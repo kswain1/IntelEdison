@@ -1,5 +1,9 @@
 from SF_9DOF import IMU
 import time
+import sys
+from datetime import datetime
+from time import sleep 
+
 
 # Create IMU object
 imu = IMU() # To select a specific I2C port, use IMU(n). Default is 1. 
@@ -36,6 +40,7 @@ while(1):
     print "Mag: " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz) 
     print "Gyro: " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
     print "Temperature: " + str(imu.temp) 
+    sys.stdout.flush()  ##This is the addition for communicating with node serially
 
     # Sleep for 1/10th of a second
     time.sleep(0.1)
