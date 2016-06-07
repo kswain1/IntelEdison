@@ -1,7 +1,7 @@
 from SF_9DOF import IMU
 from fusion import Fusion
 import time
-
+from swing_detector import SwingDetector 
 # Create IMU object
 imu = IMU() # To select a specific I2C port, use IMU(n). Default is 1. 
 
@@ -16,6 +16,9 @@ imu.enable_temp()
 fuse = Fusion()
 
 callibrate_count = 0 
+
+#swing detection 
+swing = SwingDetector()
 
 # Set range on accel, mag, and gyro
 
@@ -81,6 +84,7 @@ while(1):
        roll = fuse.roll - _roll  
        print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
        outFile.write("{:7.3f},{:7.3f},{:7.3f}\n".format(heading, pitch, roll))                                                                                                                       
+       swing.swing_detector(heading, pitch, roll) 
     print("count is : ", callibrate_count, "\n")
     # Sleep for 1/10th of a second
     time.sleep(0.1)
