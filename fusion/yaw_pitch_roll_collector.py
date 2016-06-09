@@ -1,7 +1,11 @@
 from SF_9DOF import IMU
 from fusion import Fusion
-import time
 from swing_detector import SwingDetector 
+import time
+import sys
+import select
+import tty
+import termios
 # Create IMU object
 imu = IMU() # To select a specific I2C port, use IMU(n). Default is 1. 
 
@@ -34,11 +38,22 @@ imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
 
 # Loop and read accel, mag, and gyro
 log_file = raw_input("Enter name of log file: ")
-outFile = open("/swing_log/"+log_file, 'w')
+outFile = open("logs/"+log_file, 'w')
 callibrated = False
 _heading = 0
 _pitch = 0
 _roll = 0
+swinging = False
+
+def is_swinging():
+    global swinging
+    if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
+        c = sys.stdin.read(1)
+        if c == '\x1b':
+            exit(0)
+        swinging = not swinging
+    return swinging
+
 
 while(1):
     
@@ -83,7 +98,7 @@ while(1):
        pitch = fuse.pitch - _pitch 
        roll = fuse.roll - _roll  
        print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
-       outFile.write("{:7.3f},{:7.3f},{:7.3f}\n".format(heading, pitch, roll))                                                                                                                       
+       outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(heading, pitch, roll, is_swinging()))
        swing.swing_detector(heading, pitch, roll) 
     print("count is : ", callibrate_count, "\n")
     # Sleep for 1/10th of a second
