@@ -34,7 +34,7 @@ imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
 
 # Loop and read accel, mag, and gyro
 log_file = raw_input("Enter name of log file: ")
-outFile = open(log_file, 'w')
+outFile = open("/swing_log/"+log_file, 'w')
 callibrated = False
 _heading = 0
 _pitch = 0
