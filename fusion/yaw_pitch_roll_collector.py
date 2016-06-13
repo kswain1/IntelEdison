@@ -39,6 +39,9 @@ imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
 # Loop and read accel, mag, and gyro
 log_file = raw_input("Enter name of log file: ")
 outFile = open("logs/"+log_file, 'w')
+outFile_accel = open("logs/accel_"+log_file, 'w') 
+
+
 callibrated = False
 _heading = 0
 _pitch = 0
@@ -80,7 +83,7 @@ try:
         print "Mag: " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz)
         print "Gyro: " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz)
         print "Temperature: " + str(imu.temp)
-
+        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,is_swinging()))  
         data = {"AX":str(imu.ax),"AY":str(imu.ay),"AZ":str(imu.az)}
 
         #passes the data to the fusion data for yaw pitch and roll data
@@ -104,6 +107,8 @@ try:
            roll = fuse.roll - _roll
            print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
            outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(heading, pitch, roll, is_swinging()))
+
+
            swing.swing_detector(heading, pitch, roll)
         print("count is : ", callibrate_count, "\n")
         # Sleep for 1/10th of a second
