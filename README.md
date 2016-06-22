@@ -7,5 +7,5 @@ Inside of the fusion folder one will find the programs for using the spark fun 9
 
 
 #Installation Required
-MRAA -> opkg install mraa 
-NUMPY -> opkg install numpy
+- MRAA -> opkg install mraa 
+- NUMPY -> opkg install numpy
