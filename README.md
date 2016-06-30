@@ -9,3 +9,5 @@ Inside of the fusion folder one will find the programs for using the spark fun 9
 #Installation Required
 - MRAA -> opkg install mraa 
 - NUMPY -> opkg install numpy
+- Pandas -> pip install panda
+- Scikit-learn -> pip install SciKit 
