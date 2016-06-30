@@ -58,16 +58,16 @@ def is_swinging():
         swinging = not swinging
     return swinging
 
-def calibrate(self, mag):
+def calibrate(mag):
     fuse = Fusion()
     print("Calibrating. Press switch when done.")
-    sw = self.switch
+    sw = switch
     fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
     print(fuse.magbias)
 
 def switch(count):
     if count < 20:
-        time.sleep(8)
+        time.sleep(30)
         count += 1
         return True
     else:
@@ -78,7 +78,9 @@ old_settings = termios.tcgetattr(sys.stdin)
 try:
     tty.setcbreak(sys.stdin.fileno())
     imu.read_mag()
-    fuse.calibrate((imu.mx, imu.my, imu.mz),switch(0), lambda: time.sleep(0.1 ))
+    #fuse.calibrate((imu.mx, imu.my, imu.mz),switch(0), lambda: time.sleep(0.1 ))
+    mag = (imu.mx, imu.my, imu.mz)
+    calibrate(mag)
     print fuse.magbias
     
     while(1):
