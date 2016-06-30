@@ -62,13 +62,15 @@ def is_swinging():
 old_settings = termios.tcgetattr(sys.stdin)
 try:
     tty.setcbreak(sys.stdin.fileno())
-
+    fuse.calibrate(imu.read_mag(), raw_input())
+    
     while(1):
 
         imu.read_accel()
         imu.read_mag()
         imu.read_gyro()
         imu.readTemp()
+
 
 
          #gather the accel results for the fusion algorithm
