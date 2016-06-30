@@ -6,6 +6,8 @@ import sys
 import select
 import tty
 import termios
+
+#Initialization code
 # Create IMU object
 imu = IMU() # To select a specific I2C port, use IMU(n). Default is 1.
 
@@ -59,10 +61,10 @@ def is_swinging():
     return swinging
 
 def calibrate(mag):
-    fuse = Fusion()
     print("Calibrating. Press switch when done.")
     sw = switch
     fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
+    fuse.update(accel,gyro, mag)
     print(fuse.magbias)
 
 def switch(count):
@@ -75,10 +77,10 @@ def switch(count):
 
 # this is for non-blocking input
 old_settings = termios.tcgetattr(sys.stdin)
+
 try:
     tty.setcbreak(sys.stdin.fileno())
     imu.read_mag()
-    #fuse.calibrate((imu.mx, imu.my, imu.mz),switch(0), lambda: time.sleep(0.1 ))
     mag = (imu.mx, imu.my, imu.mz)
     calibrate(mag)
     print fuse.magbias
@@ -123,14 +125,15 @@ try:
            _roll = fuse.roll
         else:
            callibrated = True
-           heading = fuse.heading - _heading
-           pitch = fuse.pitch - _pitch
-           roll = fuse.roll - _roll
-           print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
-           outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(heading, pitch, roll, is_swinging()))
+           # heading = fuse.heading - _heading
+           # pitch = fuse.pitch - _pitch
+           # roll = fuse.roll - _roll
+           # print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
+           print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(fuse.pitch, fuse.heading, fuse.roll))
+           outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(fuse.heading, fuse.pitch, fuse.roll, is_swinging()))
 
 
-           swing.swing_detector(heading, pitch, roll)
+           # swing.swing_detector(heading, pitch, roll)
         print("count is : ", callibrate_count, "\n")
         # Sleep for 1/10th of a second
         time.sleep(0.1)
