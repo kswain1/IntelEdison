@@ -6,6 +6,8 @@ import sys
 import select
 import tty
 import termios
+
+#Initialization code
 # Create IMU object
 imu = IMU() # To select a specific I2C port, use IMU(n). Default is 1.
 
@@ -59,7 +61,6 @@ def is_swinging():
     return swinging
 
 def calibrate(mag):
-    fuse = Fusion()
     print("Calibrating. Press switch when done.")
     sw = switch
     fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
@@ -75,6 +76,7 @@ def switch(count):
 
 # this is for non-blocking input
 old_settings = termios.tcgetattr(sys.stdin)
+
 try:
     tty.setcbreak(sys.stdin.fileno())
     imu.read_mag()
