@@ -64,7 +64,6 @@ def calibrate(mag):
     print("Calibrating. Press switch when done.")
     sw = switch
     fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
-    fuse.update(accel,gyro, mag)
     print(fuse.magbias)
 
 def switch(count):
@@ -125,11 +124,11 @@ try:
            _roll = fuse.roll
         else:
            callibrated = True
-           # heading = fuse.heading - _heading
-           # pitch = fuse.pitch - _pitch
-           # roll = fuse.roll - _roll
-           # print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
-           print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(fuse.pitch, fuse.heading, fuse.roll))
+           heading = fuse.heading - _heading
+           pitch = fuse.pitch - _pitch
+           roll = fuse.roll - _roll
+           print("Motion Tracking Values Callibrated!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
+           print("Motion Tracking Values Raw!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(fuse.pitch, fuse.heading, fuse.roll))
            outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(fuse.heading, fuse.pitch, fuse.roll, is_swinging()))
 
 
