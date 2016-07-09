@@ -1,16 +1,12 @@
 from SF_9DOF import IMU
-import time
-import sys
-import select
-import nunmpy as np
-
-
-
-import tty
-import termios
+import numpy as np
+from math import *
+#import termios
 
 #This script uses numpy in order to perform matrix operations
-
+#So the numpy library must be downloaded otherwise script won't work
+#Calibrate
+#Begin sampling acceleration
 def initialize():
     #Returns  initialized IMU object
     # Initialization code
@@ -24,7 +20,6 @@ def initialize():
     imu.enable_accel()
     imu.enable_mag()
     imu.enable_gyro()
-    imu.enable_temp()
 
     # Specify Options: "2G", "4G", "6G", "8G", "16G"
     imu.accel_range("2G")  # leave blank for default of "2G"
@@ -49,14 +44,16 @@ def calibrate(imu):
     az = accelVec(3, 1)
     g = 9.81 #Gravitational constant m/s^2 may change to ft/s^2
 
-    theta1 = arcsin(-ax/g)
-    theta2 = arctan(ay/az)
+    theta1 = asin(-ax/g)
+    theta2 = atan(ay/az)
 
     #Calculate initial euler parameters
-    e1 = sin(theta2)*(1+cos(theta1))/(4*e4)
-    e2 = sin(theta1)*(1+cos(theta2))/(4*e4)
-    e3 = -sin(theta1)*sin(theta2)/(4*e4)
+    e4_0 = sqrt(1+cos(theta1)+ cos(theta2) + cos(theta1)*cos(theta2)/2)
+    e1_0 = sin(theta2)*(1+cos(theta1))/(4*e4_0)
+    e2_0 = sin(theta1)*(1+cos(theta2))/(4*e4_0)
+    e3_0 = -sin(theta1)*sin(theta2)/(4*e4_0)
 
+    return [e1_0,e2_0,e3_0,e4_0]
 
 def readAcceleration(imu):
     imu.read_accel()
@@ -66,10 +63,37 @@ def readAcceleration(imu):
     accelVec(3, 1) = imu.az
     return accelVec
 
+def stateEquationModel(e,e_initial, t_inital,t_final,wx,wy,wz):
+    #e is a vector containing e1 through e4
+    #e_inital contains initial conditions for the euler angles
 
-#Begin by calibrating
+    de1 = e[4]*wx - e[3]*wy + e[2]*wz
+    de2 = e[3]*wx + e[4]*wy - e[1]*wz
+    de3 = -e[2]*wx + e[1]*wy + e[4]*wz
+    de4 = -e[1]*wx - e[2]*wy - e[3]*wy
+
+    return [de1,de2,de3,de4]
+
+
+#Initialize
 imu = initialize()
-accelVec = readAcceleration(imu)
+
+#Begin calibration procedure
+#Calibrate returns the four initial euler parameters
+#which are needed in order to solve for cosine matrix
+e_initial = calibrate(imu)
+
+#Compute Angular velocity
+
+
+#Compute Direction Cosine Matrix
+
+
+
+#accelVec = readAcceleration(imu)
+
+
+
 
 
 
