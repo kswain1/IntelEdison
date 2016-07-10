@@ -44,7 +44,6 @@ def calibrate(imu):
 
     #Begin by computing theta1 and theta2
     accelVec = readAcceleration(imu)
-    print accelVec
     ax = accelVec(1, 1)
     ay = accelVec(2, 1)
     az = accelVec(3, 1)
