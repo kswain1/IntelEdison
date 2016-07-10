@@ -1,8 +1,4 @@
 from SF_9DOF import IMU
-import time
-import sys
-import select
-import numpy as np
 import numpy as np
 from math import *
 from scipy.integrate import odeint
@@ -49,11 +45,6 @@ def calibrate(imu):
 
     # Begin by computing theta1 and theta2
     accelVec = readAcceleration(imu)
-    print accelVec
-    ax = accelVec(1, 1)
-    ay = accelVec(2, 1)
-    az = accelVec(3, 1)
-    g = 9.81 #Gravitational constant m/s^2 may change to ft/s^2
     ax = accelVec[1, 1]
     ay = accelVec[2, 1]
     az = accelVec[3, 1]
@@ -70,20 +61,9 @@ def calibrate(imu):
 
     return [e1_0, e2_0, e3_0, e4_0]
 
-    #additions by Kehlin Swain 
-    print e1,e2,e3
-
 
 def readAcceleration(imu):
     imu.read_accel()
-    accelVec = [imu.ax, imu.ay, imu.az]
-    accelVec = np.array(accelVec)
-    accelVec.reshape(3,1) 
-    ## Changes edited by Kehlin Swain for gathering Accel Vector Information
-    #accelVec = np.reshape(3, 1) # 3x1 Column Vector
-    #accelVec(1, 1) = imu.ax
-    #accelVec(2, 1) = imu.ay
-    #accelVec(3, 1) = imu.az
     accelVec = np.shape(3, 1)  # 3x1 Column Vector
     accelVec[1, 1] = imu.ax
     accelVec[2, 1] = imu.ay
@@ -119,8 +99,6 @@ def stateEquationModel(e, angularVelocity):
 
 # Initialize
 imu = initialize()
-accelVec = readAcceleration(imu)
-calibrate(imu)
 
 # Begin calibration procedure
 # Calibrate returns the four initial euler parameters

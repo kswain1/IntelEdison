@@ -1,11 +1,14 @@
 from SF_9DOF import IMU
+<<<<<<< HEAD
 import time
 import sys
 import select
 import numpy as np
+=======
 import numpy as np
 from math import *
 from scipy.integrate import odeint
+>>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
 
 
 # import termios
@@ -49,11 +52,13 @@ def calibrate(imu):
 
     # Begin by computing theta1 and theta2
     accelVec = readAcceleration(imu)
+<<<<<<< HEAD
     print accelVec
     ax = accelVec(1, 1)
     ay = accelVec(2, 1)
     az = accelVec(3, 1)
     g = 9.81 #Gravitational constant m/s^2 may change to ft/s^2
+=======
     ax = accelVec[1, 1]
     ay = accelVec[2, 1]
     az = accelVec[3, 1]
@@ -61,6 +66,7 @@ def calibrate(imu):
 
     theta1 = asin(-ax / g)
     theta2 = atan(ay / az)
+>>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
 
     # Calculate initial euler parameters
     e4_0 = sqrt(1 + cos(theta1) + cos(theta2) + cos(theta1) * cos(theta2) / 2)
@@ -76,6 +82,7 @@ def calibrate(imu):
 
 def readAcceleration(imu):
     imu.read_accel()
+<<<<<<< HEAD
     accelVec = [imu.ax, imu.ay, imu.az]
     accelVec = np.array(accelVec)
     accelVec.reshape(3,1) 
@@ -84,10 +91,12 @@ def readAcceleration(imu):
     #accelVec(1, 1) = imu.ax
     #accelVec(2, 1) = imu.ay
     #accelVec(3, 1) = imu.az
+=======
     accelVec = np.shape(3, 1)  # 3x1 Column Vector
     accelVec[1, 1] = imu.ax
     accelVec[2, 1] = imu.ay
     accelVec[3, 1] = imu.az
+>>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
     return accelVec
 
 
@@ -119,13 +128,16 @@ def stateEquationModel(e, angularVelocity):
 
 # Initialize
 imu = initialize()
+<<<<<<< HEAD
 accelVec = readAcceleration(imu)
 calibrate(imu)
+=======
 
 # Begin calibration procedure
 # Calibrate returns the four initial euler parameters
 # which are needed in order to solve for cosine matrix
 e_initial = calibrate(imu)
+>>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
 
 # Read Angular velocity
 angularVelocity = readAngularVelocity(imu)
