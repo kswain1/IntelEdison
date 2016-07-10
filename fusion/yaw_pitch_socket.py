@@ -6,11 +6,9 @@ import sys
 import select
 import tty
 import termios
-<<<<<<< HEAD
-
-#Initialization code
-=======
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
+import math 
+import json
+import socket
 # Create IMU object
 imu = IMU() # To select a specific I2C port, use IMU(n). Default is 1.
 
@@ -55,7 +53,7 @@ swinging = False
 
 def is_swinging():
     global swinging
-    print(swinging)
+    #print(swinging)
     if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
         c = sys.stdin.read(1)
         if c == '\x1b':
@@ -63,56 +61,27 @@ def is_swinging():
         swinging = not swinging
     return swinging
 
-def calibrate(mag):
-<<<<<<< HEAD
-    print("Calibrating. Press switch when done.")
-    sw = switch
-    fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
-    fuse.update(accel,gyro, mag)
-=======
-    fuse = Fusion()
-    print("Calibrating. Press switch when done.")
-    sw = switch
-    fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
-    print(fuse.magbias)
 
-def switch(count):
-    if count < 20:
-<<<<<<< HEAD
-        time.sleep(30)
-=======
-        time.sleep(10)
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
-        count += 1
-        return True
-    else:
-        return False
+def socket_sender(roll, pitch, yaw):
+    conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_address = ('', 8900)
 
+    conn.listen(1)
+    data = {"roll":round(roll), "pitch":round(pitch), "yaw":round(yaw)}
+    json_data = json.dumps(data)
+    conn.connect(server_address)
+    conn.sendall(json_data, '\n')
 # this is for non-blocking input
 old_settings = termios.tcgetattr(sys.stdin)
-<<<<<<< HEAD
+try:
+    tty.setcbreak(sys.stdin.fileno())
 
-try:
-    tty.setcbreak(sys.stdin.fileno())
-    imu.read_mag()
-=======
-try:
-    tty.setcbreak(sys.stdin.fileno())
-    imu.read_mag()
-    #fuse.calibrate((imu.mx, imu.my, imu.mz),switch(0), lambda: time.sleep(0.1 ))
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
-    mag = (imu.mx, imu.my, imu.mz)
-    calibrate(mag)
-    print fuse.magbias
-    
     while(1):
 
         imu.read_accel()
         imu.read_mag()
         imu.read_gyro()
         imu.readTemp()
-
 
 
          #gather the accel results for the fusion algorithm
@@ -146,27 +115,22 @@ try:
            _roll = fuse.roll
         else:
            callibrated = True
-<<<<<<< HEAD
-           # heading = fuse.heading - _heading
-           # pitch = fuse.pitch - _pitch
-           # roll = fuse.roll - _roll
-           # print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
-           print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(fuse.pitch, fuse.heading, fuse.roll))
-           outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(fuse.heading, fuse.pitch, fuse.roll, is_swinging()))
-
-
-           # swing.swing_detector(heading, pitch, roll)
-=======
            heading = fuse.heading - _heading
            pitch = fuse.pitch - _pitch
            roll = fuse.roll - _roll
+           socket_sender(roll, pitch, heading)
            print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
+           summation = heading**2 + pitch**2 + roll**2
+           magnitude = math.sqrt(summation)
+           alpha = math.acos(heading/magnitude)
+           beta = math.acos(pitch/magnitude)
+           gamma = math.acos(roll/magnitude)
+           
            outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(heading, pitch, roll, is_swinging()))
+           print("alpha {:7.3f}, beta {:7.3f}, gamma{:7.3f}\n".format(math.degrees(alpha), math.degrees(beta), math.degrees(gamma)))
 
-
-           swing.swing_detector(heading, pitch, roll)
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
-        print("count is : ", callibrate_count, "\n")
+           #swing.swing_detector(heading, pitch, roll)
+        #print("count is : ", callibrate_count, "\n")
         # Sleep for 1/10th of a second
         time.sleep(0.1)
 
