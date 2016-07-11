@@ -1,8 +1,7 @@
 from SF_9DOF import IMU
-import numpy as np
 from math import *
 from scipy.integrate import odeint
-
+import numpy as np
 
 # import termios
 # This script uses numpy in order to perform matrix operations
@@ -47,9 +46,9 @@ def calibrate(imu):
 
     # Begin by computing theta1 and theta2
     accelVec = readAcceleration(imu)
-    ax = accelVec[1, 1]
-    ay = accelVec[2, 1]
-    az = accelVec[3, 1]
+    ax = accelVec[1][1]
+    ay = accelVec[2][1]
+    az = accelVec[3][1]
     g = 9.81  # Gravitational constant m/s^2 may change to ft/s^2
 
     theta1 = asin(-ax / g)
@@ -68,7 +67,7 @@ def readAcceleration(imu):
     # Returns 3x1 numpy Column Vector with acceleration values
 
     imu.read_accel()
-    accelVec = np.shape([3, 1])  # 3x1 Column Vector
+    accelVec = np.zeros((3, 1))  # 3x1 Column Vector
     accelVec[1, 1] = imu.ax
     accelVec[2, 1] = imu.ay
     accelVec[3, 1] = imu.az
@@ -102,6 +101,7 @@ def stateEquationModel(e, angularVelocity):
     de4 = -e[1] * w[1] - e[2] * w[2] - e[3] * w[3]
 
     return [de1, de2, de3, de4]
+
 
 def computeDirectionCosineMatrix(e):
     # Computes Direction Cosine Matrix from Euler Parameters
