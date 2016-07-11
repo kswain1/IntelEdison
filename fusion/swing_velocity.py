@@ -81,7 +81,7 @@ def readAngularVelocity(imu):
     # angularVelocityVec[1-3] = x y z component respectively
 
     imu.read_gyro()
-    angularVelocityVec = np.shape([3, 1])  # 3x1 Column Vector
+    angularVelocityVec = np.zeros((3, 1))  # 3x1 Column Vector
     angularVelocityVec[0][0] = imu.gx
     angularVelocityVec[1][0] = imu.gy
     angularVelocityVec[2][0] = imu.gy
