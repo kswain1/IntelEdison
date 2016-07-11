@@ -14,6 +14,7 @@ from scipy.integrate import odeint
 
 def initialize():
     # Returns  initialized IMU object
+
     # Initialization code
     # Create IMU object
     imu = IMU()  # To select a specific I2C port, use IMU(n). Default is 1.
@@ -40,6 +41,7 @@ def initialize():
 def calibrate(imu):
     # IMU must calibrate by pointing the tip of the bat
     # in the (I_hat x K_hat) plane of the field frame.
+    # Returns the four initial euler parameters
     # User has 5 seconds to complete.
     # PLEASE REMEMBER TO CHECK GRAVITATIONAL CONSTANT UNITS
 
@@ -63,28 +65,35 @@ def calibrate(imu):
 
 
 def readAcceleration(imu):
+    # Returns 3x1 numpy Column Vector with acceleration values
+
     imu.read_accel()
-    accelVec = np.shape(3, 1)  # 3x1 Column Vector
+    accelVec = np.shape([3, 1])  # 3x1 Column Vector
     accelVec[1, 1] = imu.ax
     accelVec[2, 1] = imu.ay
     accelVec[3, 1] = imu.az
+
     return accelVec
 
 
 def readAngularVelocity(imu):
     # angularVelocityVec is a 3x1 Column Vector
+    # Returns 3x1 numpy Column vector with angular velocity values
     # angularVelocityVec[1-3] = x y z component respectively
+
     imu.read_gyro()
-    angularVelocityVec = np.shape(3, 1)  # 3x1 Column Vector
+    angularVelocityVec = np.shape([3,1])  # 3x1 Column Vector
     angularVelocityVec[1, 1] = imu.gx
     angularVelocityVec[2, 1] = imu.gy
     angularVelocityVec[3, 1] = imu.gy
+
     return angularVelocityVec
 
 
 def stateEquationModel(e, angularVelocity):
     # e is a vector containing e1 through e4
     # angularVelocity is a vector containing the component velocities
+    # Returns a list with the four differential euler parameter equations
     w = angularVelocity
 
     de1 = e[4] * w[1] - e[3] * w[2] + e[2] * w[3]
@@ -94,13 +103,33 @@ def stateEquationModel(e, angularVelocity):
 
     return [de1, de2, de3, de4]
 
-# def computeDirectionCosineMatrix
+def computeDirectionCosineMatrix(e):
+    # Computes Direction Cosine Matrix from Euler Parameters
+    # Returns 3x3 numpy array
+
+    e1 = e[1]
+    e2 = e[2]
+    e3 = e[3]
+    e4 = e[4]
+
+    # Using the definition from the Bat Physics Paper
+    cosineMatrix = np.zeros([3, 3])
+    cosineMatrix[1, 1] = e1**2 - e2**2 - e3**2 + e4**2
+    cosineMatrix[1, 2] = 2 * (e1*e2 + e3*e4)
+    cosineMatrix[1, 3] = 2 * (e2*e3 - e1*e4)
+    cosineMatrix[2, 1] = 2 * (e1*e2 - e3*e4)
+    cosineMatrix[2, 2] = e2**2 - e1**2 - e3**2 + e4**2
+    cosineMatrix[2, 3] = 2 * (e2*e3 + e1*e4)
+    cosineMatrix[3, 1] = 2 * (e1*e3 + e2*e4)
+    cosineMatrix[3, 2] = 2 * (e2*e3 - e1*e4)
+    cosineMatrix[3, 3] = e3**2 - e1**2 - e2**2 + e4**2
+
+    return cosineMatrix
 
 
 # Initialize
 imu = initialize()
 
-# Begin calibration procedure
 # Calibrate returns the four initial euler parameters
 # which are needed in order to solve for cosine matrix
 e_initial = calibrate(imu)
@@ -115,5 +144,4 @@ time = np.linspace(0.0, 0.01, 2)
 e = odeint(stateEquationModel, e_initial, time)
 
 # Compute Direction Cosine Matrix
-
-accelVec = readAcceleration(imu)
+directionMatrix = computeDirectionCosineMatrix(e)
