@@ -6,11 +6,8 @@ import sys
 import select
 import tty
 import termios
-<<<<<<< HEAD
 
 #Initialization code
-=======
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
 # Create IMU object
 imu = IMU() # To select a specific I2C port, use IMU(n). Default is 1.
 
@@ -64,26 +61,15 @@ def is_swinging():
     return swinging
 
 def calibrate(mag):
-<<<<<<< HEAD
     print("Calibrating. Press switch when done.")
     sw = switch
     fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
     fuse.update(accel,gyro, mag)
-=======
-    fuse = Fusion()
-    print("Calibrating. Press switch when done.")
-    sw = switch
-    fuse.calibrate(mag, sw, lambda: time.sleep(0.1))
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
     print(fuse.magbias)
 
 def switch(count):
     if count < 20:
-<<<<<<< HEAD
         time.sleep(30)
-=======
-        time.sleep(10)
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
         count += 1
         return True
     else:
@@ -91,17 +77,10 @@ def switch(count):
 
 # this is for non-blocking input
 old_settings = termios.tcgetattr(sys.stdin)
-<<<<<<< HEAD
 
 try:
     tty.setcbreak(sys.stdin.fileno())
     imu.read_mag()
-=======
-try:
-    tty.setcbreak(sys.stdin.fileno())
-    imu.read_mag()
-    #fuse.calibrate((imu.mx, imu.my, imu.mz),switch(0), lambda: time.sleep(0.1 ))
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
     mag = (imu.mx, imu.my, imu.mz)
     calibrate(mag)
     print fuse.magbias
@@ -146,7 +125,6 @@ try:
            _roll = fuse.roll
         else:
            callibrated = True
-<<<<<<< HEAD
            # heading = fuse.heading - _heading
            # pitch = fuse.pitch - _pitch
            # roll = fuse.roll - _roll
@@ -156,16 +134,6 @@ try:
 
 
            # swing.swing_detector(heading, pitch, roll)
-=======
-           heading = fuse.heading - _heading
-           pitch = fuse.pitch - _pitch
-           roll = fuse.roll - _roll
-           print("Motion Tracking Values!!: Pitch: {:7.3f} Heading: {:7.3f} Roll: {:7.3f}".format(pitch, heading, roll))
-           outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(heading, pitch, roll, is_swinging()))
-
-
-           swing.swing_detector(heading, pitch, roll)
->>>>>>> 08eb9df3045e816ada5be95b92de43e9b09bd53b
         print("count is : ", callibrate_count, "\n")
         # Sleep for 1/10th of a second
         time.sleep(0.1)
