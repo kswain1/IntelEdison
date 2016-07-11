@@ -95,10 +95,10 @@ def stateEquationModel(e, angularVelocity):
     # Returns a list with the four differential euler parameter equations
     w = angularVelocity
 
-    de1 = e[4] * w[1] - e[3] * w[2] + e[2] * w[3]
-    de2 = e[3] * w[1] + e[4] * w[2] - e[1] * w[3]
-    de3 = -e[2] * w[1] + e[1] * w[2] + e[4] * w[3]
-    de4 = -e[1] * w[1] - e[2] * w[2] - e[3] * w[3]
+    de1 = e[3] * w[0] - e[2] * w[1] + e[1] * w[2]
+    de2 = e[2] * w[0] + e[3] * w[1] - e[0] * w[2]
+    de3 = -e[1] * w[0] + e[0] * w[1] + e[3] * w[2]
+    de4 = -e[0] * w[0] - e[1] * w[1] - e[2] * w[2]
 
     return [de1, de2, de3, de4]
 
