@@ -46,9 +46,9 @@ def calibrate(imu):
 
     # Begin by computing theta1 and theta2
     accelVec = readAcceleration(imu)
-    ax = accelVec[1][1]
-    ay = accelVec[2][1]
-    az = accelVec[3][1]
+    ax = accelVec[0][0]
+    ay = accelVec[1][0]
+    az = accelVec[2][0]
     g = 9.81  # Gravitational constant m/s^2 may change to ft/s^2
 
     theta1 = asin(-ax / g)
@@ -68,9 +68,9 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros((3, 1))  # 3x1 Column Vector
-    accelVec[1, 1] = imu.ax
-    accelVec[2, 1] = imu.ay
-    accelVec[3, 1] = imu.az
+    accelVec[0][0] = imu.ax
+    accelVec[1][0] = imu.ay
+    accelVec[2][0] = imu.az
 
     return accelVec
 
