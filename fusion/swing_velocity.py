@@ -141,7 +141,9 @@ angularVelocity = readAngularVelocity(imu)
 time = np.linspace(0.0, 0.01, 2)
 
 # Solve for euler parameters
-e = odeint(stateEquationModel, e_initial, time)
+e = odeint(stateEquationModel, e_initial, time, args=(angularVelocity))
 
 # Compute Direction Cosine Matrix
 directionMatrix = computeDirectionCosineMatrix(e)
+
+
