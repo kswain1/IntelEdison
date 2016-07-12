@@ -1,4 +1,4 @@
-from SF_9DOF import IMU
+#from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 import numpy as np
@@ -89,7 +89,7 @@ def readAngularVelocity(imu):
     return angularVelocityVec
 
 
-def stateEquationModel(e, angularVelocity):
+def stateEquationModel(e, t, w0, w1, w2):
     # e is a vector containing e1 through e4
     # angularVelocity is a vector containing the component velocities
     # Returns a list with the four differential euler parameter equations
@@ -107,10 +107,10 @@ def computeDirectionCosineMatrix(e):
     # Computes Direction Cosine Matrix from Euler Parameters
     # Returns 3x3 numpy array
 
-    e1 = e[1]
-    e2 = e[2]
-    e3 = e[3]
-    e4 = e[4]
+    e1 = e[0]
+    e2 = e[1]
+    e3 = e[2]
+    e4 = e[3]
 
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
@@ -134,14 +134,19 @@ imu = initialize()
 # which are needed in order to solve for cosine matrix
 e_initial = calibrate(imu)
 
+#e_initial = np.array([0.1, 0.1, 0.1, 0.1])
+
 # Read Angular velocity
 angularVelocity = readAngularVelocity(imu)
 
-# Create time vector
-time = np.linspace(0.0, 0.01, 2)
+#angularVelocity = (0.65, 0, 0)
 
-# Solve for euler parameters
-e = odeint(stateEquationModel, e_initial, time, args=(angularVelocity))
+# Create time vector
+time = np.linspace(0.0, 1, 5)
+
+# Solve for euler parameter
+e = odeint(stateEquationModel, e_initial, time, angularVelocity)
+print e
 
 # Compute Direction Cosine Matrix
 directionMatrix = computeDirectionCosineMatrix(e)
