@@ -138,7 +138,6 @@ def streamSwingTrial():
     e_initial = calibrate(imu)
 
     #Init time object
-    time = struct_time()
     initialTime = time.time()
 
     # Read Angular velocity
