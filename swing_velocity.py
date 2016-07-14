@@ -1,9 +1,9 @@
-#!/usr/bin/python
+
 from fusion.SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 import numpy as np
-import time
+from time import *
 
 # import termios
 # This script uses numpy in order to perform matrix operations
@@ -136,6 +136,9 @@ def streamSwingTrial():
     # Calibrate returns the four initial euler parameters
     # which are needed in order to solve for cosine matrix
     e_initial = calibrate(imu)
+
+    #Init time object
+    time = struct_time()
     initialTime = time.time()
 
     # Read Angular velocity
