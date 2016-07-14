@@ -1,5 +1,4 @@
-
-from fusion.SF_9DOF import IMU
+from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 import numpy as np
