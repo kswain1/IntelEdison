@@ -3,7 +3,8 @@ from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 import numpy as np
-from time import *
+import time as tm
+
 
 # import termios
 # This script uses numpy in order to perform matrix operations
@@ -12,6 +13,8 @@ from time import *
 # Begin sampling acceleration
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
+
+
 
 def initialize():
     # Returns  initialized IMU object
@@ -138,13 +141,13 @@ def streamSwingTrial():
     e_initial = calibrate(imu)
 
     #Init time object
-    initialTime = time.time()
+    initialTime = tm.time()
 
     # Read Angular velocity
     angularVelocity = readAngularVelocity(imu)
 
     # Read time at which sample was read (elapsed time)
-    sampleTime = time.time() - initialTime
+    sampleTime = tm.time() - initialTime
 
     # Create time vector
     time = [0.0, sampleTime]
