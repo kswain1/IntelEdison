@@ -94,7 +94,7 @@ def stateEquationModel(e, t, w0, w1, w2):
     # e is a vector containing e1 through e4
     # angularVelocity is a vector containing the component velocities
     # Returns a list with the four differential euler parameter equations
-    w = angularVelocity
+    w = [w0, w1, w2]
 
     de1 = e[3] * w[0] - e[2] * w[1] + e[1] * w[2]
     de2 = e[2] * w[0] + e[3] * w[1] - e[0] * w[2]
@@ -151,5 +151,9 @@ def streamSwingTrial():
     e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
     eCurrent = e[1]
     print eCurrent
-    # Compute Direction Cosine Matrix rtc
+
+    # Compute Direction Cosine Matrix
     directionMatrix = computeDirectionCosineMatrix(e)
+
+
+streamSwingTrial()
