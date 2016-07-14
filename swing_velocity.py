@@ -1,7 +1,9 @@
+#!/usr/bin/python
 from fusion.SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 import numpy as np
+import time
 
 # import termios
 # This script uses numpy in order to perform matrix operations
@@ -113,6 +115,7 @@ def computeDirectionCosineMatrix(e):
 
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
+    #MUST FIX INDEXING
     cosineMatrix[1, 1] = e1**2 - e2**2 - e3**2 + e4**2
     cosineMatrix[1, 2] = 2 * (e1*e2 + e3*e4)
     cosineMatrix[1, 3] = 2 * (e2*e3 - e1*e4)
@@ -126,28 +129,27 @@ def computeDirectionCosineMatrix(e):
     return cosineMatrix
 
 
-# Initialize
-imu = initialize()
+def streamSwingTrial():
+    # Initialize
+    imu = initialize()
 
-# Calibrate returns the four initial euler parameters
-# which are needed in order to solve for cosine matrix
-e_initial = calibrate(imu)
+    # Calibrate returns the four initial euler parameters
+    # which are needed in order to solve for cosine matrix
+    e_initial = calibrate(imu)
+    initialTime = time.time()
 
-#e_initial = np.array([0.1, 0.1, 0.1, 0.1])
+    # Read Angular velocity
+    angularVelocity = readAngularVelocity(imu)
 
-# Read Angular velocity
-angularVelocity = readAngularVelocity(imu)
+    # Read time at which sample was read (elapsed time)
+    sampleTime = time.time() - initialTime
 
-#angularVelocity = (0.65, 0, 0)
+    # Create time vector
+    time = [0.0, sampleTime]
 
-# Create time vector
-time = np.linspace(0.0, 1, 5)
-
-# Solve for euler parameter
-e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
-print e
-
-# Compute Direction Cosine Matrix
-directionMatrix = computeDirectionCosineMatrix(e)
-
-
+    # Solve for euler parameter
+    e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
+    eCurrent = e[1]
+    print eCurrent
+    # Compute Direction Cosine Matrix rtc
+    directionMatrix = computeDirectionCosineMatrix(e)
