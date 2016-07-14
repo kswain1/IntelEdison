@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
