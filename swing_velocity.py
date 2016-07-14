@@ -1,4 +1,4 @@
-#from SF_9DOF import IMU
+from fusion.SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 import numpy as np
@@ -16,7 +16,7 @@ def initialize():
 
     # Initialization code
     # Create IMU object
-    imu = IMU()  # To select a specific I2C port, use IMU(n). Default is 1.
+    imu = IMU(1)  # To select a specific I2C port, use IMU(n). Default is 1.
 
     # Initialize IMU
     imu.initialize()
@@ -77,8 +77,7 @@ def readAcceleration(imu):
 
 def readAngularVelocity(imu):
     # angularVelocityVec is a 3x1 Column Vector
-    # Returns 3x1 numpy Column vector with angular velocity values
-    # angularVelocityVec[1-3] = x y z component respectively
+    # Returns 3x1 numpyVc[1-3] = x y z component respectively
 
     imu.read_gyro()
     angularVelocityVec = np.zeros(3)  # 3x1 Column Vector
@@ -145,7 +144,7 @@ angularVelocity = readAngularVelocity(imu)
 time = np.linspace(0.0, 1, 5)
 
 # Solve for euler parameter
-e = odeint(stateEquationModel, e_initial, time, angularVelocity)
+e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
 print e
 
 # Compute Direction Cosine Matrix
