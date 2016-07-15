@@ -112,9 +112,7 @@ def computeDirectionCosineMatrix(e):
     # Returns 3x3 numpy array
 
     e1 = e[0]
-    print e1
     e2 = e[1]
-    print e1
     e3 = e[2]
     e4 = e[3]
 
@@ -157,10 +155,11 @@ def streamSwingTrial():
     # Solve for euler parameter
     e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
     eCurrent = e.tolist()[1]
-    print eCurrent
 
     # Compute Direction Cosine Matrix
     directionMatrix = computeDirectionCosineMatrix(eCurrent)
+    print "Direction Cosine Matrix:"
+    print directionMatrix
 
 
 streamSwingTrial()
