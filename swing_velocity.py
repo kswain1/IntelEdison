@@ -167,4 +167,6 @@ def streamSwingTrial():
     print directionMatrix
 
 
+
+
 streamSwingTrial()

@@ -66,6 +66,11 @@ class IMU:
     def enable_accel(self):
         self.x.address(self.XM.ADDRESS)
         self.x.writeReg(self.XM.CTRL_REG1_XM, 0x67)  # 100 Hz, XYZ
+        # Additions by Guzman
+        print self.x.readReg(self.XM.CTRL_REG1_XM)
+        self.x.writeReg(self.XM.CTRL_REG1_XM, 0xF7) #Flip some bits to test
+        print self.x.readReg(self.XM.CTRL_REG1_XM)
+        self.x.writeReg(self.XM.CTRL_REG1_XM, )
         self.x.address(self.XM.ADDRESS)
         self.x.writeReg(self.XM.CTRL_REG5_XM, 0xF0)
 
