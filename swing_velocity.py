@@ -156,9 +156,7 @@ def streamSwingTrial():
 
     # Solve for euler parameter
     e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
-    print e
-    print
-    eCurrent = e.pop()
+    eCurrent = e.list()[1]
     print eCurrent
 
     # Compute Direction Cosine Matrix
