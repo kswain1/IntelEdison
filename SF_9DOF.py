@@ -30,7 +30,7 @@ def read3axis(x, address, reg, cal):
     return x, y, z 
 
 
-# IMU Class 
+# IMU Class
 class IMU:
 
     # Mag and Gyro Configs loaded
@@ -66,13 +66,14 @@ class IMU:
     def enable_accel(self):
         self.x.address(self.XM.ADDRESS)
         self.x.writeReg(self.XM.CTRL_REG1_XM, 0x67)  # 100 Hz, XYZ
-        # Additions by Guzman
-        print self.x.readReg(self.XM.CTRL_REG1_XM)
-        self.x.writeReg(self.XM.CTRL_REG1_XM, 0xF0) #Flip some bits to test
-        print self.x.readReg(self.XM.CTRL_REG1_XM)
-        self.x.writeReg(self.XM.CTRL_REG1_XM, )
         self.x.address(self.XM.ADDRESS)
         self.x.writeReg(self.XM.CTRL_REG5_XM, 0xF0)
+
+    # Changes sampling mode of the accelerometer
+    def accel_mode(self, hexCode):
+        # Accelerometer may be played in Bypass, FIFO, or Stream mode
+        self.x.address(self.XM.ADDRESS)
+        self.x.writeReg(self.XM.FIFO_CTRL_REG_G, hexCode)
 
     # Enables the gyro in normal mode on all axes
     def enable_gyro(self):
