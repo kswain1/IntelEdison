@@ -138,9 +138,13 @@ def streamSwingTrial():
 
     # Calibrate returns the four initial euler parameters
     # which are needed in order to solve for cosine matrix
+    print "5 seconds to Calibrate. Please hold Calibration Position:"
+    tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu)
+    print "5 seconds to place in desired position:"
+    tm.sleep(5.5)  # User may place in desired position
 
-    #Init time object
+    # Init time object
     initialTime = tm.time()
 
     # Read Angular velocity
@@ -148,13 +152,14 @@ def streamSwingTrial():
 
     # Read time at which sample was read (elapsed time)
     sampleTime = tm.time() - initialTime
+    print sampleTime
 
     # Create time vector
     time = [0.0, sampleTime]
 
     # Solve for euler parameter
     e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
-    eCurrent = e.tolist()[1]
+    eCurrent = e.tolist()[1]  # Assign 2nd entry of e array to eCurrent
 
     # Compute Direction Cosine Matrix
     directionMatrix = computeDirectionCosineMatrix(eCurrent)
