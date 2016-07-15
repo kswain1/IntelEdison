@@ -121,15 +121,15 @@ def computeDirectionCosineMatrix(e):
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
     #MUST FIX INDEXING
-    cosineMatrix[1, 1] = e1**2 - e2**2 - e3**2 + e4**2
-    cosineMatrix[1, 2] = 2 * (e1*e2 + e3*e4)
-    cosineMatrix[1, 3] = 2 * (e2*e3 - e1*e4)
-    cosineMatrix[2, 1] = 2 * (e1*e2 - e3*e4)
-    cosineMatrix[2, 2] = e2**2 - e1**2 - e3**2 + e4**2
-    cosineMatrix[2, 3] = 2 * (e2*e3 + e1*e4)
-    cosineMatrix[3, 1] = 2 * (e1*e3 + e2*e4)
-    cosineMatrix[3, 2] = 2 * (e2*e3 - e1*e4)
-    cosineMatrix[3, 3] = e3**2 - e1**2 - e2**2 + e4**2
+    cosineMatrix[0][0] = e1**2 - e2**2 - e3**2 + e4**2
+    cosineMatrix[0][1] = 2 * (e1*e2 + e3*e4)
+    cosineMatrix[0][2] = 2 * (e2*e3 - e1*e4)
+    cosineMatrix[1][0] = 2 * (e1*e2 - e3*e4)
+    cosineMatrix[1][1] = e2**2 - e1**2 - e3**2 + e4**2
+    cosineMatrix[1][2] = 2 * (e2*e3 + e1*e4)
+    cosineMatrix[2][0] = 2 * (e1*e3 + e2*e4)
+    cosineMatrix[2][1] = 2 * (e2*e3 - e1*e4)
+    cosineMatrix[2][2] = e3**2 - e1**2 - e2**2 + e4**2
 
     return cosineMatrix
 
