@@ -160,7 +160,7 @@ def streamSwingTrial():
     print eCurrent
 
     # Compute Direction Cosine Matrix
-    directionMatrix = computeDirectionCosineMatrix(e)
+    directionMatrix = computeDirectionCosineMatrix(eCurrent)
 
 
 streamSwingTrial()
