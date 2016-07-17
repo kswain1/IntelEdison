@@ -1,7 +1,10 @@
-from fusion.SF_9DOF import IMU
+#!/usr/bin/python
+from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 import numpy as np
+import time as tm
+
 
 # import termios
 # This script uses numpy in order to perform matrix operations
@@ -10,6 +13,8 @@ import numpy as np
 # Begin sampling acceleration
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
+
+
 
 def initialize():
     # Returns  initialized IMU object
@@ -92,7 +97,7 @@ def stateEquationModel(e, t, w0, w1, w2):
     # e is a vector containing e1 through e4
     # angularVelocity is a vector containing the component velocities
     # Returns a list with the four differential euler parameter equations
-    w = angularVelocity
+    w = [w0, w1, w2]
 
     de1 = e[3] * w[0] - e[2] * w[1] + e[1] * w[2]
     de2 = e[2] * w[0] + e[3] * w[1] - e[0] * w[2]
@@ -113,41 +118,55 @@ def computeDirectionCosineMatrix(e):
 
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
-    cosineMatrix[1, 1] = e1**2 - e2**2 - e3**2 + e4**2
-    cosineMatrix[1, 2] = 2 * (e1*e2 + e3*e4)
-    cosineMatrix[1, 3] = 2 * (e2*e3 - e1*e4)
-    cosineMatrix[2, 1] = 2 * (e1*e2 - e3*e4)
-    cosineMatrix[2, 2] = e2**2 - e1**2 - e3**2 + e4**2
-    cosineMatrix[2, 3] = 2 * (e2*e3 + e1*e4)
-    cosineMatrix[3, 1] = 2 * (e1*e3 + e2*e4)
-    cosineMatrix[3, 2] = 2 * (e2*e3 - e1*e4)
-    cosineMatrix[3, 3] = e3**2 - e1**2 - e2**2 + e4**2
+    #MUST FIX INDEXING
+    cosineMatrix[0][0] = e1**2 - e2**2 - e3**2 + e4**2
+    cosineMatrix[0][1] = 2 * (e1*e2 + e3*e4)
+    cosineMatrix[0][2] = 2 * (e2*e3 - e1*e4)
+    cosineMatrix[1][0] = 2 * (e1*e2 - e3*e4)
+    cosineMatrix[1][1] = e2**2 - e1**2 - e3**2 + e4**2
+    cosineMatrix[1][2] = 2 * (e2*e3 + e1*e4)
+    cosineMatrix[2][0] = 2 * (e1*e3 + e2*e4)
+    cosineMatrix[2][1] = 2 * (e2*e3 - e1*e4)
+    cosineMatrix[2][2] = e3**2 - e1**2 - e2**2 + e4**2
 
     return cosineMatrix
 
 
-# Initialize
-imu = initialize()
+def streamSwingTrial():
+    # Initialize
+    imu = initialize()
 
-# Calibrate returns the four initial euler parameters
-# which are needed in order to solve for cosine matrix
-e_initial = calibrate(imu)
+    # Calibrate returns the four initial euler parameters
+    # which are needed in order to solve for cosine matrix
+    print "5 seconds to Calibrate. Please hold Calibration Position:"
+    tm.sleep(5.5)  # Wait for calibration position
+    e_initial = calibrate(imu)
+    print "5 seconds to place in desired position:"
+    tm.sleep(5.5)  # User may place in desired position
 
-#e_initial = np.array([0.1, 0.1, 0.1, 0.1])
+    # Init time object
+    initialTime = tm.time()
 
-# Read Angular velocity
-angularVelocity = readAngularVelocity(imu)
+    # Read Angular velocity
+    angularVelocity = readAngularVelocity(imu)
 
-#angularVelocity = (0.65, 0, 0)
+    # Read time at which sample was read (elapsed time)
+    sampleTime = tm.time() - initialTime
+    print sampleTime
 
-# Create time vector
-time = np.linspace(0.0, 1, 5)
+    # Create time vector
+    time = [0.0, sampleTime]
 
-# Solve for euler parameter
-e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
-print e
+    # Solve for euler parameter
+    e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
+    eCurrent = e.tolist()[1]  # Assign 2nd entry of e array to eCurrent
 
-# Compute Direction Cosine Matrix
-directionMatrix = computeDirectionCosineMatrix(e)
+    # Compute Direction Cosine Matrix
+    directionMatrix = computeDirectionCosineMatrix(eCurrent)
+    print "Direction Cosine Matrix:"
+    print directionMatrix
 
 
+
+
+streamSwingTrial()
