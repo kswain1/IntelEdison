@@ -41,7 +41,7 @@ imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
 # Loop and read accel, mag, and gyro
 log_file = raw_input("Enter name of log file: ")
 #outFile = open("logs/"+log_file, 'w')
-outFile_accel = open("guzman_logs/"+log_file, 'w') 
+outFile_accel = open("guzman_logs/"+log_file+"_CalInertialAndMag.csv", 'w') 
 
 #File header 
 outFile_accel.write("Packet number, Gyroscope X (deg/s),Gyroscope Y (deg/s),Gyroscope Z (deg/s),Accelerometer X (g),Acceleromter Y (g),Accelerometer Z (g), Magnetometer X (G), Magnetometer Y (G), Magnetometer Z (G)\n")
@@ -106,7 +106,7 @@ try:
 
            #outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(fuse.heading, fuse.pitch, fuse.roll, is_swinging()))
 
-
+        callibrate_count += 1
            # swing.swing_detector(heading, pitch, roll)
         print("count is : ", callibrate_count, "\n")
         # Sleep for 1/10th of a second
