@@ -65,6 +65,8 @@ def calibrate(imu):
     e2_0 = sin(theta1) * (1 + cos(theta2)) / (4 * e4_0)
     e3_0 = -sin(theta1) * sin(theta2) / (4 * e4_0)
 
+    #
+
     return [e1_0, e2_0, e3_0, e4_0]
 
 
@@ -118,6 +120,7 @@ def computeDirectionCosineMatrix(e):
 
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
+
     #MUST FIX INDEXING
     cosineMatrix[0][0] = e1**2 - e2**2 - e3**2 + e4**2
     cosineMatrix[0][1] = 2 * (e1*e2 + e3*e4)
@@ -133,6 +136,8 @@ def computeDirectionCosineMatrix(e):
 
 
 def streamSwingTrial():
+    # Testing and debugging method to verify results
+
     # Initialize
     imu = initialize()
 
@@ -141,6 +146,7 @@ def streamSwingTrial():
     print "5 seconds to Calibrate. Please hold Calibration Position:"
     tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu)
+    # TODO:Do we have to normalize the quaternion?
     print "5 seconds to place in desired position:"
     tm.sleep(5.5)  # User may place in desired position
 
@@ -159,6 +165,7 @@ def streamSwingTrial():
 
     # Solve for euler parameter
     e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
+    # TODO:Do we have to normalize the quaternion?
     eCurrent = e.tolist()[1]  # Assign 2nd entry of e array to eCurrent
 
     # Compute Direction Cosine Matrix
