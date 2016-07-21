@@ -5,52 +5,49 @@ from scipy.integrate import odeint
 import numpy as np
 import time as tm
 
-
-# import termios
-# This script uses numpy in order to perform matrix operations
-# So the numpy library must be downloaded otherwise script won't work
-# Calibrate
-# Begin sampling acceleration
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
 
 
-
 def initialize():
-    # Returns  initialized IMU object
+    """Creates and initializes the IMU object
 
-    # Initialization code
+    Returns an IMU object
+    """
+
     # Create IMU object
-    imu = IMU(1)  # To select a specific I2C port, use IMU(n). Default is 1.
-
-    # Initialize IMU
+    imu = IMU()  # To select a specific I2C port, use IMU(n). Default is 1.
     imu.initialize()
 
-    # Enable accel, mag, gyro, and temperature
+    # Enable accelerometer, magnetometer, gyroscope
     imu.enable_accel()
     imu.enable_mag()
     imu.enable_gyro()
 
-    # Specify Options: "2G", "4G", "6G", "8G", "16G"
-    imu.accel_range("2G")  # leave blank for default of "2G"
+    # Specify ranges for accelerometer, magnetometer and gyroscope
+    # Accelerometer Options: "2G", "4G", "6G", "8G", "16G"
+    # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
+    # Gyroscope Options: "245DPS", "500DPS", "2000DPS"
+    imu.accel_range("2G")
+    imu.mag_range("2GAUSS")
+    imu.gyro_range("245DPS")
 
-    # Specify Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
-    imu.mag_range("2GAUSS")  # leave blank for default of "2GAUSS"
-
-    # Specify Options: "245DPS", "500DPS", "2000DPS"
-    imu.gyro_range("245DPS")  # leave blank for default of "245DPS"
     return imu
 
 
 def calibrate(imu):
-    # IMU must calibrate by pointing the tip of the bat
-    # in the (I_hat x K_hat) plane of the field frame.
-    # Returns the four initial euler parameters
-    # User has 5 seconds to complete.
-    # PLEASE REMEMBER TO CHECK GRAVITATIONAL CONSTANT UNITS
+    """Calibrates the metric program. Batter must point the tip of the bat
+    in the (I_hat x K_hat) plane of the field frame as demonstrated
+    in the figures in the paper. User has 5 seconds to complete.
+    Returns the four initial euler parameters.
 
+    :param imu:
+    :return:
+    """
+
+    # TODO: PLEASE REMEMBER TO CHECK GRAVIATIONAL CONSTANT UNITS
     # Begin by computing theta1 and theta2
-    accelVec = readAcceleration(imu)
+    accelVec = readAcceleration(imu)  # TODO: Verify that angular acceleration units are correct
     ax = accelVec[0][0]
     ay = accelVec[1][0]
     az = accelVec[2][0]
@@ -65,13 +62,17 @@ def calibrate(imu):
     e2_0 = sin(theta1) * (1 + cos(theta2)) / (4 * e4_0)
     e3_0 = -sin(theta1) * sin(theta2) / (4 * e4_0)
 
-    #
-
     return [e1_0, e2_0, e3_0, e4_0]
 
 
 def readAcceleration(imu):
-    # Returns 3x1 numpy Column Vector with acceleration values
+    """Obtains accelerometer sample from IMU
+    The accelerometer measures linear acceleration
+
+    Returns a 3x1 numpy Column Vector with (x,y,z) linear acceleration components
+    :param imu:
+    :return:
+    """
 
     imu.read_accel()
     accelVec = np.zeros((3, 1))  # 3x1 Column Vector
@@ -83,8 +84,13 @@ def readAcceleration(imu):
 
 
 def readAngularVelocity(imu):
-    # angularVelocityVec is a 3x1 Column Vector
-    # Returns 3x1 numpyVc[1-3] = x y z component respectively
+    """ Obtains gyroscope sample from IMU
+    The gyroscope measures angular velocity
+
+    Returns a 3x1 numpy Column Vector with (x,y,z) angular velocity components
+    :param imu:
+    :return:
+    """
 
     imu.read_gyro()
     angularVelocityVec = np.zeros(3)  # 3x1 Column Vector
@@ -136,7 +142,10 @@ def computeDirectionCosineMatrix(e):
 
 
 def streamSwingTrial():
-    # Testing and debugging method to verify results
+    """
+    Method runs a swing trial event and computes important bat metrics
+    Returns the bat metrics in an array
+    """
 
     # Initialize
     imu = initialize()
@@ -147,6 +156,7 @@ def streamSwingTrial():
     tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu)
     # TODO:Do we have to normalize the quaternion?
+
     print "5 seconds to place in desired position:"
     tm.sleep(5.5)  # User may place in desired position
 
