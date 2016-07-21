@@ -102,6 +102,18 @@ def readAngularVelocity(imu):
 
 
 def stateEquationModel(e, t, w0, w1, w2):
+    """Method provides the state equation model of the swing physics modeled
+    in the paper. This model contains the system of differential equations
+    that must be solved with the ode solver.
+
+    Returns derivatives of the euler parameters
+    :param e:
+    :param t:
+    :param w0:
+    :param w1:
+    :param w2:
+    :return:
+    """
     # e is a vector containing e1 through e4
     # angularVelocity is a vector containing the component velocities
     # Returns a list with the four differential euler parameter equations
@@ -116,8 +128,12 @@ def stateEquationModel(e, t, w0, w1, w2):
 
 
 def computeDirectionCosineMatrix(e):
-    # Computes Direction Cosine Matrix from Euler Parameters
-    # Returns 3x3 numpy array
+    """Computes Direction Cosine Matrix from Euler Parameters
+
+    Returns 3x3 numpy array
+    :param e:
+    :return:
+    """
 
     e1 = e[0]
     e2 = e[1]
@@ -127,7 +143,8 @@ def computeDirectionCosineMatrix(e):
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
 
-    #MUST FIX INDEXING
+
+    # TODO: MUST FIX ARRAY INDEXING
     cosineMatrix[0][0] = e1**2 - e2**2 - e3**2 + e4**2
     cosineMatrix[0][1] = 2 * (e1*e2 + e3*e4)
     cosineMatrix[0][2] = 2 * (e2*e3 - e1*e4)
@@ -142,8 +159,8 @@ def computeDirectionCosineMatrix(e):
 
 
 def streamSwingTrial():
-    """
-    Method runs a swing trial event and computes important bat metrics
+    """Method runs a swing trial event and computes important bat metrics
+
     Returns the bat metrics in an array
     """
 
