@@ -2,6 +2,8 @@
 from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
+from scipy.integrate import trapz
+
 import numpy as np
 import time as tm
 
@@ -170,6 +172,34 @@ def computeInertialAcceleration(imu, orientMat):
     inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - g * np.array([0, 0, 1])
 
     return inertialAcceleration
+
+def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
+    """Computes the inertial frame (field frame) velocity by numerical integration
+
+    Returns a 3x1 numpy column vector with (x,y,z) inertial velocity components
+    :param imu:
+    :param inertialAcceleration:
+    :return:
+    """
+
+    xInertialAcceleration = inertialAcceleration[0]
+    yInertialAcceleration = inertialAcceleration[1]
+    zInertialAcceleration = inertialAcceleration[2]
+
+    xInertialVelocity = trapz(xInertialAcceleration, sampleTimes)  # I Beez in the trap
+    yInertialVelocity = trapz(yInertialAcceleration, sampleTimes)
+    zInertialVelocity = trapz(zInertialAcceleration, sampleTimes)
+
+    InertialVelocity = np.array([xInertialAcceleration,
+                                 yInertialAcceleration,
+                                 zInertialAcceleration])
+
+    return InertialVelocity
+
+
+
+    #integrate each component of velocity
+
 
 
 def streamSwingTrial():
