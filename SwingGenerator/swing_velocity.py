@@ -45,12 +45,12 @@ def calibrate(imu):
     :return:
     """
 
-    # TODO: PLEASE REMEMBER TO CHECK GRAVIATIONAL CONSTANT UNITS
+    # TODO: PLEASE REMEMBER TO CHECK GRAVITATIONAL CONSTANT UNITS
     # Begin by computing theta1 and theta2
     accelVec = readAcceleration(imu)  # TODO: Verify that angular acceleration units are correct
-    ax = accelVec[0][0]
-    ay = accelVec[1][0]
-    az = accelVec[2][0]
+    ax = accelVec[0]
+    ay = accelVec[1]
+    az = accelVec[2]
     g = 9.81  # Gravitational constant m/s^2 may change to ft/s^2
 
     theta1 = asin(-ax / g)
@@ -75,10 +75,10 @@ def readAcceleration(imu):
     """
 
     imu.read_accel()
-    accelVec = np.zeros((3, 1))  # 3x1 Column Vector
-    accelVec[0][0] = imu.ax
-    accelVec[1][0] = imu.ay
-    accelVec[2][0] = imu.az
+    accelVec = np.zeros(3)  # 3x1 Column Vector
+    accelVec[0] = imu.ax
+    accelVec[1] = imu.ay
+    accelVec[2] = imu.az
 
     return accelVec
 
@@ -107,15 +107,13 @@ def stateEquationModel(e, t, w0, w1, w2):
     that must be solved with the ode solver.
 
     Returns derivatives of the euler parameters
-    :param e:
+    :param e: a vector containing e1 through e4
     :param t:
-    :param w0:
-    :param w1:
-    :param w2:
+    :param w0: x-component angular velocity
+    :param w1: y-component angular velocity
+    :param w2: z-component angualr velocity
     :return:
     """
-    # e is a vector containing e1 through e4
-    # angularVelocity is a vector containing the component velocities
     # Returns a list with the four differential euler parameter equations
     w = [w0, w1, w2]
 
@@ -143,7 +141,6 @@ def computeDirectionCosineMatrix(e):
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
 
-
     # TODO: MUST FIX ARRAY INDEXING
     cosineMatrix[0][0] = e1**2 - e2**2 - e3**2 + e4**2
     cosineMatrix[0][1] = 2 * (e1*e2 + e3*e4)
@@ -157,9 +154,26 @@ def computeDirectionCosineMatrix(e):
 
     return cosineMatrix
 
+def computeInertialAcceleration(imu, orientMat):
+    """ Computes the inertial frame (field frame) acceleration
+    according to equation 12 in the paper
+
+    Returns a 3x1 numpy column vector with (x,y,z) inertial acceleration components
+    :param imu:
+    :param orientMat:
+    :return:
+    """
+
+    g = 9.81  # m/s^2 Remember to change if we switch to ft/s^2
+
+    localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
+    inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - g * np.array([0, 0, 1])
+
+    return inertialAcceleration
+
 
 def streamSwingTrial():
-    """Method runs a swing trial event and computes important bat metrics
+    """Runs a swing trial event and computes important bat metrics
 
     Returns the bat metrics in an array
     """
@@ -184,7 +198,7 @@ def streamSwingTrial():
     angularVelocity = readAngularVelocity(imu)
 
     # Read time at which sample was read (elapsed time)
-    sampleTime = tm.time() - initialTime
+    sampleTime = tm.time() - initialTime  # TODO:check if sample times are correct
     print sampleTime
 
     # Create time vector
