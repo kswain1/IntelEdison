@@ -70,10 +70,55 @@ class IMU:
         self.x.writeReg(self.XM.CTRL_REG5_XM, 0xF0)
 
     # Changes sampling mode of the accelerometer
-    def accel_mode(self, hexCode):
-        # Accelerometer may be played in Bypass, FIFO, or Stream mode
+    def accel_mode(self, modeBits):
+        """ Sets the mode of operation for Accelerometer.
+        Refer to IMU Datasheet for more information.
+
+        :param modeBits: Binary number that controls the mode. Refer to mode chart
+
+        Modes
+        =====
+        Bypass : 0b000
+        FIFO : 0b001
+        Stream: 0b010
+        Stream-to-FIFO: 0b011
+        Bypass-to-Stream: 0b100
+        """
         self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.FIFO_CTRL_REG_G, hexCode)
+        regBits = self.x.readReg(self.XM.FIFO_CTRL_REG_G)
+
+        lsb = (regBits & 0b11111)   # 5 LSBs control different settings
+        msb = (modeBits << 5)  # Add 5 trailing zeros
+        newRegBits = msb | lsb
+        newRegBits = hex(newRegBits)
+
+        self.x.writeReg(self.XM.FIFO_CTRL_REG_G, newRegBits)
+
+    def gyro_mode(self, modeBits):
+        """ Sets the mode of operation for Gyroscope.
+        Refer to IMU Datasheet for more information.
+
+        :param modeBits: Binary number that controls the mode. Refer to mode chart
+
+        Modes
+        =====
+        Bypass : 0b000
+        FIFO : 0b001
+        Stream: 0b010
+        Stream-to-FIFO: 0b011
+        Bypass-to-Stream: 0b100
+        """
+
+        self.x.address(self.G.ADDRESS)
+        regBits = self.x.readReg(self.G.FIFO_CTRL_REG_G)
+
+        lsb = (regBits & 0b11111)   # 5 LSBs control different settings
+        msb = (modeBits << 5)  # Add 5 trailing zeros to preserve previous content
+        newRegBits = msb | lsb
+        newRegBits = hex(newRegBits)
+
+        self.x.writeReg(self.G.FIFO_CTRL_REG_G, newRegBits)
+
 
     # Enables the gyro in normal mode on all axes
     def enable_gyro(self):
