@@ -26,6 +26,10 @@ def initialize():
     imu.enable_mag()
     imu.enable_gyro()
 
+    # Change IMU buffer mode to Bypass
+    imu.accel_mode(0b000)
+    imu.gyro_mode(0b000)
+
     # Specify ranges for accelerometer, magnetometer and gyroscope
     # Accelerometer Options: "2G", "4G", "6G", "8G", "16G"
     # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
@@ -156,6 +160,7 @@ def computeDirectionCosineMatrix(e):
 
     return cosineMatrix
 
+
 def computeInertialAcceleration(imu, orientMat):
     """ Computes the inertial frame (field frame) acceleration
     according to equation 12 in the paper
@@ -173,6 +178,7 @@ def computeInertialAcceleration(imu, orientMat):
 
     return inertialAcceleration
 
+
 def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
     """Computes the inertial frame (field frame) velocity by numerical integration
 
@@ -186,7 +192,7 @@ def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
     yInertialAcceleration = inertialAcceleration[1]
     zInertialAcceleration = inertialAcceleration[2]
 
-    xInertialVelocity = trapz(xInertialAcceleration, sampleTimes)  # I Beez in the trap
+    xInertialVelocity = trapz(xInertialAcceleration, sampleTimes)  # Beez in the trap
     yInertialVelocity = trapz(yInertialAcceleration, sampleTimes)
     zInertialVelocity = trapz(zInertialAcceleration, sampleTimes)
 
@@ -197,8 +203,18 @@ def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
     return InertialVelocity
 
 
+def computeSweetSpotVelocity(imu, localVelocity, angularVelocity):
+    """Computes sweet spot velocity on the bat
+    Returns a 3x1 numpy column vector with (x,y,z) sweet spot velocity components
+    :param imu:
+    :return:
+    """
+    sweetSpotDistance = 0.7  # meters
+    sweetDistanceVector = np.array([1, 0, 0])
+    sweetSpotVelocity = localVelocity + np.cross(angularVelocity,sweetDistanceVector)
 
-    #integrate each component of velocity
+
+
 
 
 
@@ -211,21 +227,21 @@ def streamSwingTrial():
     # Initialize
     imu = initialize()
 
-    # Calibrate returns the four initial euler parameters
-    # which are needed in order to solve for cosine matrix
+    # Obtain four initial euler parameters to solve for cosine matrix
     print "5 seconds to Calibrate. Please hold Calibration Position:"
+
     tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu)
     # TODO:Do we have to normalize the quaternion?
-
     print "5 seconds to place in desired position:"
+
     tm.sleep(5.5)  # User may place in desired position
 
     # Init time object
     initialTime = tm.time()
 
     # Read Angular velocity
-    angularVelocity = readAngularVelocity(imu)
+    # angularVelocity = readAngularVelocity(imu)
 
     # Read time at which sample was read (elapsed time)
     sampleTime = tm.time() - initialTime  # TODO:check if sample times are correct
@@ -243,6 +259,11 @@ def streamSwingTrial():
     directionMatrix = computeDirectionCosineMatrix(eCurrent)
     print "Direction Cosine Matrix:"
     print directionMatrix
+
+    # Get Inertial Acceleration snd Velocity
+    inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
+    inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
+
 
 
 
