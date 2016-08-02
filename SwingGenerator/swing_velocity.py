@@ -3,6 +3,7 @@ from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 from scipy.integrate import trapz
+from scikits.odes import dae
 
 import numpy as np
 import time as tm
@@ -27,6 +28,7 @@ def initialize():
     imu.enable_gyro()
 
     # Change IMU buffer mode to Bypass
+    # TODO: Try other modes as well
     imu.accel_mode(0b000)
     imu.gyro_mode(0b000)
 
@@ -45,8 +47,8 @@ def calibrate(imu):
     """Calibrates the metric program. Batter must point the tip of the bat
     in the (I_hat x K_hat) plane of the field frame as demonstrated
     in the figures in the paper. User has 5 seconds to complete.
-    Returns the four initial euler parameters.
 
+    Returns the four initial euler parameters.
     :param imu:
     :return:
     """
@@ -117,7 +119,7 @@ def stateEquationModel(e, t, w0, w1, w2):
     :param t:
     :param w0: x-component angular velocity
     :param w1: y-component angular velocity
-    :param w2: z-component angualr velocity
+    :param w2: z-component angular velocity
     :return:
     """
     # Returns a list with the four differential euler parameter equations
@@ -192,13 +194,13 @@ def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
     yInertialAcceleration = inertialAcceleration[1]
     zInertialAcceleration = inertialAcceleration[2]
 
-    xInertialVelocity = trapz(xInertialAcceleration, sampleTimes)  # Beez in the trap
+    xInertialVelocity = trapz(xInertialAcceleration, sampleTimes)  # I Beez in the trap
     yInertialVelocity = trapz(yInertialAcceleration, sampleTimes)
     zInertialVelocity = trapz(zInertialAcceleration, sampleTimes)
 
-    InertialVelocity = np.array([xInertialAcceleration,
-                                 yInertialAcceleration,
-                                 zInertialAcceleration])
+    InertialVelocity = np.array([xInertialVelocity,
+                                 yInertialVelocity,
+                                 zInertialVelocity])
 
     return InertialVelocity
 
@@ -209,9 +211,42 @@ def computeSweetSpotVelocity(imu, localVelocity, angularVelocity):
     :param imu:
     :return:
     """
-    sweetSpotDistance = 0.7  # meters
+    sweetSpotDistance = 0.7  # meters TODO:VERIFY SWEET SPOT DISTANCE
     sweetDistanceVector = np.array([1, 0, 0])
     sweetSpotVelocity = localVelocity + np.cross(angularVelocity,sweetDistanceVector)
+
+
+def normalizeEulerParameters(eulerParameters):
+    """Normalizes the quaternion/euler parameters into a unit quaternion
+    --That is a quaternion whose magnitude is equal to 1
+
+    :param eulerParameters: 1x4 numpy array
+    :return: 1x4 numpy array
+    """
+
+    quaternionMagnitude = \
+        sqrt(eulerParameters[0]**2 + eulerParameters[1]**2 +
+             eulerParameters[2]**2 + eulerParameters[3]**2)
+
+    normalizedQuaternion = eulerParameters/quaternionMagnitude
+
+    return normalizedQuaternion
+
+
+def computeOrientation(e_initial, previousSampleTime):
+    """Computes the orientation at each sampled instant of time during the swing trial.
+    Waits for IMU interrupt which signals IMU has undergone sufficient acceleration
+
+    Returns direction cosine/rotation matrix at each sampled-instant time
+    which is used to compute the kinematic path
+
+    :param: e_initial: initial conditions for euler parameters
+    :param: previousSampleTime: Time at which the last sample was taken
+    :return:
+    """
+
+
+
 
 
 
@@ -223,46 +258,45 @@ def streamSwingTrial():
 
     Returns the bat metrics in an array
     """
-
-    # Initialize
     imu = initialize()
-
-    # Obtain four initial euler parameters to solve for cosine matrix
+    # Obtain four initial euler parameters
     print "5 seconds to Calibrate. Please hold Calibration Position:"
-
     tm.sleep(5.5)  # Wait for calibration position
-    e_initial = calibrate(imu)
-    # TODO:Do we have to normalize the quaternion?
+    e_initial = calibrate(imu)  # TODO:Do we have to normalize the quaternion at calibration?
     print "5 seconds to place in desired position:"
-
     tm.sleep(5.5)  # User may place in desired position
 
-    # Init time object
-    initialTime = tm.time()
+    orientationVectors = computeOrientation(e_initial)
+    #computeKinematicPath()
 
-    # Read Angular velocity
-    # angularVelocity = readAngularVelocity(imu)
+    while(True):
 
-    # Read time at which sample was read (elapsed time)
-    sampleTime = tm.time() - initialTime  # TODO:check if sample times are correct
-    print sampleTime
+        # Init time object
+        initialTime = tm.time()
 
-    # Create time vector
-    time = [0.0, sampleTime]
+        # Read time at which sample was read (elapsed time)
+        sampleTime = tm.time() - initialTime  # TODO:check if sample times are correct
+        print sampleTime
 
-    # Solve for euler parameter
-    e = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
-    # TODO:Do we have to normalize the quaternion?
-    eCurrent = e.tolist()[1]  # Assign 2nd entry of e array to eCurrent
+        # Create time vector
+        time = [0.0, sampleTime]
 
-    # Compute Direction Cosine Matrix
-    directionMatrix = computeDirectionCosineMatrix(eCurrent)
-    print "Direction Cosine Matrix:"
-    print directionMatrix
+        # Solve for euler parameters
+        eulerParameters = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
+        # TODO:Do we have to normalize the quaternion?
+        # TODO:Can we use this same solver or do we have to switch
 
-    # Get Inertial Acceleration snd Velocity
-    inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
-    inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
+        eulerParameters = eulerParameters.tolist()[1]  # Assign 2nd entry of e array to eCurrent
+        eulerPrametersNoramlized = normalizeEulerParameters(eulerParameters)
+
+        # Compute Direction Cosine Matrix
+        directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
+        print "Direction Cosine Matrix:"
+        print directionMatrix
+
+        # Get Inertial Acceleration snd Velocity
+        inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
+        inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
 
 
 
