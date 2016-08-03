@@ -233,7 +233,7 @@ def normalizeEulerParameters(eulerParameters):
     return normalizedQuaternion
 
 
-def computeOrientation(e_initial, previousSampleTime):
+def computeOrientation(imu, e_initial, previousSampleTime, xAngularVelocity, yAngularVelocity, zAngularVelocity):
     """Computes the orientation at each sampled instant of time during the swing trial.
     Waits for IMU interrupt which signals IMU has undergone sufficient acceleration
 
@@ -246,10 +246,18 @@ def computeOrientation(e_initial, previousSampleTime):
     """
 
 
+    currentTime = tm.time()
+    timeVector = [previousSampleTime, currentTime]
 
+    # Solve for euler parameters
+    eulerParameters = odeint(stateEquationModel, e_initial, timeVector,
+                             (xAngularVelocity, yAngularVelocity, zAngularVelocity))  #TODO: LOOK AT THIS INITIAL CONDITIONS WRONG
+    # TODO:Do we have to normalize the quaternion?
+    # TODO:Can we use this same solver or do we have to switch
 
+    normalEulerParameters = normalizeEulerParameters(eulerParameters)
 
-
+    return normalEulerParameters
 
 
 
@@ -263,31 +271,36 @@ def streamSwingTrial():
     print "5 seconds to Calibrate. Please hold Calibration Position:"
     tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu)  # TODO:Do we have to normalize the quaternion at calibration?
-    print "5 seconds to place in desired position:"
-    tm.sleep(5.5)  # User may place in desired position
 
-    orientationVectors = computeOrientation(e_initial)
-    #computeKinematicPath()
+    imu.accel_mode(0b001)  # Switch to FIFO mode
+    imu.gyro_mode(0b001)
+
+    accelerationVectors = [readAcceleration(imu)]          # Create list of accelerationVectors
+    orientationVectors = [computeOrientation(e_initial)]   # Create list of orientationVectors
+    timeVectors = [0]
+
+    # Init time object
+    initialTime = tm.time()
 
     while(True):
 
-        # Init time object
-        initialTime = tm.time()
+        # Read Angular Velocity
+        currentAngularVelocity = readAngularVelocity(imu)
+        currentAcceleration = readAcceleration(imu)
 
         # Read time at which sample was read (elapsed time)
         sampleTime = tm.time() - initialTime  # TODO:check if sample times are correct
         print sampleTime
 
-        # Create time vector
-        time = [0.0, sampleTime]
+        # Solve for rotation matrix
 
-        # Solve for euler parameters
-        eulerParameters = odeint(stateEquationModel, e_initial, time, (imu.ax, imu.ay, imu.az))
         # TODO:Do we have to normalize the quaternion?
         # TODO:Can we use this same solver or do we have to switch
 
         eulerParameters = eulerParameters.tolist()[1]  # Assign 2nd entry of e array to eCurrent
         eulerPrametersNoramlized = normalizeEulerParameters(eulerParameters)
+        currentOrientationVector = computeOrientation()
+        orientationVectors.append(computeOrientation(eulerPrametersNoramlized))
 
         # Compute Direction Cosine Matrix
         directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
@@ -298,7 +311,7 @@ def streamSwingTrial():
         inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
         inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
 
-
+        # Stop collecting data once acceleration has reached zero again.
 
 
 
