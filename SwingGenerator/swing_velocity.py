@@ -311,6 +311,9 @@ def streamSwingTrial():
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
 
+        print "Angular Velocity", currentAngularVelocity
+        print "Current Acceleration", currentAcceleration
+
         currentEpochTime = tm.time()
         currentElapsedSampleTime += currentEpochTime - previousEpochTime
         timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
