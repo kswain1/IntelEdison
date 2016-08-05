@@ -333,11 +333,9 @@ def streamSwingTrial():
         directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
         rotationMatrices.append(directionMatrix)
 
-        #print "Direction Cosine Matrix:"
-        #print directionMatrix[0]
+        print "Direction Cosine Matrix:", directionMatrix[0]
 
-        print "Elevation angle"
-        print asin(directionMatrix[0][2]) * 57.3
+        print "Elevation angle", asin(directionMatrix[0][2]) * 57.3
         elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
 
         # Get Inertial Acceleration snd Velocity
