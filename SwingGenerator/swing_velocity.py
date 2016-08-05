@@ -84,9 +84,9 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = imu.ax
-    accelVec[1] = imu.ay
-    accelVec[2] = imu.az
+    accelVec[0] = imu.ax * 9.81
+    accelVec[1] = imu.ay * 9.81
+    accelVec[2] = imu.az * 9.81
 
     return accelVec
 
@@ -102,9 +102,9 @@ def readAngularVelocity(imu):
 
     imu.read_gyro()
     angularVelocityVec = np.zeros(3)  # 3x1 Column Vector
-    angularVelocityVec[0] = imu.gx
-    angularVelocityVec[1] = imu.gy
-    angularVelocityVec[2] = imu.gy
+    angularVelocityVec[0] = imu.gx * (pi/180)
+    angularVelocityVec[1] = imu.gy * (pi/180)
+    angularVelocityVec[2] = imu.gy * (pi/180)
 
     return angularVelocityVec
 
