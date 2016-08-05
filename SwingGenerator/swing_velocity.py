@@ -65,7 +65,7 @@ def calibrate(imu):
     theta2 = atan(ay / az)
 
     # Calculate initial euler parameters
-    e4_0 = sqrt(1 + cos(theta1) + cos(theta2) + cos(theta1) * cos(theta2 / 2) )
+    e4_0 = sqrt(1 + cos(theta1) + cos(theta2) + cos(theta1) * cos(theta2) / 2)
     e1_0 = sin(theta2) * (1 + cos(theta1)) / (4 * e4_0)
     e2_0 = sin(theta1) * (1 + cos(theta2)) / (4 * e4_0)
     e3_0 = -sin(theta1) * sin(theta2) / (4 * e4_0)
@@ -342,7 +342,7 @@ def streamSwingTrial():
         #inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
 
         # Stop collecting data once acceleration has reached zero again.
-
+        previousEulerParameters = currentEulerParameters
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
 
