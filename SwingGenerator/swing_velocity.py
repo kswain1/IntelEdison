@@ -255,6 +255,7 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     # Solve for euler parameters
     eulerParameters = odeint(stateEquationModel, e_current, timeVector,
                              (xAngularVelocity, yAngularVelocity, zAngularVelocity))
+    eulerParameters = eulerParameters.tolist()[1]
 
     print "Obtained Euler Parameters:"
     print eulerParameters
