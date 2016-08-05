@@ -228,6 +228,8 @@ def normalizeEulerParameters(eulerParameters):
         sqrt(eulerParameters[0]**2 + eulerParameters[1]**2 +
              eulerParameters[2]**2 + eulerParameters[3]**2)
 
+    eulerParameters = np.asarray(eulerParameters)  # Convert to numpy array to perform element wise operation
+
     normalizedQuaternion = eulerParameters/quaternionMagnitude
 
     return normalizedQuaternion
