@@ -258,9 +258,9 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     #timeVector = [previousSampleTime, currentTime]
 
     # Solve for euler parameters
-    eulerParameters = odeint(stateEquationModel, e_current, timeVector,
-                             (xAngularVelocity, yAngularVelocity, zAngularVelocity))
-    eulerParameters = eulerParameters.tolist()[1]
+    #eulerParameters = odeint(stateEquationModel, e_current, timeVector,
+    #                         (xAngularVelocity, yAngularVelocity, zAngularVelocity))
+    #eulerParameters = eulerParameters.tolist()[1]
 
     #print "Obtained Euler Parameters:"
     #print eulerParameters
@@ -315,8 +315,8 @@ def streamSwingTrial():
         #print "Current Acceleration", currentAcceleration
 
         currentEpochTime = tm.time()
-        currentElapsedSampleTime += currentEpochTime - previousEpochTime
-        timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
+        currentElapsedSampleTime = currentEpochTime - previousEpochTime
+        timeVector = [0, currentElapsedSampleTime]
 
         #print "TimeVector:", timeVector
 
