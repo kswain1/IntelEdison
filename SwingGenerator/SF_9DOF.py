@@ -85,14 +85,14 @@ class IMU:
         Bypass-to-Stream: 0b100
         """
         self.x.address(self.XM.ADDRESS)
-        regBits = self.x.readReg(self.XM.FIFO_CTRL_REG_G)
+        regBits = self.x.readReg(self.XM.FIFO_CTRL_REG)
 
         lsb = (regBits & 0b11111)   # 5 LSBs control different settings
         msb = (modeBits << 5)  # Add 5 trailing zeros
         newRegBits = msb | lsb
         newRegBits = hex(newRegBits)
 
-        self.x.writeReg(self.XM.FIFO_CTRL_REG_G, newRegBits)
+        self.x.writeReg(self.XM.FIFO_CTRL_REG, newRegBits)
 
     def gyro_mode(self, modeBits):
         """ Sets the mode of operation for Gyroscope.
