@@ -299,6 +299,7 @@ def streamSwingTrial():
     # Initialize useful computation variables
     previousEpochTime = initialTime  # t0
     previousElapsedSampleTime = 0
+    currentElapsedSampleTime = 0
     previousEulerParameters = e_initial
     index = 0
 
@@ -310,7 +311,7 @@ def streamSwingTrial():
         currentAcceleration = readAcceleration(imu)
         currentEpochTime = tm.time()
 
-        currentElapsedSampleTime = tm.time() - previousEpochTime  # Read time at which sample was read (elapsed time)
+        currentElapsedSampleTime += currentEpochTime - previousEpochTime  # Read time at which sample was read (elapsed time)
 
         print "Previous Sample Time:", previousEpochTime, " Current Sample Time:", currentEpochTime
         timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
