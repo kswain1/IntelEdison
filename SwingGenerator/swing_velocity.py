@@ -287,8 +287,8 @@ def streamSwingTrial():
     # Init time object
     initialTime = tm.time()
 
-    #imu.accel_mode(0b001)  # Switch to FIFO mode
-    #imu.gyro_mode(0b001)
+    imu.accel_mode(0b001)  # Switch to FIFO mode
+    imu.gyro_mode(0b001)
 
     # Initialize Storage Vectors
     accelerationVectors = [readAcceleration(imu)]
@@ -351,7 +351,7 @@ def streamSwingTrial():
     #rotationMatrices.reverse()
     #print rotationMatrices[0]
 
-    print "Elevation Angles:", floor(elevationAngles)
+    print "Elevation Angles:", elevationAngles
 
 
 
