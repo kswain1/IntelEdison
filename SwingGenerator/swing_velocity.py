@@ -352,7 +352,7 @@ def streamSwingTrial():
     #rotationMatrices.reverse()
     #print rotationMatrices[0]
 
-    print "Elevation Angles:", elevationAngles
+    #print "Elevation Angles:", elevationAngles
 
 
 
