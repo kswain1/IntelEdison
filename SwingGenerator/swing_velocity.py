@@ -312,7 +312,7 @@ def streamSwingTrial():
         currentElapsedSampleTime = tm.time() - previousEpochTime  # Read time at which sample was read (elapsed time)
 
         print "Previous Sample Time:", previousEpochTime, " Current Sample Time:", currentEpochTime
-        timeVector = [previousEpochTime, currentEpochTime]
+        timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
 
         print "TimeVector:", timeVector
 
