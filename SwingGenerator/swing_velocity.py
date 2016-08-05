@@ -309,6 +309,8 @@ def streamSwingTrial():
         currentSampleTime = tm.time() - previousSampleTime  # Read time at which sample was read (elapsed time)
         timeVector = [previousSampleTime, currentSampleTime]
 
+        print "TimeVector:", timeVector
+
         # TODO:Do we have to normalize the quaternion?
         # TODO:Can we use this same solver or do we have to switch
 
