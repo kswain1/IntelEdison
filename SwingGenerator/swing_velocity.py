@@ -289,7 +289,7 @@ def streamSwingTrial():
     initialTime = tm.time()
 
     #imu.accel_mode(0b010)  # Switch to Stream mode
-    i#mu.gyro_mode(0b010)
+    #imu.gyro_mode(0b010)
 
     # Initialize Storage Vectors
     accelerationVectors = [readAcceleration(imu)]
