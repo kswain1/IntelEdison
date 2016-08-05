@@ -233,24 +233,27 @@ def normalizeEulerParameters(eulerParameters):
     return normalizedQuaternion
 
 
-def computeOrientation(imu, e_initial, previousSampleTime, xAngularVelocity, yAngularVelocity, zAngularVelocity):
+def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     """Computes the orientation at each sampled instant of time during the swing trial.
     Waits for IMU interrupt which signals IMU has undergone sufficient acceleration
 
     Returns direction cosine/rotation matrix at each sampled-instant time
     which is used to compute the kinematic path
 
-    :param: e_initial: initial conditions for euler parameters
+    :param: e_current: current euler parameters; for t0 e_current is e_initial
     :param: previousSampleTime: Time at which the last sample was taken
     :return:
     """
 
+    xAngularVelocity = currentAngularVelocity[0]
+    yAngularVelocity = currentAngularVelocity[1]
+    zAngularVelocity = currentAngularVelocity[2]
 
-    currentTime = tm.time()
-    timeVector = [previousSampleTime, currentTime]
+    #currentTime = tm.time()
+    #timeVector = [previousSampleTime, currentTime]
 
     # Solve for euler parameters
-    eulerParameters = odeint(stateEquationModel, e_initial, timeVector,
+    eulerParameters = odeint(stateEquationModel, e_current, timeVector,
                              (xAngularVelocity, yAngularVelocity, zAngularVelocity))  #TODO: LOOK AT THIS INITIAL CONDITIONS WRONG
     # TODO:Do we have to normalize the quaternion?
     # TODO:Can we use this same solver or do we have to switch
@@ -272,46 +275,51 @@ def streamSwingTrial():
     tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu)  # TODO:Do we have to normalize the quaternion at calibration?
 
+    # Init time object
+    initialTime = tm.time()
+
     imu.accel_mode(0b001)  # Switch to FIFO mode
     imu.gyro_mode(0b001)
 
-    accelerationVectors = [readAcceleration(imu)]          # Create list of accelerationVectors
-    orientationVectors = [computeOrientation(e_initial)]   # Create list of orientationVectors
+    # Initialize Storage Vectors
+    accelerationVectors = [readAcceleration(imu)]
+    rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
     timeVectors = [0]
 
-    # Init time object
-    initialTime = tm.time()
+    # Initialize useful computation variables
+    previousSampleTime = initialTime  # t0
+    previousEulerParameters = e_initial
+    index = 0
 
     while(True):
 
         # Read Angular Velocity
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
-
-        # Read time at which sample was read (elapsed time)
-        sampleTime = tm.time() - initialTime  # TODO:check if sample times are correct
-        print sampleTime
-
-        # Solve for rotation matrix
+        currentSampleTime = tm.time() - previousSampleTime  # Read time at which sample was read (elapsed time)
+        timeVector = [previousSampleTime, currentSampleTime]
 
         # TODO:Do we have to normalize the quaternion?
         # TODO:Can we use this same solver or do we have to switch
 
-        eulerParameters = eulerParameters.tolist()[1]  # Assign 2nd entry of e array to eCurrent
-        eulerPrametersNoramlized = normalizeEulerParameters(eulerParameters)
-        currentOrientationVector = computeOrientation()
-        orientationVectors.append(computeOrientation(eulerPrametersNoramlized))
+        # Solve for current rotation matrix
+        currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
+        eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
 
         # Compute Direction Cosine Matrix
         directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
+        rotationMatrices.append(directionMatrix)
+
         print "Direction Cosine Matrix:"
         print directionMatrix
 
         # Get Inertial Acceleration snd Velocity
-        inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
-        inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
+        #inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
+        #inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
 
         # Stop collecting data once acceleration has reached zero again.
+
+        previousSampleTime = currentSampleTime # move to next step
 
 
 
