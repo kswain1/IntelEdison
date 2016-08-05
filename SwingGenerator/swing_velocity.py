@@ -323,7 +323,7 @@ def streamSwingTrial():
         rotationMatrices.append(directionMatrix)
 
         print "Direction Cosine Matrix:"
-        print directionMatrix
+        print directionMatrix[0]
 
         print "Elevation angle"
         print asin(directionMatrix[[0][2]])
