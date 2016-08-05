@@ -318,7 +318,7 @@ def streamSwingTrial():
         currentElapsedSampleTime = currentEpochTime - previousEpochTime
         timeVector = [0, currentElapsedSampleTime]
 
-        #print "TimeVector:", timeVector
+        print "TimeVector:", timeVector
 
         # TODO:Do we have to normalize the quaternion?
         # TODO:Can we use this same solver or do we have to switch
