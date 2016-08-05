@@ -268,9 +268,9 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     # TODO:Do we have to normalize the quaternion?
     # TODO:Can we use this same solver or do we have to switch
 
-    normalEulerParameters = normalizeEulerParameters(eulerParameters)
+    #normalEulerParameters = normalizeEulerParameters(eulerParameters)
 
-    return normalEulerParameters
+    return eulerParameters
 
 
 
