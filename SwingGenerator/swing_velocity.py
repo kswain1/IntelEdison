@@ -254,7 +254,11 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
 
     # Solve for euler parameters
     eulerParameters = odeint(stateEquationModel, e_current, timeVector,
-                             (xAngularVelocity, yAngularVelocity, zAngularVelocity))  #TODO: LOOK AT THIS INITIAL CONDITIONS WRONG
+                             (xAngularVelocity, yAngularVelocity, zAngularVelocity))
+
+    print "Obtained Euler Parameters:"
+    print eulerParameters
+
     # TODO:Do we have to normalize the quaternion?
     # TODO:Can we use this same solver or do we have to switch
 
