@@ -309,11 +309,9 @@ def streamSwingTrial():
         # Read Angular Velocity
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
+
         currentEpochTime = tm.time()
-
-        currentElapsedSampleTime += currentEpochTime - previousEpochTime  # Read time at which sample was read (elapsed time)
-
-        print "Previous Sample Time:", previousEpochTime, " Current Sample Time:", currentEpochTime
+        currentElapsedSampleTime += currentEpochTime - previousEpochTime
         timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
 
         print "TimeVector:", timeVector
@@ -353,7 +351,7 @@ def streamSwingTrial():
     #rotationMatrices.reverse()
     #print rotationMatrices[0]
 
-    print "Elevation Angles:", elevationAngles
+    print "Elevation Angles:", floor(elevationAngles)
 
 
 
