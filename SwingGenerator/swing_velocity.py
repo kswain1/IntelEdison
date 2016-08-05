@@ -307,6 +307,7 @@ def streamSwingTrial():
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
         currentSampleTime = tm.time() - previousSampleTime  # Read time at which sample was read (elapsed time)
+        print "Previous Sample Time:", previousSampleTime, " Current Sample Time:", currentSampleTime
         timeVector = [previousSampleTime, currentSampleTime]
 
         print "TimeVector:", timeVector
@@ -336,7 +337,7 @@ def streamSwingTrial():
 
         # Stop collecting data once acceleration has reached zero again.
 
-        previousSampleTime = currentSampleTime # move to next step
+        previousSampleTime = currentSampleTime  # move to next step
 
 
     print "The first and last direction matrices are: "
