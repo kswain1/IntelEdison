@@ -152,7 +152,7 @@ def computeDirectionCosineMatrix(e):
     # TODO: MUST FIX ARRAY INDEXING
     cosineMatrix[0][0] = e1**2 - e2**2 - e3**2 + e4**2
     cosineMatrix[0][1] = 2 * (e1*e2 + e3*e4)
-    cosineMatrix[0][2] = 2 * (e2*e3 - e1*e4)
+    cosineMatrix[0][2] = 2 * (e1*e3 - e2*e4)
     cosineMatrix[1][0] = 2 * (e1*e2 - e3*e4)
     cosineMatrix[1][1] = e2**2 - e1**2 - e3**2 + e4**2
     cosineMatrix[1][2] = 2 * (e2*e3 + e1*e4)
