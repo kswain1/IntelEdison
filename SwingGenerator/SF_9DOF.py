@@ -114,8 +114,6 @@ class IMU:
         lsb = (regBits & 0b11111)   # 5 LSBs control different settings
         msb = (modeBits << 5)  # Add 5 trailing zeros to preserve previous content
         newRegBits = msb | lsb
-        newRegBits = hex(newRegBits)
-        type(newRegBits)
 
         self.x.writeReg(self.G.FIFO_CTRL_REG_G, newRegBits)
 
