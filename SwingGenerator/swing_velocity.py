@@ -326,6 +326,7 @@ def streamSwingTrial():
         # Solve for current rotation matrix
         currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
         eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
+
         #print "Normalized Euler Parameters"
         #print eulerPrametersNoramlized
 
@@ -343,7 +344,7 @@ def streamSwingTrial():
         #inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
 
         # Stop collecting data once acceleration has reached zero again.
-        previousEulerParameters = eulerPrametersNoramlized
+        previousEulerParameters = currentEulerParameters
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
 
