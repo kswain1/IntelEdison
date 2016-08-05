@@ -293,6 +293,7 @@ def streamSwingTrial():
     # Initialize Storage Vectors
     accelerationVectors = [readAcceleration(imu)]
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
+    elevationAngles = []
     timeVectors = [0]
 
     # Initialize useful computation variables
@@ -334,6 +335,7 @@ def streamSwingTrial():
 
         print "Elevation angle"
         print asin(directionMatrix[0][2]) * 57.3
+        elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
 
         # Get Inertial Acceleration snd Velocity
         #inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
@@ -350,6 +352,7 @@ def streamSwingTrial():
     #rotationMatrices.reverse()
     #print rotationMatrices[0]
 
+    print "Elevation Angles:", elevationAngles
 
 
 
