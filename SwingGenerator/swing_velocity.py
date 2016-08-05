@@ -332,5 +332,12 @@ def streamSwingTrial():
         previousSampleTime = currentSampleTime # move to next step
 
 
+    print "The first and last direction matrices are: "
+    print rotationMatrices[1]
+    rotationMatrices.reverse()
+    print rotationMatrices[0]
+
+
+
 
 streamSwingTrial()
