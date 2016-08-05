@@ -231,8 +231,9 @@ def normalizeEulerParameters(eulerParameters):
     eulerParameters = np.asarray(eulerParameters)  # Convert to numpy array to perform element wise operation
 
     normalizedQuaternion = eulerParameters/quaternionMagnitude
-    print sqrt(normalizedQuaternion[0]**2 + normalizedQuaternion[1]**2 +
-             normalizedQuaternion[2]**2 + normalizedQuaternion[3]**2)
+
+    #print sqrt(normalizedQuaternion[0]**2 + normalizedQuaternion[1]**2 +
+    #         normalizedQuaternion[2]**2 + normalizedQuaternion[3]**2)
 
     return normalizedQuaternion
 
@@ -287,8 +288,8 @@ def streamSwingTrial():
     # Init time object
     initialTime = tm.time()
 
-    imu.accel_mode(0b001)  # Switch to FIFO mode
-    imu.gyro_mode(0b001)
+    #imu.accel_mode(0b001)  # Switch to FIFO mode
+    #imu.gyro_mode(0b001)
 
     # Initialize Storage Vectors
     accelerationVectors = [readAcceleration(imu)]
@@ -314,7 +315,7 @@ def streamSwingTrial():
         currentElapsedSampleTime += currentEpochTime - previousEpochTime
         timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
 
-        print "TimeVector:", timeVector
+        #print "TimeVector:", timeVector
 
         # TODO:Do we have to normalize the quaternion?
         # TODO:Can we use this same solver or do we have to switch
