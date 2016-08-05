@@ -261,8 +261,8 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
                              (xAngularVelocity, yAngularVelocity, zAngularVelocity))
     eulerParameters = eulerParameters.tolist()[1]
 
-    print "Obtained Euler Parameters:"
-    print eulerParameters
+    #print "Obtained Euler Parameters:"
+    #print eulerParameters
 
     # TODO:Do we have to normalize the quaternion?
     # TODO:Can we use this same solver or do we have to switch
@@ -345,10 +345,10 @@ def streamSwingTrial():
         previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
 
 
-    print "The first and last direction matrices are: "
-    print rotationMatrices[1]
-    rotationMatrices.reverse()
-    print rotationMatrices[0]
+    #print "The first and last direction matrices are: "
+    #print rotationMatrices[1]
+    #rotationMatrices.reverse()
+    #print rotationMatrices[0]
 
 
 
