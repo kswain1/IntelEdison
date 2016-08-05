@@ -334,7 +334,7 @@ def streamSwingTrial():
         #print directionMatrix[0]
 
         print "Elevation angle"
-        print asin(directionMatrix[0][2])
+        print asin(directionMatrix[0][2]) * 57.3
         elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
 
         # Get Inertial Acceleration snd Velocity
