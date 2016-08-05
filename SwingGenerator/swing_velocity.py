@@ -311,14 +311,14 @@ def streamSwingTrial():
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
 
-        print "Angular Velocity", currentAngularVelocity
-        print "Current Acceleration", currentAcceleration
+        #print "Angular Velocity", currentAngularVelocity
+        #print "Current Acceleration", currentAcceleration
 
         currentEpochTime = tm.time()
         currentElapsedSampleTime += currentEpochTime - previousEpochTime
         timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
 
-        print "TimeVector:", timeVector
+        #print "TimeVector:", timeVector
 
         # TODO:Do we have to normalize the quaternion?
         # TODO:Can we use this same solver or do we have to switch

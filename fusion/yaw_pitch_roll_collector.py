@@ -91,25 +91,22 @@ try:
         imu.read_gyro()
         imu.readTemp()
 
-
-
-         #gather the accel results for the fusion algorithm
+        #gather the accel results for the fusion algorithm
         accel = (float(imu.ax), float(imu.ay), float(imu.az))
         gyro = (float(imu.gx), float(imu.gy), float(imu.gz))
         mag = (float(imu.mx), float(imu.my), float(imu.mz))
 
 
 
-        # Print the results
+        #Print the results
         print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az)
         print "Mag: " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz)
         print "Gyro: " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz)
-        print "Temperature: " + str(imu.temp)
         outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,is_swinging()))  
         data = {"AX":str(imu.ax),"AY":str(imu.ay),"AZ":str(imu.az)}
 
         #passes the data to the fusion data for yaw pitch and roll data
-        fuse.update(accel,gyro, mag)
+        fuse.update(accel, gyro, mag)
        # print("I am printing the fuse data", fuse.roll)
         print("\n")
         callibrate_count += 1
