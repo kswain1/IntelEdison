@@ -3,7 +3,7 @@ from SF_9DOF import IMU
 from math import *
 from scipy.integrate import odeint
 from scipy.integrate import trapz
-from scikits.odes import dae
+
 
 import numpy as np
 import time as tm
@@ -291,7 +291,8 @@ def streamSwingTrial():
     previousEulerParameters = e_initial
     index = 0
 
-    while(True):
+    # Loop for 3 seconds
+    while (tm.time() - initialTime) < 3:
 
         # Read Angular Velocity
         currentAngularVelocity = readAngularVelocity(imu)
