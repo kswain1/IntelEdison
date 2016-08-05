@@ -288,8 +288,8 @@ def streamSwingTrial():
     # Init time object
     initialTime = tm.time()
 
-    imu.accel_mode(0b001)  # Switch to FIFO mode
-    imu.gyro_mode(0b001)
+    imu.accel_mode(0b010)  # Switch to Stream mode
+    imu.gyro_mode(0b010)
 
     # Initialize Storage Vectors
     accelerationVectors = [readAcceleration(imu)]
@@ -342,7 +342,7 @@ def streamSwingTrial():
         #inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
 
         # Stop collecting data once acceleration has reached zero again.
-        previousEulerParameters = currentEulerParameters
+        previousEulerParameters = eulerPrametersNoramlized
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
 
