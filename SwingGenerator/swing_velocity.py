@@ -325,6 +325,9 @@ def streamSwingTrial():
         print "Direction Cosine Matrix:"
         print directionMatrix
 
+        print "Elevation angle"
+        print asin(directionMatrix[[0][2]])
+
         # Get Inertial Acceleration snd Velocity
         #inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
         #inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
@@ -338,6 +341,8 @@ def streamSwingTrial():
     print rotationMatrices[1]
     rotationMatrices.reverse()
     print rotationMatrices[0]
+
+
 
 
 
