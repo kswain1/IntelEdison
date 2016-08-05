@@ -66,9 +66,9 @@ def calibrate(imu):
 
     # Calculate initial euler parameters
     e4_0 = sqrt(1 + cos(theta1) + cos(theta2) + cos(theta1) * cos(theta2) / 2)
-    e1_0 = sin(theta2) * (1 + cos(theta1)) / (4 * e4_0)
-    e2_0 = sin(theta1) * (1 + cos(theta2)) / (4 * e4_0)
-    e3_0 = -sin(theta1) * sin(theta2) / (4 * e4_0)
+    e1_0 = (sin(theta2) * (1 + cos(theta1))) / (4 * e4_0)
+    e2_0 = (sin(theta1) * (1 + cos(theta2))) / (4 * e4_0)
+    e3_0 = (-sin(theta1) * sin(theta2)) / (4 * e4_0)
 
     return [e1_0, e2_0, e3_0, e4_0]
 
