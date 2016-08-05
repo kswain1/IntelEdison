@@ -90,9 +90,7 @@ class IMU:
         lsb = (regBits & 0b11111)   # 5 LSBs control different settings
         msb = (modeBits << 5)  # Add 5 trailing zeros
         newRegBits = msb | lsb
-        newRegBits = hex(newRegBits)
-        print "writing:"
-        print newRegBits
+
         self.x.writeReg(self.XM.FIFO_CTRL_REG, newRegBits)
 
     def gyro_mode(self, modeBits):
@@ -117,6 +115,7 @@ class IMU:
         msb = (modeBits << 5)  # Add 5 trailing zeros to preserve previous content
         newRegBits = msb | lsb
         newRegBits = hex(newRegBits)
+        type(newRegBits)
 
         self.x.writeReg(self.G.FIFO_CTRL_REG_G, newRegBits)
 
