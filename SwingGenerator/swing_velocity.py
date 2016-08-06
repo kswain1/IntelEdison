@@ -204,6 +204,37 @@ def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
 
     return InertialVelocity
 
+def computeAngularVelocityMagnitude(angularVelocity):
+    """Computes angular velocity vector magnitude
+
+    :param angularVelocity:
+    :return:
+    """
+
+    return sqrt(angularVelocity[0]**2 + angularVelocity[1]**2 + angularVelocity[2]**2)
+
+def normalizeAngularVelocityVector(angularVelocity):
+    """Normalizes angular velocity vector so that its magnitude
+    may be 1
+
+    :param angularVelocity:
+    :return:
+    """
+
+    angularVelocityMagnitude = \
+        sqrt(angularVelocity[0] ** 2 + angularVelocity[1] ** 2 +
+             angularVelocity[2] ** 2 + angularVelocity[3] ** 2)
+
+    normalizedAngularVelocity = np.asarray(angularVelocity)  # Convert to numpy array to perform element wise operation
+
+    normalizedQuaternion = angularVelocity / angularVelocityMagnitude
+
+    #print angularVelocityMagnitude
+
+    return normalizedQuaternion
+
+
+
 
 def computeSweetSpotVelocity(imu, localVelocity, angularVelocity):
     """Computes sweet spot velocity on the bat
@@ -250,17 +281,56 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     :return:
     """
 
+
+
     xAngularVelocity = currentAngularVelocity[0]
     yAngularVelocity = currentAngularVelocity[1]
     zAngularVelocity = currentAngularVelocity[2]
 
-    #currentTime = tm.time()
-    #timeVector = [previousSampleTime, currentTime]
+    angularVelocityMagnitude = computeAngularVelocityMagnitude(currentAngularVelocity)
+
+    elapsedTime = timeVector[1]
+
+
+
+    # Compute new quaternion
+    q = np.zeros(4)
+    q[0] = cos(angularVelocityMagnitude * elapsedTime / 2)
+    q[1] = sin(angularVelocityMagnitude * elapsedTime / 2) *(xAngularVelocity/angularVelocityMagnitude)
+    q[2] = sin(angularVelocityMagnitude * elapsedTime / 2) *(yAngularVelocity/angularVelocityMagnitude)
+    q[3] = sin(angularVelocityMagnitude * elapsedTime / 2) *(zAngularVelocity/angularVelocityMagnitude)
+
+    q0 = q[0]
+    q1 = q[1]
+    q2 = q[2]
+    q3 = q[3]
+
+    # Define quaternion multiplication matrix
+    omegaMatrix = np.zeros([3, 3])
+    omegaMatrix[0][0] = q0
+    omegaMatrix[0][1] = -q1
+    omegaMatrix[0][2] = -q2
+    omegaMatrix[0][3] = -q3
+    omegaMatrix[1][0] = q1
+    omegaMatrix[1][1] = q0
+    omegaMatrix[1][2] = q3
+    omegaMatrix[1][3] = -q2
+    omegaMatrix[2][0] = q2
+    omegaMatrix[2][1] = -q3
+    omegaMatrix[2][2] = q0
+    omegaMatrix[2][3] = q1
+    omegaMatrix[3][0] = q3
+    omegaMatrix[3][1] = q2
+    omegaMatrix[3][2] = -q1
+    omegaMatrix[3][3] = q0
+
+
+
 
     # Solve for euler parameters
-    eulerParameters = odeint(stateEquationModel, e_current, timeVector,
-                             (xAngularVelocity, yAngularVelocity, zAngularVelocity))
-    eulerParameters = eulerParameters.tolist()[1]
+    #eulerParameters = odeint(stateEquationModel, e_current, timeVector,
+    #                         (xAngularVelocity, yAngularVelocity, zAngularVelocity))
+    #eulerParameters = eulerParameters.tolist()[1]
 
     #print "Obtained Euler Parameters:"
     #print eulerParameters
