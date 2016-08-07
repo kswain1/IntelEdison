@@ -400,8 +400,8 @@ def streamSwingTrial():
         currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
         eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
 
-        #print "Normalized Euler Parameters"
-        #print eulerPrametersNoramlized
+        print "Normalized Euler Parameters"
+        print eulerPrametersNoramlized
 
         # Compute Direction Cosine Matrix
         directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
