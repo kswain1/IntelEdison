@@ -263,8 +263,8 @@ def normalizeEulerParameters(eulerParameters):
 
     normalizedQuaternion = eulerParameters/quaternionMagnitude
 
-    #print sqrt(normalizedQuaternion[0]**2 + normalizedQuaternion[1]**2 +
-    #         normalizedQuaternion[2]**2 + normalizedQuaternion[3]**2)
+    print sqrt(normalizedQuaternion[0]**2 + normalizedQuaternion[1]**2 +
+             normalizedQuaternion[2]**2 + normalizedQuaternion[3]**2)
 
     return normalizedQuaternion
 
@@ -400,8 +400,8 @@ def streamSwingTrial():
         currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
         eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
 
-        print "Normalized Euler Parameters"
-        print eulerPrametersNoramlized
+        #print "Normalized Euler Parameters"
+        #print eulerPrametersNoramlized
 
         # Compute Direction Cosine Matrix
         directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
