@@ -388,8 +388,8 @@ def streamSwingTrial():
         #print "Current Acceleration", currentAcceleration
 
         currentEpochTime = tm.time()
-        currentElapsedSampleTime += currentEpochTime - previousEpochTime
-        timeVector = [previousElapsedSampleTime, currentElapsedSampleTime]
+        currentElapsedSampleTime = currentEpochTime - previousEpochTime
+        timeVector = [0, currentElapsedSampleTime]
 
         #print "TimeVector:", timeVector
 
