@@ -324,6 +324,9 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     omegaMatrix[3][2] = -q1
     omegaMatrix[3][3] = q0
 
+    # New quaternion computed through multiplication
+    newEulerParameters = np.dot(omegaMatrix, e_current)  # Dot is used to multiply
+
 
 
 
@@ -340,7 +343,7 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
 
     #normalEulerParameters = normalizeEulerParameters(eulerParameters)
 
-    return eulerParameters
+    return newEulerParameters
 
 
 
