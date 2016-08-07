@@ -306,7 +306,7 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     q3 = q[3]
 
     # Define quaternion multiplication matrix
-    omegaMatrix = np.zeros([3, 3])
+    omegaMatrix = np.zeros([4, 4])
     omegaMatrix[0][0] = q0
     omegaMatrix[0][1] = -q1
     omegaMatrix[0][2] = -q2
