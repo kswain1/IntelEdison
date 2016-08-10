@@ -204,6 +204,7 @@ def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
 
     return InertialVelocity
 
+
 def computeAngularVelocityMagnitude(angularVelocity):
     """Computes angular velocity vector magnitude
 
@@ -212,6 +213,7 @@ def computeAngularVelocityMagnitude(angularVelocity):
     """
 
     return sqrt(angularVelocity[0]**2 + angularVelocity[1]**2 + angularVelocity[2]**2)
+
 
 def normalizeAngularVelocityVector(angularVelocity):
     """Normalizes angular velocity vector so that its magnitude
@@ -232,8 +234,6 @@ def normalizeAngularVelocityVector(angularVelocity):
     #print angularVelocityMagnitude
 
     return normalizedQuaternion
-
-
 
 
 def computeSweetSpotVelocity(imu, localVelocity, angularVelocity):
@@ -430,7 +430,24 @@ def streamSwingTrial():
     #print "Elevation Angles:", elevationAngles
 
 
+def valueStream():
+    """Continuously displays linear acceleration and angular velocity values
+
+    :return:
+    """
+
+    imu = initialize()
+    # Obtain four initial euler parameters
+    print "5 seconds to Calibrate. Please hold Calibration Position:"
+    tm.sleep(5.5)  # Wait for calibration position
+    e_initial = calibrate(imu)
+
+    while(True):
+        angularVelocity = readAngularVelocity(imu)
+        acceleration = readAcceleration(imu)
+        print("Acceleration:%s  Angular Velocity:%s", (acceleration, angularVelocity))
 
 
 
-streamSwingTrial()
+valueStream()
+#streamSwingTrial()
