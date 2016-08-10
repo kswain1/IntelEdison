@@ -446,6 +446,7 @@ def valueStream():
         angularVelocity = readAngularVelocity(imu)
         acceleration = readAcceleration(imu)
         print("Acceleration:%s  Angular Velocity:%s", (acceleration, angularVelocity))
+        tm.sleep(1)
 
 
 
