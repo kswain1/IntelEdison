@@ -102,9 +102,9 @@ def readAngularVelocity(imu):
 
     imu.read_gyro()
     angularVelocityVec = np.zeros(3)  # 3x1 Column Vector
-    angularVelocityVec[0] = imu.gx * (pi/180)
-    angularVelocityVec[1] = imu.gy * (pi/180)
-    angularVelocityVec[2] = imu.gy * (pi/180)
+    angularVelocityVec[0] = (imu.gx * (pi/180)) + 0.05
+    angularVelocityVec[1] = (imu.gy * (pi/180)) - 0.172
+    angularVelocityVec[2] = (imu.gy * (pi/180)) - 0.170
 
     return angularVelocityVec
 
@@ -450,5 +450,5 @@ def valueStream():
 
 
 
-valueStream()
-#streamSwingTrial()
+#valueStream()
+streamSwingTrial()
