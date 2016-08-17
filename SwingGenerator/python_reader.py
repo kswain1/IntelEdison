@@ -4,10 +4,8 @@ import matplotlib
 import time
 
 # Open Serial Port
-
-
 if _platform == "linux" or _platform == "linux2":
-    #linux
+    #Linux
     print "Linux Detected"
 
 elif _platform == "darwin":
@@ -16,7 +14,7 @@ elif _platform == "darwin":
     ser = serial.Serial(port='COM6', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
 
 elif _platform == "win32":
-   # Windows
+   #Windows
    print "Windows Detected"
    ser = serial.Serial(port='COM6', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
 
@@ -35,7 +33,7 @@ while True:
         if out == "\n":
             print "EOL Character Received:"
             print out
-            break;
+            break
 
         else:
             myList.append(float(out))
