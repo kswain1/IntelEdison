@@ -2,9 +2,7 @@
 from SF_9DOF import IMU
 from math import *
 from scipy.integrate import trapz
-import pySerial
-
-
+import serial
 import numpy as np
 import time as tm
 
@@ -346,6 +344,34 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     return newEulerParameters
 
 
+def sendData(data, interface=0):
+    """Send data through selected interface. Interface is
+    selected according to the chart below
+
+    Interfaces:
+    Serial -- 0
+    Bluetooth -- 1
+
+    :param data: Data to send of type list
+    :param interface: integer denoting interface to select
+    :return:
+    """
+
+    uart = mraa.Uart(0)  # Enable UART for serial port usage
+    ser = serial.Serial(
+        port='/dev/ttyMFD2',  # Port dependant on hardware block
+        baudrate=115200,
+        parity=serial.PARITY_EVEN)
+
+    # Send each number in the list
+    for number in data:
+        print "Sending:", number
+        bytesSent = ser.write(str(number) + '\n')
+        print "Bytes Sent:", bytesSent
+
+    print "Transmission successful"
+
+
 def streamSwingTrial():
     """Runs a swing trial event and computes important bat metrics
 
@@ -421,10 +447,8 @@ def streamSwingTrial():
         previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
 
 
-    #print "The first and last direction matrices are: "
-    #print rotationMatrices[1]
-    #rotationMatrices.reverse()
-    #print rotationMatrices[0]
+    # Data must be received in the same order sent
+    sendData(elevationAngles)
 
     #print "Elevation Angles:", elevationAngles
 
