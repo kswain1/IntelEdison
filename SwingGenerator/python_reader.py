@@ -1,6 +1,7 @@
 import serial
 from sys import platform as _platform
 import matplotlib.pyplot as plt
+import numpy as np
 import time
 
 # Open Serial Port
@@ -34,13 +35,16 @@ def obtainSwingData():
     :return:
     """
 
-    print "test"
-    accelerationVector = readData()
-    angularVelocityVector = readData()
+    xAccelerationVector = readData()
+    yAccelerationVector = readData()
+    zAccelerationVector = readData()
+    xAngularVelocity = readData()
+    yAngularVelocity = readData()
+    zAngularVelocity = readData()
     timeVector = readData() # TODO: Change name to avoid confusion
 
 
-    plotLinearAcceleration(accelerationVector, timeVector)
+    plotLinearAcceleration(xAccelerationVector, timeVector)
 
 
 def plotLinearAcceleration(accelerationVector, timeVector):
@@ -58,10 +62,10 @@ def plotLinearAcceleration(accelerationVector, timeVector):
 def readData():
     """Reads data into a list until EOF character is detected
     :param
-    :return:
+    :return: Data received [Numpy Array]
     """
 
-    dataList = []
+    dataList = np.array()
     while True:
 
         if ser.in_waiting >= 1:
@@ -75,6 +79,8 @@ def readData():
             else:
                 dataList.append(float(out))
                 print out
+
+    return dataList
 
 
 
