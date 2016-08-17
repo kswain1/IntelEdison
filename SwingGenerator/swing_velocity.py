@@ -398,20 +398,20 @@ def streamSwingTrial():
 
     Returns the bat metrics in an array
     """
+
     imu = initialize()
-    # Obtain four initial euler parameters
     print "5 seconds to Calibrate. Please hold Calibration Position:"
     tm.sleep(5.5)  # Wait for calibration position
-    e_initial = calibrate(imu)  # TODO:Do we have to normalize the quaternion at calibration?
+    e_initial = calibrate(imu) # Obtain four initial euler parameters
 
-    # Init time object
-    initialTime = tm.time()
+    initialTime = tm.time() # Time 0
 
     #imu.accel_mode(0b010)  # Switch to Stream mode
     #imu.gyro_mode(0b010)
 
     # Initialize Storage Vectors
     accelerationVectors = [readAcceleration(imu)]
+    angularVelocityVectors =[readAngularVelocity(imu)]
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
     elevationAngles = []
     timeVectors = [0]
@@ -426,15 +426,18 @@ def streamSwingTrial():
     # Loop for 3 seconds
     while (tm.time() - initialTime) < 10:
 
-        # Read Angular Velocity
+        # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
+        accelerationVectors.append(currentAcceleration)
+        angularVelocityVectors.append(currentAngularVelocity)
 
         #print "Angular Velocity", currentAngularVelocity
         #print "Current Acceleration", currentAcceleration
 
         currentEpochTime = tm.time()
         currentElapsedSampleTime = currentEpochTime - previousEpochTime
+        timeVector.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History
         timeVector = [0, currentElapsedSampleTime]
 
         #print "TimeVector:", timeVector
@@ -446,9 +449,6 @@ def streamSwingTrial():
         currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
         eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
 
-        #print "Normalized Euler Parameters"
-        #print eulerPrametersNoramlized
-
         # Compute Direction Cosine Matrix
         directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
         rotationMatrices.append(directionMatrix)
@@ -459,17 +459,24 @@ def streamSwingTrial():
         elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
 
         # Get Inertial Acceleration snd Velocity
-        #inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
-        #inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
+        # inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
+        # inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
 
         # Stop collecting data once acceleration has reached zero again.
         previousEulerParameters = currentEulerParameters
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
 
-
     # Data must be received in the same order sent
-    sendData(elevationAngles)
+    sendData(accelerationVectors)
+    sendData(angularVelocityVectors)
+    sendData(timeVectors)
+
+    #sendData(elevationAngles)
+
+
+    #print time vector
+    print timeVector
 
     #print "Elevation Angles:", elevationAngles
 
