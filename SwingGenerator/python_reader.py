@@ -1,32 +1,50 @@
 import serial
+from sys import platform as _platform
+import matplotlib
 import time
 
-ser = serial.Serial(
-	port='COM6',
-	baudrate=115200,
-	parity=serial.PARITY_EVEN,
-)
+# Open Serial Port
+
+
+if _platform == "linux" or _platform == "linux2":
+    #linux
+    print "Linux Detected"
+
+elif _platform == "darwin":
+    #MAC OS X
+    print "OSX Detected"
+    ser = serial.Serial(port='COM6', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
+
+elif _platform == "win32":
+   # Windows
+   print "Windows Detected"
+   ser = serial.Serial(port='COM6', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
 
 print "Port Open:", ser.is_open
 print "Port Name:", ser.name
 print "Flushing Serial Input Buffer.."
 ser.flushInput()
 
-print "Information Received:"
-
-
 myList = []
 
 while True:
 
-	if ser.in_waiting >= 1:
-		out = ser.readline()
-		myList.append(float(out))
-		print out
-		time.sleep(2)
+    if ser.in_waiting >= 1:
+        out = ser.readline()
 
-	else:
-		print "Waiting for data.."
-		print "Elements in myList:", myList
-		time.sleep(2)
+        if out == "\n":
+            print "EOL Character Received:"
+            print out
+            break;
+
+        else:
+            myList.append(float(out))
+            print out
+
+    else:
+        print "Waiting for data.."
+        print "Elements in myList:", myList
+
+
+print "Transmission Successful"
 
