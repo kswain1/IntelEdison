@@ -1,7 +1,6 @@
 import serial
 from sys import platform as _platform
-
-import matplotlib
+import matplotlib.pyplot as plt
 import time
 
 # Open Serial Port
@@ -25,24 +24,58 @@ print "Flushing Serial Input Buffer.."
 print "Waiting for Data.."
 ser.flushInput()
 
-myList = []
+
+def obtainSwingData():
+    """Obtains all the data from the edison
+    The order in which the data is read
+    must be the same order in which it is
+    sent. Data is then plotted
+
+    :return:
+    """
+
+    print "test"
+    accelerationVector = readData()
+    angularVelocityVector = readData()
+    timeVector = readData() # TODO: Change name to avoid confusion
 
 
-while True:
-
-    if ser.in_waiting >= 1:
-        out = ser.readline()
-
-        if out == "\n":
-            print "EOL Character Received:"
-            print out
-            break
-
-        else:
-            myList.append(float(out))
-            print out
+    plotLinearAcceleration(accelerationVector, timeVector)
 
 
+def plotLinearAcceleration(accelerationVector, timeVector):
+    """ Plots Acceleration vs Time
 
-print "Elements in myList:", myList
-print "Transmission Successful"
+    :param accelerationVector:
+    :param timeVector:
+    :return:
+    """
+
+    plt.plot(timeVector, accelerationVector)
+    plt.show()
+
+
+def readData():
+    """Reads data into a list until EOF character is detected
+    :param
+    :return:
+    """
+
+    dataList = []
+    while True:
+
+        if ser.in_waiting >= 1:
+            out = ser.readline()
+
+            if out == "\n":
+                print "EOL Character Received:"
+                print out
+                break
+
+            else:
+                dataList.append(float(out))
+                print out
+
+
+
+obtainSwingData()
