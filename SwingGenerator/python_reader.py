@@ -1,5 +1,6 @@
 import serial
 from sys import platform as _platform
+
 import matplotlib
 import time
 
@@ -11,7 +12,7 @@ if _platform == "linux" or _platform == "linux2":
 elif _platform == "darwin":
     #MAC OS X
     print "OSX Detected"
-    ser = serial.Serial(port='COM6', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
+    ser = serial.Serial(port='/dev/tty.usbserial-DNO1EW18', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
 
 elif _platform == "win32":
    #Windows
@@ -24,6 +25,7 @@ print "Flushing Serial Input Buffer.."
 ser.flushInput()
 
 myList = []
+
 
 while True:
 
@@ -45,4 +47,3 @@ while True:
 
 
 print "Transmission Successful"
-
