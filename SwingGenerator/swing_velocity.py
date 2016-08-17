@@ -410,8 +410,18 @@ def streamSwingTrial():
     #imu.gyro_mode(0b010)
 
     # Initialize Storage Vectors
-    accelerationVectors = [readAcceleration(imu)]
-    angularVelocityVectors =[readAngularVelocity(imu)]
+    acceleration = readAcceleration(imu)
+    xAccelerationVector = acceleration[0]
+    yAccelerationVector = acceleration[1]
+    zAccelerationVector = acceleration[2]
+
+
+    angularVelocity = readAngularVelocity(imu)
+    xAngularVelocity = angularVelocity[0]
+    yAngularVelocity = angularVelocity[1]
+    zAngularVelocity = angularVelocity[2]
+
+
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
     elevationAngles = []
     timeVector = [0]
@@ -430,8 +440,14 @@ def streamSwingTrial():
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
-        accelerationVectors.append(currentAcceleration)
-        angularVelocityVectors.append(currentAngularVelocity)
+
+        xAccelerationVector.append(currentAcceleration[0])
+        yAccelerationVector.append(currentAcceleration[1])
+        zAccelerationVector.append(currentAcceleration[2])
+
+        xAngularVelocity.append(currentAngularVelocity[0])
+        yAngularVelocity.append(currentAngularVelocity[1])
+        zAngularVelocity.append(currentAngularVelocity[2])
 
         #print "Angular Velocity", currentAngularVelocity
         #print "Current Acceleration", currentAcceleration
@@ -469,8 +485,12 @@ def streamSwingTrial():
         previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
 
     # Data must be received in the same order sent
-    sendData(accelerationVectors)
-    sendData(angularVelocityVectors)
+    sendData(xAccelerationVector)
+    sendData(yAccelerationVector)
+    sendData(zAccelerationVector)
+    sendData(xAngularVelocity)
+    sendData(yAngularVelocity)
+    sendData(zAngularVelocity)
     sendData(timeVectors)
 
     #sendData(elevationAngles)
