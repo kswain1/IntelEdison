@@ -411,15 +411,15 @@ def streamSwingTrial():
 
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
-    xAccelerationVector = acceleration[0]
-    yAccelerationVector = acceleration[1]
-    zAccelerationVector = acceleration[2]
+    xAccelerationVector = [acceleration[0]]
+    yAccelerationVector = [acceleration[1]]
+    zAccelerationVector = [acceleration[2]]
 
 
     angularVelocity = readAngularVelocity(imu)
-    xAngularVelocity = angularVelocity[0]
-    yAngularVelocity = angularVelocity[1]
-    zAngularVelocity = angularVelocity[2]
+    xAngularVelocity = [angularVelocity[0]]
+    yAngularVelocity = [angularVelocity[1]]
+    zAngularVelocity = [angularVelocity[2]]
 
 
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
