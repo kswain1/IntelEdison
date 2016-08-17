@@ -414,6 +414,7 @@ def streamSwingTrial():
     angularVelocityVectors =[readAngularVelocity(imu)]
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
     elevationAngles = []
+    timeVector = [0]
     timeVectors = [0]
 
     # Initialize useful computation variables
@@ -437,7 +438,7 @@ def streamSwingTrial():
 
         currentEpochTime = tm.time()
         currentElapsedSampleTime = currentEpochTime - previousEpochTime
-        timeVector.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History
+        timeVectors.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History TODO: CHANGE NAME TO AVOID CONFUSION
         timeVector = [0, currentElapsedSampleTime]
 
         #print "TimeVector:", timeVector
