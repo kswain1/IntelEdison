@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import mraa
 from SF_9DOF import IMU
 from math import *
 from scipy.integrate import trapz
