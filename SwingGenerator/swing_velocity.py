@@ -370,7 +370,27 @@ def sendData(data, interface=0):
         bytesSent = ser.write(str(number) + '\n')
         print "Bytes Sent:", bytesSent
 
+    ser.write('\n')  # Send EOF Character
     print "Transmission successful"
+
+
+def valueStream():
+    """Continuously displays linear acceleration and angular velocity values
+
+    :return:
+    """
+
+    imu = initialize()
+    # Obtain four initial euler parameters
+    print "5 seconds to Calibrate. Please hold Calibration Position:"
+    tm.sleep(5.5)  # Wait for calibration position
+    e_initial = calibrate(imu)
+
+    while(True):
+        angularVelocity = readAngularVelocity(imu)
+        acceleration = readAcceleration(imu)
+        print("Acceleration:%s  Angular Velocity:%s", (acceleration, angularVelocity))
+        tm.sleep(1)
 
 
 def streamSwingTrial():
@@ -452,27 +472,6 @@ def streamSwingTrial():
     sendData(elevationAngles)
 
     #print "Elevation Angles:", elevationAngles
-
-
-def valueStream():
-    """Continuously displays linear acceleration and angular velocity values
-
-    :return:
-    """
-
-    imu = initialize()
-    # Obtain four initial euler parameters
-    print "5 seconds to Calibrate. Please hold Calibration Position:"
-    tm.sleep(5.5)  # Wait for calibration position
-    e_initial = calibrate(imu)
-
-    while(True):
-        angularVelocity = readAngularVelocity(imu)
-        acceleration = readAcceleration(imu)
-        print("Acceleration:%s  Angular Velocity:%s", (acceleration, angularVelocity))
-        tm.sleep(1)
-
-
 
 #valueStream()
 streamSwingTrial()

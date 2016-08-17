@@ -22,6 +22,7 @@ elif _platform == "win32":
 print "Port Open:", ser.is_open
 print "Port Name:", ser.name
 print "Flushing Serial Input Buffer.."
+print "Waiting for Data.."
 ser.flushInput()
 
 myList = []
@@ -41,9 +42,7 @@ while True:
             myList.append(float(out))
             print out
 
-    else:
-        print "Waiting for data.."
-        print "Elements in myList:", myList
 
 
+print "Elements in myList:", myList
 print "Transmission Successful"
