@@ -56,6 +56,9 @@ def plotLinearAcceleration(accelerationVector, timeVector):
     """
 
     plt.plot(timeVector, accelerationVector)
+    plt.ylabel('x - Linear Acceleration [meters/second^2]')
+    plt.xlabel('Time [seconds]')
+    plt.axis([0, 10, -10, 10])
     plt.show()
 
 
@@ -73,12 +76,12 @@ def readData():
 
             if out == "\n":
                 print "EOL Character Received:"
-                print out
+                #print out
                 break
 
             else:
                 dataList.append(float(out))
-                print out
+                #print out
 
     return np.asarray(dataList)
 

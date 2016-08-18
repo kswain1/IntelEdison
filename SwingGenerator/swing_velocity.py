@@ -63,6 +63,7 @@ def calibrate(imu):
     theta1 = asin(-ax / g)
     theta2 = atan(ay / az)
 
+    # TODO: PLEASE REMEMBER TO START TRACING FROM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # Calculate initial euler parameters
     e4_0 = sqrt(1 + cos(theta1) + cos(theta2) + cos(theta1) * cos(theta2)) / 2
     e1_0 = (sin(theta2) * (1 + cos(theta1))) / (4 * e4_0)
@@ -140,10 +141,10 @@ def computeDirectionCosineMatrix(e):
     :return:
     """
 
-    e1 = e[0]
-    e2 = e[1]
-    e3 = e[2]
-    e4 = e[3]
+    e1 = e[1]
+    e2 = e[2]
+    e3 = e[3]
+    e4 = e[0]
 
     # Using the definition from the Bat Physics Paper
     cosineMatrix = np.zeros([3, 3])
@@ -285,47 +286,44 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     xAngularVelocity = currentAngularVelocity[0]
     yAngularVelocity = currentAngularVelocity[1]
     zAngularVelocity = currentAngularVelocity[2]
-
     angularVelocityMagnitude = computeAngularVelocityMagnitude(currentAngularVelocity)
-
     elapsedTime = timeVector[1]
 
-
-
     # Compute new quaternion
-    q = np.zeros(4)
+    q = np.zeros(4) #TODO: WHY IS THIS NAMED Q AND NOT OMEGA??
     q[0] = cos(angularVelocityMagnitude * elapsedTime / 2)
     q[1] = sin(angularVelocityMagnitude * elapsedTime / 2) *(xAngularVelocity/angularVelocityMagnitude)
     q[2] = sin(angularVelocityMagnitude * elapsedTime / 2) *(yAngularVelocity/angularVelocityMagnitude)
     q[3] = sin(angularVelocityMagnitude * elapsedTime / 2) *(zAngularVelocity/angularVelocityMagnitude)
 
-    q0 = q[3]  # q1
-    q1 = q[0]  # q2
-    q2 = q[1]  # q3
-    q3 = q[2]  # q4
-
+    # TODO: This may not be needed
     # TODO: E4 == E0!!!!
+    q0 = q[0]  # q1
+    q1 = q[1]  # q2
+    q2 = q[2]  # q3
+    q3 = q[3]  # q4
+
     # Define quaternion multiplication matrix
-    omegaMatrix = np.zeros([4, 4])
-    omegaMatrix[0][0] = q0
-    omegaMatrix[0][1] = -q1
-    omegaMatrix[0][2] = -q2
-    omegaMatrix[0][3] = -q3
-    omegaMatrix[1][0] = q1
-    omegaMatrix[1][1] = q0
-    omegaMatrix[1][2] = q3
-    omegaMatrix[1][3] = -q2
-    omegaMatrix[2][0] = q2
-    omegaMatrix[2][1] = -q3
-    omegaMatrix[2][2] = q0
-    omegaMatrix[2][3] = q1
-    omegaMatrix[3][0] = q3
-    omegaMatrix[3][1] = q2
-    omegaMatrix[3][2] = -q1
-    omegaMatrix[3][3] = q0
+    quaternionMultiplicationMatrix = np.zeros([4, 4])
+    quaternionMultiplicationMatrix[0][0] = q0  # ???? Why are there q's here and not omegas.
+    quaternionMultiplicationMatrix[0][1] = -q1
+    quaternionMultiplicationMatrix[0][2] = -q2
+    quaternionMultiplicationMatrix[0][3] = -q3
+    quaternionMultiplicationMatrix[1][0] = q1
+    quaternionMultiplicationMatrix[1][1] = q0
+    quaternionMultiplicationMatrix[1][2] = q3
+    quaternionMultiplicationMatrix[1][3] = -q2
+    quaternionMultiplicationMatrix[2][0] = q2
+    quaternionMultiplicationMatrix[2][1] = -q3
+    quaternionMultiplicationMatrix[2][2] = q0
+    quaternionMultiplicationMatrix[2][3] = q1
+    quaternionMultiplicationMatrix[3][0] = q3
+    quaternionMultiplicationMatrix[3][1] = q2
+    quaternionMultiplicationMatrix[3][2] = -q1
+    quaternionMultiplicationMatrix[3][3] = q0
 
     # New quaternion computed through multiplication
-    newEulerParameters = np.dot(omegaMatrix, e_current)  # Dot is used to multiply
+    newEulerParameters = np.dot(quaternionMultiplicationMatrix, e_current)  # Dot is used to multiply
 
 
 
@@ -412,16 +410,13 @@ def streamSwingTrial():
 
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
+    angularVelocity = readAngularVelocity(imu)
     xAccelerationVector = [acceleration[0]]
     yAccelerationVector = [acceleration[1]]
     zAccelerationVector = [acceleration[2]]
-
-
-    angularVelocity = readAngularVelocity(imu)
     xAngularVelocity = [angularVelocity[0]]
     yAngularVelocity = [angularVelocity[1]]
     zAngularVelocity = [angularVelocity[2]]
-
 
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
     elevationAngles = []
@@ -441,11 +436,9 @@ def streamSwingTrial():
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
-
         xAccelerationVector.append(currentAcceleration[0])
         yAccelerationVector.append(currentAcceleration[1])
         zAccelerationVector.append(currentAcceleration[2])
-
         xAngularVelocity.append(currentAngularVelocity[0])
         yAngularVelocity.append(currentAngularVelocity[1])
         zAngularVelocity.append(currentAngularVelocity[2])
