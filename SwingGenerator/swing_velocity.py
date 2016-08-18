@@ -497,7 +497,6 @@ def streamSwingTrial():
 
 
     #print time vector
-    print timeVectors
 
     #print "Elevation Angles:", elevationAngles
 
