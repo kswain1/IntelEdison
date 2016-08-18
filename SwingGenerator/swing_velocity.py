@@ -366,9 +366,9 @@ def sendData(data, interface=0):
 
     # Send each number in the list
     for number in data:
-        print "Sending:", number
+        #print "Sending:", number
         bytesSent = ser.write(str(number) + '\n')
-        print "Bytes Sent:", bytesSent
+        #print "Bytes Sent:", bytesSent
 
     ser.write('\n')  # Send EOF Character
     print "Transmission successful"
