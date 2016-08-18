@@ -65,7 +65,7 @@ def readData():
     :return: Data received [Numpy Array]
     """
 
-    dataList = np.empty()
+    dataList = []
     while True:
 
         if ser.in_waiting >= 1:
@@ -80,7 +80,7 @@ def readData():
                 dataList.append(float(out))
                 print out
 
-    return dataList
+    return np.asarray(dataList)
 
 
 

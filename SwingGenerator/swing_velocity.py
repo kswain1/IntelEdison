@@ -482,7 +482,7 @@ def streamSwingTrial():
         # Stop collecting data once acceleration has reached zero again.
         previousEulerParameters = currentEulerParameters
         previousEpochTime = currentEpochTime
-        previousElapsedSampleTime = currentElapsedSampleTime  # move to next step
+        previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
@@ -497,7 +497,7 @@ def streamSwingTrial():
 
 
     #print time vector
-    print timeVector
+    print timeVectors
 
     #print "Elevation Angles:", elevationAngles
 
