@@ -299,11 +299,12 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     q[2] = sin(angularVelocityMagnitude * elapsedTime / 2) *(yAngularVelocity/angularVelocityMagnitude)
     q[3] = sin(angularVelocityMagnitude * elapsedTime / 2) *(zAngularVelocity/angularVelocityMagnitude)
 
-    q0 = q[0]
-    q1 = q[1]
-    q2 = q[2]
-    q3 = q[3]
+    q0 = q[3]  # q1
+    q1 = q[0]  # q2
+    q2 = q[1]  # q3
+    q3 = q[2]  # q4
 
+    # TODO: E4 == E0!!!!
     # Define quaternion multiplication matrix
     omegaMatrix = np.zeros([4, 4])
     omegaMatrix[0][0] = q0
