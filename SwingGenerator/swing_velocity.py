@@ -402,6 +402,7 @@ def streamSwingTrial():
     print "5 seconds to Calibrate. Please hold Calibration Position:"
     tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu) # Obtain four initial euler parameters
+    e_initial = normalizeEulerParameters(e_initial) #Normalize
 
     initialTime = tm.time() # Time 0
 
