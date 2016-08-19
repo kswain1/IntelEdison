@@ -402,7 +402,7 @@ def streamSwingTrial():
     print "5 seconds to Calibrate. Please hold Calibration Position:"
     tm.sleep(5.5)  # Wait for calibration position
     e_initial = calibrate(imu) # Obtain four initial euler parameters
-    e_initial = normalizeEulerParameters(e_initial) #Normalize
+    #e_initial = normalizeEulerParameters(e_initial) #Normalize
 
     initialTime = tm.time() # Time 0
 
@@ -459,7 +459,7 @@ def streamSwingTrial():
 
         # Solve for current rotation matrix
         currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
-        eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
+        #eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
 
         # Compute Direction Cosine Matrix
         directionMatrix = computeDirectionCosineMatrix(eulerPrametersNoramlized)
