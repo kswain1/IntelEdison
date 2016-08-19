@@ -44,10 +44,10 @@ def obtainSwingData():
     timeVector = readData() # TODO: Change name to avoid confusion
 
 
-    plotLinearAcceleration(xAccelerationVector, timeVector)
+    plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector)
 
 
-def plotLinearAcceleration(accelerationVector, timeVector):
+def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
@@ -55,10 +55,16 @@ def plotLinearAcceleration(accelerationVector, timeVector):
     :return:
     """
 
-    plt.plot(timeVector, accelerationVector)
-    plt.ylabel('x - Linear Acceleration [meters/second^2]')
+    plt.plot(timeVector, xAccelerationVector, 'b',
+             timeVector, yAccelerationVector, 'g',
+             timeVector, zAccelerationVector, 'r')
+    plt.ylabel('Linear Acceleration [meters/second^2]')
     plt.xlabel('Time [seconds]')
     plt.axis([0, 10, -10, 10])
+    plt.legend(['x - Linear Acceleration',
+                'y - Linear Acceleration',
+                'z - Linear Acceleration'],
+               loc='lower left')
     plt.show()
 
 
