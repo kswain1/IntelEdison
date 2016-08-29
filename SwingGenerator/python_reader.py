@@ -58,7 +58,7 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.plot(timeVector, xAccelerationVector, 'b',
              timeVector, yAccelerationVector, 'g',
              timeVector, zAccelerationVector, 'r')
-    plt.ylabel('Linear Acceleration [meters/second^2]')
+    plt.ylabel('Linear Acceleration [G[s]]')
     plt.xlabel('Time [seconds]')
     plt.axis([0, 10, -3, 3])
     plt.legend(['x - Linear Acceleration',
