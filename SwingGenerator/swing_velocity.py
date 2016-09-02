@@ -35,6 +35,7 @@ def initialize():
     # Accelerometer Options: "2G", "4G", "6G", "8G", "16G"
     # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
     # Gyroscope Options: "245DPS", "500DPS", "2000DPS"
+
     imu.accel_range("16G")
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
@@ -245,6 +246,7 @@ def computeSweetSpotVelocity(imu, localVelocity, angularVelocity):
     sweetSpotDistance = 0.7  # meters TODO:VERIFY SWEET SPOT DISTANCE
     sweetDistanceVector = np.array([1, 0, 0])
     sweetSpotVelocity = localVelocity + np.cross(angularVelocity,sweetDistanceVector)
+    return sweetSpotVelocity
 
 
 def normalizeEulerParameters(eulerParameters):
