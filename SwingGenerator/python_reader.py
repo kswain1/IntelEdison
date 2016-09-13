@@ -65,16 +65,17 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     #b, a = butter_lowpass(cutoff, fs, order)
 
     # Filter the data
-    xFilteredData = butter_lowpass_filter(xAccelerationVector, cutoff, fs, order)
-    yFilteredData = butter_lowpass_filter(yAccelerationVector, cutoff, fs, order)
-    zFilteredData = butter_lowpass_filter(zAccelerationVector, cutoff, fs, order)
+    #xFilteredData = butter_lowpass_filter(xAccelerationVector, cutoff, fs, order)
+    #yFilteredData = butter_lowpass_filter(yAccelerationVector, cutoff, fs, order)
+    #zFilteredData = butter_lowpass_filter(zAccelerationVector, cutoff, fs, order)
 
-    plt.subplot(2, 1, 1)
+    #plt.subplot(2, 1, 1)
 
     plt.plot(timeVector, xAccelerationVector, 'b',
              timeVector, yAccelerationVector, 'g',
              timeVector, zAccelerationVector, 'r')
     plt.xlim(0, 10)
+    plt.ylim(-5, 5)
     plt.legend(['x - Linear Acceleration',
                 'y - Linear Acceleration',
                 'z - Linear Acceleration'],
@@ -82,11 +83,11 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.ylabel('Linear Acceleration [G[s]]')
     plt.xlabel('Time [seconds]')
 
-    plt.subplot(2, 1, 2)
+    #plt.subplot(2, 1, 2)
 
-    plt.plot(timeVector, xFilteredData, 'b',
-             timeVector, yFilteredData, 'g',
-             timeVector, zFilteredData, 'r')
+    #plt.plot(timeVector, xFilteredData, 'b',
+             #timeVector, yFilteredData, 'g',
+             #timeVector, zFilteredData, 'r')
 
     plt.ylabel('Filtered Linear Acceleration [G[s]]')
     plt.xlabel('Time [seconds]')
