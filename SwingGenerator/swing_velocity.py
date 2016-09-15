@@ -105,7 +105,7 @@ def readAngularVelocity(imu):
     angularVelocityVec = np.zeros(3)  # 3x1 Column Vector
     angularVelocityVec[0] = (imu.gx * (pi/180)) + 0.05
     angularVelocityVec[1] = (imu.gy * (pi/180)) - 0.172
-    angularVelocityVec[2] = (imu.gy * (pi/180)) - 0.170
+    angularVelocityVec[2] = (imu.gz * (pi/180)) - 0.170
 
     return angularVelocityVec
 
