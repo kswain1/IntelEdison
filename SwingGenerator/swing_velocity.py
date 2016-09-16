@@ -434,7 +434,7 @@ def streamSwingTrial():
     index = 0
 
     # Loop for 3 seconds
-    while (tm.time() - initialTime) < 10:
+    while (tm.time() - initialTime) < 20:
 
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
@@ -483,13 +483,13 @@ def streamSwingTrial():
         previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
     # Data must be received in the same order sent
-    sendData(xAccelerationVector)
-    sendData(yAccelerationVector)
-    sendData(zAccelerationVector)
-    sendData(xAngularVelocity)
-    sendData(yAngularVelocity)
-    sendData(zAngularVelocity)
-    sendData(timeVectors)
+    #sendData(xAccelerationVector)
+    #sendData(yAccelerationVector)
+    #sendData(zAccelerationVector)
+    #sendData(xAngularVelocity)
+    #sendData(yAngularVelocity)
+    #sendData(zAngularVelocity)
+    #sendData(timeVectors)
 
     #sendData(elevationAngles)
 
