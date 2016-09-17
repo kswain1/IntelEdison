@@ -42,13 +42,16 @@ def obtainSwingData():
     xAngularVelocity = readData()
     yAngularVelocity = readData()
     zAngularVelocity = readData()
+    elevationAngles = readData()
     timeVector = readData() # TODO: Change name to avoid confusion
 
 
-    plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector)
+    plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
+                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles)
 
 
-def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector):
+def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
+                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
@@ -69,7 +72,8 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     #yFilteredData = butter_lowpass_filter(yAccelerationVector, cutoff, fs, order)
     #zFilteredData = butter_lowpass_filter(zAccelerationVector, cutoff, fs, order)
 
-    #plt.subplot(2, 1, 1)
+    plt.figure(1)
+    plt.subplot(2, 1, 1)
 
     plt.plot(timeVector, xAccelerationVector, 'b',
              timeVector, yAccelerationVector, 'g',
@@ -83,22 +87,28 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.ylabel('Linear Acceleration [G[s]]')
     plt.xlabel('Time [seconds]')
 
-    #plt.subplot(2, 1, 2)
+    plt.subplot(2, 1, 2)
 
-    #plt.plot(timeVector, xFilteredData, 'b',
-             #timeVector, yFilteredData, 'g',
-             #timeVector, zFilteredData, 'r')
+    plt.plot(timeVector, xAngularVelocity, 'b',
+             timeVector, yAngularVelocity, 'g',
+             timeVector, zAngularVelocity, 'r')
 
-    plt.ylabel('Filtered Linear Acceleration [G[s]]')
+    plt.ylabel('Angular Velocity [Degrees/second]')
     plt.xlabel('Time [seconds]')
     #plt.axis([0, 10, -5, 5])
     plt.xlim(0, 10)
-    plt.legend(['x - Linear Acceleration',
-                'y - Linear Acceleration',
-                'z - Linear Acceleration'],
+    plt.legend(['x - Angular Acceleration',
+                'y - Angular Acceleration',
+                'z - Angular Acceleration'],
                loc='lower left')
     plt.grid()
     plt.show()
+
+    plt.figure(2)
+    plt.plot(timeVector, elevationAngles, 'b')
+    plt.ylabel('Elevation Angle [degrees]')
+    plt.xlabel('Time [seconds]')
+    plt.legend(['Elevation Angle'], loc='lower left')
 
 
 def readData():
