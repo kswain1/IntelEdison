@@ -45,6 +45,8 @@ def obtainSwingData():
     elevationAngles = readData()
     timeVector = readData() # TODO: Change name to avoid confusion
 
+    print elevationAngles
+
 
     plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                            xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles)
@@ -72,8 +74,8 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     #yFilteredData = butter_lowpass_filter(yAccelerationVector, cutoff, fs, order)
     #zFilteredData = butter_lowpass_filter(zAccelerationVector, cutoff, fs, order)
 
-    plt.figure(1)
-    plt.subplot(2, 1, 1)
+
+    plt.subplot(3, 1, 1)
 
     plt.plot(timeVector, xAccelerationVector, 'b',
              timeVector, yAccelerationVector, 'g',
@@ -87,7 +89,7 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.ylabel('Linear Acceleration [G[s]]')
     plt.xlabel('Time [seconds]')
 
-    plt.subplot(2, 1, 2)
+    plt.subplot(3, 1, 2)
 
     plt.plot(timeVector, xAngularVelocity, 'b',
              timeVector, yAngularVelocity, 'g',
@@ -104,7 +106,6 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
 
     plt.subplot(3, 1, 3)
     plt.xlim(0, 10)
-    #plt.figure(2)
     plt.plot(timeVector, elevationAngles, 'b')
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')

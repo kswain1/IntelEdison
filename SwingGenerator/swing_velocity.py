@@ -422,7 +422,7 @@ def streamSwingTrial():
     zAngularVelocity = [angularVelocity[2]]
 
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
-    elevationAngles = []
+    elevationAngles = [0]
     timeVector = [0]
     timeVectors = [0]
 
