@@ -109,6 +109,7 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
     plt.legend(['Elevation Angle'], loc='lower left')
+    plt.show()
 
 
 def readData():

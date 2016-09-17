@@ -433,8 +433,8 @@ def streamSwingTrial():
     previousEulerParameters = e_initial
     index = 0
 
-    # Loop for 3 seconds
-    while (tm.time() - initialTime) < 20:
+    # Loop for 10 seconds
+    while (tm.time() - initialTime) < 10:
 
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
