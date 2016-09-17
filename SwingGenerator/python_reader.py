@@ -99,9 +99,9 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.xlabel('Time [seconds]')
     #plt.axis([0, 10, -5, 5])
     plt.xlim(0, 10)
-    plt.legend(['x - Angular Acceleration',
-                'y - Angular Acceleration',
-                'z - Angular Acceleration'],
+    plt.legend(['x - Angular Velocity',
+                'y - Angular Velocity',
+                'z - Angular Velocity'],
                loc='lower left')
 
     plt.subplot(3, 1, 3)
