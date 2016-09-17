@@ -101,14 +101,16 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
                 'y - Angular Acceleration',
                 'z - Angular Acceleration'],
                loc='lower left')
-    plt.grid()
-    plt.show()
 
-    plt.figure(2)
+    plt.subplot(3, 1, 3)
+    plt.xlim(0, 10)
+    #plt.figure(2)
     plt.plot(timeVector, elevationAngles, 'b')
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
     plt.legend(['Elevation Angle'], loc='lower left')
+
+    plt.grid()
     plt.show()
 
 
