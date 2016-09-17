@@ -103,9 +103,9 @@ def readAngularVelocity(imu):
 
     imu.read_gyro()
     angularVelocityVec = np.zeros(3)  # 3x1 Column Vector
-    angularVelocityVec[0] = (imu.gx * (pi/180))
-    angularVelocityVec[1] = (imu.gy * (pi/180))
-    angularVelocityVec[2] = (imu.gz * (pi/180))
+    angularVelocityVec[0] = (imu.gx * (pi/180)) + 0.045
+    angularVelocityVec[1] = (imu.gy * (pi/180)) - 0.170
+    angularVelocityVec[2] = (imu.gz * (pi/180)) + 0.207
 
     return angularVelocityVec
 
@@ -434,7 +434,7 @@ def streamSwingTrial():
     index = 0
 
     # Loop for 10 seconds
-    while (tm.time() - initialTime) < 20:
+    while (tm.time() - initialTime) < 10:
 
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
