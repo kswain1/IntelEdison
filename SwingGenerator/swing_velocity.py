@@ -36,7 +36,7 @@ def initialize():
     # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
     # Gyroscope Options: "245DPS", "500DPS", "2000DPS"
 
-    imu.accel_range("16G")
+    imu.accel_range("8G")
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
 
@@ -61,7 +61,7 @@ def calibrate(imu):
     az = accelVec[2]
     g = 9.81  # Gravitational constant m/s^2 may change to ft/s^2
 
-    theta1 = asin(-ax / g)
+    theta1 = asin(-ax / g) # please check if the units are right on this
     theta2 = atan(ay / az)
 
     # TODO: PLEASE REMEMBER TO START TRACING FROM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
