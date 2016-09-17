@@ -36,7 +36,7 @@ def initialize():
     # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
     # Gyroscope Options: "245DPS", "500DPS", "2000DPS"
 
-    imu.accel_range("8G")
+    imu.accel_range("6G")
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
 
