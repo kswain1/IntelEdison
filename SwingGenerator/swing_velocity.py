@@ -434,7 +434,7 @@ def streamSwingTrial():
     index = 0
 
     # Loop for 10 seconds
-    while (tm.time() - initialTime) < 10:
+    while (tm.time() - initialTime) < 20:
 
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
