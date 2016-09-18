@@ -221,12 +221,12 @@ def computeVelocityHistory(accelerationVector, timeVector):
     velocityHistory = [0]
     index = 0
     while index < len(accelerationVector):
-        lowerVelocityLimit = accelerationVector[index]
-        upperVelocityLimit = accelerationVector[index+1]
+        lowerAccelerationLimit = accelerationVector[index]
+        upperAccelerationLimit = accelerationVector[index+1]
         timeLowerLimit = timeVector[index]
         timeUpperLimit = timeVector[index+1]
 
-        velocityHistory.append(trapz([lowerVelocityLimit, upperVelocityLimit], [timeLowerLimit, timeUpperLimit]))
+        velocityHistory.append(trapz([lowerAccelerationLimit, upperAccelerationLimit, [timeLowerLimit, timeUpperLimit]))
         index = index + 1
 
     return velocityHistory
