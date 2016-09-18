@@ -227,6 +227,7 @@ def computeVelocityHistory(accelerationVector, timeVector):
         timeUpperLimit = timeVector[index+1]
 
         velocityHistory.append(trapz([lowerVelocityLimit, upperVelocityLimit], [timeLowerLimit, timeUpperLimit]))
+        index = index + 1
 
     return velocityHistory
 
