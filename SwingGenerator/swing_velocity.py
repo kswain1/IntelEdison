@@ -193,9 +193,9 @@ def computeInertialVelocity(imu, inertialAccelerationVector, sampleTimes):
     :return:
     """
 
-    xInertialAccelerationVector = inertialAcceleration[0]
-    yInertialAccelerationVector = inertialAcceleration[1]
-    zInertialAccelerationVector = inertialAcceleration[2]
+    xInertialAccelerationVector = inertialAccelerationVector[0]
+    yInertialAccelerationVector = inertialAccelerationVector[1]
+    zInertialAccelerationVector = inertialAccelerationVector[2]
 
     xInertialVelocity = trapz(xInertialAccelerationVector, sampleTimes)  # I Beez in the trap
     yInertialVelocity = trapz(yInertialAccelerationVector, sampleTimes)
