@@ -525,7 +525,9 @@ def streamSwingTrial():
 
     # Once trial is finished, compute inertial velocity
     print "Inertial Acceleration Vector history"
-    print inertialAccelerationVector
+    print xinertialAccelerationVector
+    print yinertialAccelerationVector
+    print zinertialAccelerationVector
     #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
     #                                                                                  zinertialAccelerationVector, timeVectors)
 
