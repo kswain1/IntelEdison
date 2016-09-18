@@ -220,7 +220,7 @@ def computeVelocityHistory(accelerationVector, timeVector):
 
     velocityHistory = [0]
     index = 0
-    while index < len(accelerationVector):
+    while index < len(accelerationVector)-1:
         lowerAccelerationLimit = accelerationVector[index]
         upperAccelerationLimit = accelerationVector[index+1]
         timeLowerLimit = timeVector[index]
@@ -525,9 +525,9 @@ def streamSwingTrial():
 
     # Once trial is finished, compute inertial velocity
     print "Inertial Acceleration Vector history"
-    print xinertialAccelerationVector
-    print yinertialAccelerationVector
-    print zinertialAccelerationVector
+    print xinertialAccelerationVector[1]
+    print yinertialAccelerationVector[1]
+    print zinertialAccelerationVector[1]
     #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
     #                                                                                  zinertialAccelerationVector, timeVectors)
 
