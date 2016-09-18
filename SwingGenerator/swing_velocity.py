@@ -179,10 +179,14 @@ def computeInertialAcceleration(imu, orientMat):
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
     inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - g * np.array([0, 0, 1])
 
+    xinertialAcceleration = inertialAcceleration[0]
+    yinertialAcceleration = inertialAcceleration[1]
+    zinertialAcceleration = inertialAcceleration[2]
+
     #print "Inertial Acceleration"
     #print inertialAcceleration #Debug Statement
 
-    return inertialAcceleration
+    return xinertialAcceleration, yinertialAcceleration, zinertialAcceleration
 
 
 def computeInertialVelocity(imu, inertialAccelerationVector, sampleTimes):
