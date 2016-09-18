@@ -184,7 +184,7 @@ def computeInertialAcceleration(imu, orientMat):
     return inertialAcceleration
 
 
-def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
+def computeInertialVelocity(imu, inertialAccelerationVector, sampleTimes):
     """Computes the inertial frame (field frame) velocity by numerical integration
 
     Returns a 3x1 numpy column vector with (x,y,z) inertial velocity components
@@ -193,13 +193,13 @@ def computeInertialVelocity(imu, inertialAcceleration, sampleTimes):
     :return:
     """
 
-    xInertialAcceleration = inertialAcceleration[0]
-    yInertialAcceleration = inertialAcceleration[1]
-    zInertialAcceleration = inertialAcceleration[2]
+    xInertialAccelerationVector = inertialAcceleration[0]
+    yInertialAccelerationVector = inertialAcceleration[1]
+    zInertialAccelerationVector = inertialAcceleration[2]
 
-    xInertialVelocity = trapz(xInertialAcceleration, sampleTimes)  # I Beez in the trap
-    yInertialVelocity = trapz(yInertialAcceleration, sampleTimes)
-    zInertialVelocity = trapz(zInertialAcceleration, sampleTimes)
+    xInertialVelocity = trapz(xInertialAccelerationVector, sampleTimes)  # I Beez in the trap
+    yInertialVelocity = trapz(yInertialAccelerationVector, sampleTimes)
+    zInertialVelocity = trapz(zInertialAccelerationVector, sampleTimes)
 
     InertialVelocity = np.array([xInertialVelocity,
                                  yInertialVelocity,
@@ -482,12 +482,19 @@ def streamSwingTrial():
         # Get Inertial Acceleration snd Velocity
         inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
         inertialAccelerationVector.append(inertialAcceleration)
-        inertialVelocityVector.append(computeInertialVelocity(imu, inertialAcceleration, timeVectors))
+
 
         # Stop collecting data once acceleration has reached zero again.
         previousEulerParameters = currentEulerParameters
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
+
+
+    #Once trial is finished, compute inertial velocity
+    inertialVelocityVector = computeInertialVelocity(imu, inertialAccelerationVector, timeVectors)
+    xinertialVelocity = inertialVelocityVector[0]
+    yinertialVelocity = inertialVelocityVector[1]
+    zinertialVelocity = inertialVelocityVector[2]
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
@@ -498,6 +505,9 @@ def streamSwingTrial():
     sendData(zAngularVelocity)
     sendData(elevationAngles)
     sendData(timeVectors)
+    sendData(xinertialVelocity)
+    sendData(yinertialVelocity)
+    sendData(zinertialVelocity)
 
 
 
