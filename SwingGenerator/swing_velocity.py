@@ -480,7 +480,7 @@ def streamSwingTrial():
         # Get Inertial Acceleration snd Velocity
         inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
         inertialAccelerationVector.append(inertialAcceleration)
-        inertialVelocityVector.append(computeInertialVelocity(imu, inertialAccelerationVector, timeVectors))
+        inertialVelocityVector.append(computeInertialVelocity(imu, inertialAcceleration, timeVectors))
 
         # Stop collecting data once acceleration has reached zero again.
         previousEulerParameters = currentEulerParameters
