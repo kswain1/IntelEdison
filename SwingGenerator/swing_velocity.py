@@ -179,8 +179,9 @@ def computeInertialAcceleration(imu, orientMat):
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
     inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - g * np.array([0, 0, 1])
 
-    print "Inertial Acceleration"
-    print inertialAcceleration #Debug Statement
+    #print "Inertial Acceleration"
+    #print inertialAcceleration #Debug Statement
+
     return inertialAcceleration
 
 
@@ -196,6 +197,9 @@ def computeInertialVelocity(imu, inertialAccelerationVector, sampleTimes):
     xInertialAccelerationVector = inertialAccelerationVector[0]
     yInertialAccelerationVector = inertialAccelerationVector[1]
     zInertialAccelerationVector = inertialAccelerationVector[2]
+
+    print "xInertialAccelerationVector"
+    print xInertialAccelerationVector
 
     xInertialVelocity = trapz(xInertialAccelerationVector, sampleTimes)  # I Beez in the trap
     yInertialVelocity = trapz(yInertialAccelerationVector, sampleTimes)
