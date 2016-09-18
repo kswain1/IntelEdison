@@ -198,7 +198,7 @@ def computeInertialVelocity(imu, xinertialAccelerationVec, yinertialAcceleration
     :return:
     """
 
-
+    # Find velocity at various points in time. The current setup yields velocity average over 10 seconds
 
     xInertialVelocity = trapz(xinertialAccelerationVec, sampleTimes)  # I Beez in the trap
     yInertialVelocity = trapz(yinertialAccelerationVec, sampleTimes)
@@ -209,6 +209,30 @@ def computeInertialVelocity(imu, xinertialAccelerationVec, yinertialAcceleration
     #                             zInertialVelocity])
 
     return xInertialVelocity, yInertialVelocity, zInertialVelocity
+
+def computeVelocityHistory(accelerationVector, timeVector):
+    """
+    Function computes Velocity using averages between the acceleration values
+    :param accelerationVector:
+    :param timeVector:
+    :return:
+    """
+
+    velocityHistory = [0]
+    index = 0
+    while index < len(accelerationVector):
+        lowerVelocityLimit = accelerationVector[index]
+        upperVelocityLimit = accelerationVector[index+1]
+        timeLowerLimit = timeVector[index]
+        timeUpperLimit = timeVector[index+1]
+
+        velocityHistory.append(trapz([lowerVelocityLimit, upperVelocityLimit], [timeLowerLimit, timeUpperLimit]))
+
+    return velocityHistory
+
+
+
+
 
 
 def computeAngularVelocityMagnitude(angularVelocity):
@@ -501,11 +525,12 @@ def streamSwingTrial():
     # Once trial is finished, compute inertial velocity
     print "Inertial Acceleration Vector history"
     print inertialAccelerationVector
-    xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
-                                                                                      zinertialAccelerationVector, timeVectors)
+    #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
+    #                                                                                  zinertialAccelerationVector, timeVectors)
 
-    print "xinertialVelocity"
-    print xinertialVelocity
+    xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector)
+    yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector)
+    zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
