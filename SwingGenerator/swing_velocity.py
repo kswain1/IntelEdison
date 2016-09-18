@@ -426,6 +426,9 @@ def streamSwingTrial():
     angularVelocity = readAngularVelocity(imu)
     inertialVelocityVector = [0]
     inertialAccelerationVector = [0]
+    xinertialAccelerationVector = [0]
+    yinertialAccelerationVector = [0]
+    zinertialAccelerationVector = [0]
     xAccelerationVector = [acceleration[0]]
     yAccelerationVector = [acceleration[1]]
     zAccelerationVector = [acceleration[2]]
@@ -488,8 +491,10 @@ def streamSwingTrial():
 
 
         # Get Inertial Acceleration snd Velocity
-        inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
-        inertialAccelerationVector.append(inertialAcceleration)
+        xinertialAcceleration, yinertialAcceleration, zinertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
+        xinertialAccelerationVector.append(xinertialAcceleration)
+        yinertialAcceleration.append(yinertialAcceleration)
+        zinertialAcceleration.append(zinertialAcceleration)
 
 
         # Stop collecting data once acceleration has reached zero again.
@@ -501,7 +506,8 @@ def streamSwingTrial():
     # Once trial is finished, compute inertial velocity
     print "Inertial Acceleration Vector history"
     print inertialAccelerationVector
-    xinertialVelocity, yintertialVelocity, zinertialVelocity = computeInertialVelocity(imu, inertialAccelerationVector, timeVectors)
+    xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAcceleration, yinertialAcceleration,
+                                                                                      zinertialAcceleration, timeVectors)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
