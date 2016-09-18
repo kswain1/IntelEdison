@@ -493,8 +493,8 @@ def streamSwingTrial():
         # Get Inertial Acceleration snd Velocity
         xinertialAcceleration, yinertialAcceleration, zinertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
         xinertialAccelerationVector.append(xinertialAcceleration)
-        yinertialAcceleration.append(yinertialAcceleration)
-        zinertialAcceleration.append(zinertialAcceleration)
+        yinertialAccelerationVector.append(yinertialAcceleration)
+        zinertialAccelerationVector.append(zinertialAcceleration)
 
 
         # Stop collecting data once acceleration has reached zero again.
