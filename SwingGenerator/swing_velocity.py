@@ -205,11 +205,11 @@ def computeInertialVelocity(imu, inertialAccelerationVector, sampleTimes):
     yInertialVelocity = trapz(yInertialAccelerationVector, sampleTimes)
     zInertialVelocity = trapz(zInertialAccelerationVector, sampleTimes)
 
-    InertialVelocity = np.array([xInertialVelocity,
-                                 yInertialVelocity,
-                                 zInertialVelocity])
+    #InertialVelocity = np.array([xInertialVelocity,
+    #                             yInertialVelocity,
+    #                             zInertialVelocity])
 
-    return InertialVelocity
+    return xInertialVelocity, yInertialVelocity, zInertialVelocity
 
 
 def computeAngularVelocityMagnitude(angularVelocity):
@@ -494,14 +494,10 @@ def streamSwingTrial():
         previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
 
-    #Once trial is finished, compute inertial velocity
+    # Once trial is finished, compute inertial velocity
     print "Inertial Acceleration Vector history"
     print inertialAccelerationVector
-
-    inertialVelocityVector = computeInertialVelocity(imu, inertialAccelerationVector, timeVectors)
-    xinertialVelocity = inertialVelocityVector[0]
-    yinertialVelocity = inertialVelocityVector[1]
-    zinertialVelocity = inertialVelocityVector[2]
+    xinertialVelocity, yintertialVelocity, zinertialVelocity = computeInertialVelocity(imu, inertialAccelerationVector, timeVectors)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
