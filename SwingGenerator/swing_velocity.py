@@ -189,7 +189,7 @@ def computeInertialAcceleration(imu, orientMat):
     return xinertialAcceleration, yinertialAcceleration, zinertialAcceleration
 
 
-def computeInertialVelocity(imu, inertialAccelerationVector, sampleTimes):
+def computeInertialVelocity(imu, xinertialAccelerationVec, yinertialAccelerationVec, zinertialAccelerationVec, sampleTimes):
     """Computes the inertial frame (field frame) velocity by numerical integration
 
     Returns a 3x1 numpy column vector with (x,y,z) inertial velocity components
@@ -198,16 +198,11 @@ def computeInertialVelocity(imu, inertialAccelerationVector, sampleTimes):
     :return:
     """
 
-    xInertialAccelerationVector = inertialAccelerationVector[0]
-    yInertialAccelerationVector = inertialAccelerationVector[1]
-    zInertialAccelerationVector = inertialAccelerationVector[2]
 
-    print "xInertialAccelerationVector"
-    print xInertialAccelerationVector
 
-    xInertialVelocity = trapz(xInertialAccelerationVector, sampleTimes)  # I Beez in the trap
-    yInertialVelocity = trapz(yInertialAccelerationVector, sampleTimes)
-    zInertialVelocity = trapz(zInertialAccelerationVector, sampleTimes)
+    xInertialVelocity = trapz(xinertialAccelerationVec, sampleTimes)  # I Beez in the trap
+    yInertialVelocity = trapz(yinertialAccelerationVec, sampleTimes)
+    zInertialVelocity = trapz(zinertialAccelerationVec, sampleTimes)
 
     #InertialVelocity = np.array([xInertialVelocity,
     #                             yInertialVelocity,
