@@ -413,7 +413,9 @@ def streamSwingTrial():
 
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
+    inertialAcceleration = [0]
     angularVelocity = readAngularVelocity(imu)
+    inertialVelocity = [0]
     xAccelerationVector = [acceleration[0]]
     yAccelerationVector = [acceleration[1]]
     zAccelerationVector = [acceleration[2]]
@@ -473,9 +475,11 @@ def streamSwingTrial():
         print "Elevation angle", asin(directionMatrix[0][2]) * 57.3
         elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
 
+
+
         # Get Inertial Acceleration snd Velocity
-        # inertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
-        # inertialVelocity = computeInertialVelocity(imu, inertialAcceleration, time)
+        inertialAcceleration.append(computeInertialAcceleration(imu, directionMatrix))
+        inertialVelocity.append(computeInertialVelocity(imu, inertialAcceleration, timeVectors))
 
         # Stop collecting data once acceleration has reached zero again.
         previousEulerParameters = currentEulerParameters
@@ -491,6 +495,7 @@ def streamSwingTrial():
     sendData(zAngularVelocity)
     sendData(elevationAngles)
     sendData(timeVectors)
+    sendData(inertialVelocity)
 
 
 
