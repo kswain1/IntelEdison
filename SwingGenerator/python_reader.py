@@ -44,16 +44,21 @@ def obtainSwingData():
     zAngularVelocity = readData()
     elevationAngles = readData()
     timeVector = readData() # TODO: Change name to avoid confusion
+    xInertialVelocity = readData()
+    yInertialVelocity = readData()
+    zInertialVelocity = readData()
 
     print elevationAngles
 
 
     plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
-                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles)
+                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                           xInertialVelocity, yInertialVelocity, zInertialVelocity)
 
 
 def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
-                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles):
+                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                           xInertialVelocity, yInertialVelocity, zInertialVelocity):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
@@ -70,17 +75,21 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     #b, a = butter_lowpass(cutoff, fs, order)
 
     # Filter the data
-    #xFilteredData = butter_lowpass_filter(xAccelerationVector, cutoff, fs, order)
-    #yFilteredData = butter_lowpass_filter(yAccelerationVector, cutoff, fs, order)
-    #zFilteredData = butter_lowpass_filter(zAccelerationVector, cutoff, fs, order)
+    xFilteredData = butter_lowpass_filter(xAngularVelocity, cutoff, fs, order)
+    yFilteredData = butter_lowpass_filter(yAngularVelocity, cutoff, fs, order)
+    zFilteredData = butter_lowpass_filter(zAngularVelocity, cutoff, fs, order)
+
+    #xAccelerationVector = xFilteredData
+    #yAngularVelocity = yFilteredData
+    #zAngularVelocity = zFilteredData
 
 
-    plt.subplot(3, 1, 1)
+    plt.subplot(3, 2, 1)
 
     plt.plot(timeVector, xAccelerationVector, 'b',
              timeVector, yAccelerationVector, 'g',
              timeVector, zAccelerationVector, 'r')
-    plt.xlim(0, 10)
+    plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
     plt.ylim(-5, 5)
     plt.legend(['x - Linear Acceleration',
                 'y - Linear Acceleration',
@@ -89,27 +98,41 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.ylabel('Linear Acceleration [G[s]]')
     plt.xlabel('Time [seconds]')
 
-    plt.subplot(3, 1, 2)
+    plt.subplot(3, 2, 2)
 
     plt.plot(timeVector, xAngularVelocity, 'b',
              timeVector, yAngularVelocity, 'g',
              timeVector, zAngularVelocity, 'r')
+    plt.ylim(-6, 6)
 
     plt.ylabel('Angular Velocity [Degrees/second]')
     plt.xlabel('Time [seconds]')
     #plt.axis([0, 10, -5, 5])
-    plt.xlim(0, 10)
+    plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
     plt.legend(['x - Angular Velocity',
                 'y - Angular Velocity',
                 'z - Angular Velocity'],
                loc='lower left')
 
-    plt.subplot(3, 1, 3)
-    plt.xlim(0, 10)
+    plt.subplot(3, 2, 3)
+    plt.xlim(0, timeVector[-1]) # Last value in time vector as upper limit
     plt.plot(timeVector, elevationAngles, 'b')
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
     plt.legend(['Elevation Angle'], loc='lower left')
+
+    plt.subplot(3, 2, 3)
+    plt.plot(timeVector, xInertialVelocity, 'b',
+             timeVector, yInertialVelocity, 'g',
+             timeVector, zInertialVelocity, 'r')
+
+    plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
+    plt.ylabel('Inertial Velocity [m/s]')
+    plt.xlabel('Time [seconds]')
+    plt.legend(['x - Inertial Velocity',
+                'y - Inertial Velocity',
+                'z - Inertial Velocity'],
+               loc='lower left')
 
     plt.grid()
     plt.show()
