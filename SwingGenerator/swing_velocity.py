@@ -411,7 +411,7 @@ def streamSwingTrial():
     e_initial = calibrate(imu) # Obtain four initial euler parameters
     #e_initial = normalizeEulerParameters(e_initial) #Normalize
 
-    initialTime = tm.time() # Time 0
+    initialTime = tm.time() # Time
 
     #imu.accel_mode(0b010)  # Switch to Stream mode
     #imu.gyro_mode(0b010)
@@ -501,8 +501,8 @@ def streamSwingTrial():
     # Once trial is finished, compute inertial velocity
     print "Inertial Acceleration Vector history"
     print inertialAccelerationVector
-    xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAcceleration, yinertialAcceleration,
-                                                                                      zinertialAcceleration, timeVectors)
+    xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
+                                                                                      zinertialAccelerationVector, timeVectors)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
