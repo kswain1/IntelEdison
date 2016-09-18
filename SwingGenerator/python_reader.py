@@ -47,6 +47,9 @@ def obtainSwingData():
     xInertialVelocity = readData()
     yInertialVelocity = readData()
     zInertialVelocity = readData()
+    xInertialAcceleration = readData()
+    yInertialAcceleration = readData()
+    zInertialAcceleration = readData()
 
     print elevationAngles
 
@@ -84,7 +87,7 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     #zAngularVelocity = zFilteredData
 
 
-    plt.subplot(3, 2, 1)
+    plt.subplot(2, 2, 1)
 
     plt.plot(timeVector, xAccelerationVector, 'b',
              timeVector, yAccelerationVector, 'g',
@@ -98,7 +101,7 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     plt.ylabel('Linear Acceleration [G[s]]')
     plt.xlabel('Time [seconds]')
 
-    plt.subplot(3, 2, 2)
+    plt.subplot(2, 2, 2)
 
     plt.plot(timeVector, xAngularVelocity, 'b',
              timeVector, yAngularVelocity, 'g',
@@ -114,14 +117,14 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
                 'z - Angular Velocity'],
                loc='lower left')
 
-    plt.subplot(3, 2, 3)
+    plt.subplot(2, 2, 3)
     plt.xlim(0, timeVector[-1]) # Last value in time vector as upper limit
     plt.plot(timeVector, elevationAngles, 'b')
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
     plt.legend(['Elevation Angle'], loc='lower left')
 
-    plt.subplot(3, 2, 3)
+    plt.subplot(2, 2, 4)
     plt.plot(timeVector, xInertialVelocity, 'b',
              timeVector, yInertialVelocity, 'g',
              timeVector, zInertialVelocity, 'r')

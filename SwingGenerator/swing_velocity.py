@@ -232,10 +232,6 @@ def computeVelocityHistory(accelerationVector, timeVector):
     return velocityHistory
 
 
-
-
-
-
 def computeAngularVelocityMagnitude(angularVelocity):
     """Computes angular velocity vector magnitude
 
@@ -524,10 +520,7 @@ def streamSwingTrial():
 
 
     # Once trial is finished, compute inertial velocity
-    print "Inertial Acceleration Vector history"
-    print xinertialAccelerationVector[1]
-    print yinertialAccelerationVector[1]
-    print zinertialAccelerationVector[1]
+
     #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
     #                                                                                  zinertialAccelerationVector, timeVectors)
 
@@ -535,7 +528,7 @@ def streamSwingTrial():
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, timeVectors)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, timeVectors)
 
-    print xinertialVelocity
+
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
@@ -549,6 +542,9 @@ def streamSwingTrial():
     sendData(xinertialVelocity)
     sendData(yinertialVelocity)
     sendData(zinertialVelocity)
+    sendData(xinertialAccelerationVector)
+    sendData(yinertialAccelerationVector)
+    sendData(zinertialAccelerationVector)
 
 
 
