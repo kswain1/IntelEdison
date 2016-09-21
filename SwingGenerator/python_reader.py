@@ -88,6 +88,9 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
     #yAngularVelocity = yFilteredData
     #zAngularVelocity = zFilteredData
 
+    print "Time length", len(timeVector)
+    print "Acceleration Length", len(xAccelerationVector)
+
 
     plt.subplot(3, 2, 1)
 
