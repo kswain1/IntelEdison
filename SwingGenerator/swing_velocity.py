@@ -469,6 +469,8 @@ def streamSwingTrial():
     xAngularVelocity = [angularVelocity[0]]
     yAngularVelocity = [angularVelocity[1]]
     zAngularVelocity = [angularVelocity[2]]
+    aimAngleVector = [0]
+    rollVector = [0]
 
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
     elevationAngles = [0]
@@ -536,6 +538,12 @@ def streamSwingTrial():
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
+        aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0])
+        roll = eulerParametersNormalized[0]
+
+        aimAngleVector.append(aimAngle)
+        rollVector.append(roll)
+
 
     # Once trial is finished, compute inertial velocity
 
@@ -562,6 +570,8 @@ def streamSwingTrial():
     sendData(xinertialAccelerationVector)
     sendData(yinertialAccelerationVector)
     sendData(zinertialAccelerationVector)
+    sendData(aimAngleVector)
+    sendData(rollVector)
 
 
 
