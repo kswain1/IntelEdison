@@ -530,11 +530,13 @@ def streamSwingTrial():
     #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
     #                                                                                  zinertialAccelerationVector, timeVectors)
 
-    xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, timeVectors)
-    yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, timeVectors)
-    zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, timeVectors)
+    #xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, timeVectors)
+    #yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, timeVectors)
+    #zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, timeVectors)
 
-
+    xinertialVelocity = computeInertialVelocity(xinertialAcceleration, timeVectors)
+    yinertialVelocity = computeInertialVelocity(yinertialAcceleration, timeVectors)
+    zinertialVelocity = computeInertialVelocity(zinertialAcceleration, timeVectors)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
