@@ -189,7 +189,7 @@ def computeInertialAcceleration(imu, orientMat):
     return xinertialAcceleration, yinertialAcceleration, zinertialAcceleration
 
 
-def computeInertialVelocity(imu, xinertialAccelerationVec, yinertialAccelerationVec, zinertialAccelerationVec, sampleTimes):
+def computeInertialVelocity(imu, xinertialAccelerationVec,sampleTimes):
     """Computes the inertial frame (field frame) velocity by numerical integration
 
     Returns a 3x1 numpy column vector with (x,y,z) inertial velocity components
@@ -198,17 +198,17 @@ def computeInertialVelocity(imu, xinertialAccelerationVec, yinertialAcceleration
     :return:
     """
 
-    # Find velocity at various points in time. The current setup yields velocity average over 10 seconds
+    # Find velocity at various points in time. The current setup yields velocity
 
-    xInertialVelocity = trapz(xinertialAccelerationVec, sampleTimes)  # I Beez in the trap
-    yInertialVelocity = trapz(yinertialAccelerationVec, sampleTimes)
-    zInertialVelocity = trapz(zinertialAccelerationVec, sampleTimes)
+    InertialVelocity = trapz(xinertialAccelerationVec, sampleTimes)  # I Beez in the trap
+
 
     #InertialVelocity = np.array([xInertialVelocity,
     #                             yInertialVelocity,
     #                             zInertialVelocity])
 
-    return xInertialVelocity, yInertialVelocity, zInertialVelocity
+    return InertialVelocity
+
 
 def computeVelocityHistory(accelerationVector, timeVector):
     """
@@ -231,6 +231,7 @@ def computeVelocityHistory(accelerationVector, timeVector):
         print "Accel. Interval"
         print lowerAccelerationLimit, upperAccelerationLimit
 
+        previousVelocity = velocityHistory[index-1]
         velocityHistory.append(trapz([lowerAccelerationLimit, upperAccelerationLimit], [timeLowerLimit, timeUpperLimit]))
         index = index + 1
 
