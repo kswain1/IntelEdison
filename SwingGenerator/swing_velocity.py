@@ -177,7 +177,7 @@ def computeInertialAcceleration(imu, orientMat):
     g = 9.81  # m/s^2 Remember to change if we switch to ft/s^2
 
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
-    inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - (g * np.array([0, 0, 1]).transpose())
+    inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration.transpose()) - (g * np.array([0, 0, 1]).transpose())
 
     print "inertial Acceleration:", inertialAcceleration
     print "direction matrix:", orientMat
