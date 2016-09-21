@@ -28,8 +28,8 @@ def initialize():
 
     # Change IMU buffer mode to Bypass
     # TODO: Try other modes as well
-    imu.accel_mode(0b001)
-    imu.gyro_mode(0b001)
+    imu.accel_mode(0b000)
+    imu.gyro_mode(0b000)
 
     # Specify ranges for accelerometer, magnetometer and gyroscope
     # Accelerometer Options: "2G", "4G", "6G", "8G", "16G"
