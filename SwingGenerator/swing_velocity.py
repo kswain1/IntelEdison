@@ -189,7 +189,7 @@ def computeInertialAcceleration(imu, orientMat):
     return xinertialAcceleration, yinertialAcceleration, zinertialAcceleration
 
 
-def computeInertialVelocity(imu, xinertialAccelerationVec,sampleTimes):
+def computeInertialVelocity(xinertialAccelerationVec,sampleTimes):
     """Computes the inertial frame (field frame) velocity by numerical integration
 
     Returns a 3x1 numpy column vector with (x,y,z) inertial velocity components
