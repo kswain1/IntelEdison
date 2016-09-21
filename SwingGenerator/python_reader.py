@@ -50,20 +50,23 @@ def obtainSwingData():
     xInertialAcceleration = readData()
     yInertialAcceleration = readData()
     zInertialAcceleration = readData()
+    aimAngles = readData()
+    rolls = readData()
 
     print elevationAngles
 
 
-    plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
-                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
-                           xInertialVelocity, yInertialVelocity, zInertialVelocity,
-                           xInertialAcceleration, yInertialAcceleration, zInertialAcceleration)
+    plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
+                   xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                   xInertialVelocity, yInertialVelocity, zInertialVelocity,
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
+                   aimAngles, rolls)
 
 
-def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
-                           xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
-                           xInertialVelocity, yInertialVelocity, zInertialVelocity,
-                           xInertialAcceleration, yInertialAcceleration, zInertialAcceleration):
+def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
+                   xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                   xInertialVelocity, yInertialVelocity, zInertialVelocity,
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
@@ -124,10 +127,14 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
 
     plt.subplot(3, 2, 3)
     plt.xlim(0, timeVector[-1]) # Last value in time vector as upper limit
-    plt.plot(timeVector, elevationAngles, 'b')
+    plt.plot(timeVector, elevationAngles, 'b',
+             timeVector, aimAngles, 'g',
+             timeVector, rolls, 'r')
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
-    plt.legend(['Elevation Angle'], loc='lower left')
+    plt.legend(['Elevation Angle',
+                'Aim',
+                'Roll'], loc='lower left')
 
     plt.subplot(3, 2, 4)
     plt.plot(timeVector, xInertialVelocity, 'b',
@@ -153,6 +160,9 @@ def plotLinearAcceleration(xAccelerationVector, yAccelerationVector, zAccelerati
                 'y - Inertial Acceleration',
                 'z - Inertial Acceleration'],
                loc='lower left')
+
+
+
     plt.grid()
     plt.show()
 
