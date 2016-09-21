@@ -85,9 +85,9 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = imu.ax
-    accelVec[1] = imu.ay
-    accelVec[2] = imu.az
+    accelVec[0] = imu.ax * 9.81
+    accelVec[1] = imu.ay * 9.81
+    accelVec[2] = imu.az * 9.81
 
     return accelVec
 
@@ -182,6 +182,7 @@ def computeInertialAcceleration(imu, orientMat):
 
     print "inertial Acceleration:", inertialAcceleration
     print "direction matrix:", orientMat
+
     xinertialAcceleration = inertialAcceleration[0]
     yinertialAcceleration = inertialAcceleration[1]
     zinertialAcceleration = inertialAcceleration[2]
