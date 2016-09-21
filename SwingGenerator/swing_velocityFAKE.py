@@ -482,6 +482,10 @@ def streamSwingTrial():
     previousEulerParameters = e_initial
     index = 0
 
+    outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW", 'w')
+    # File header
+    outFile_accel.write("roll, pitch, yaw\n")
+
     # Loop for 10 seconds
     while (tm.time() - initialTime) < 10:
 
@@ -519,8 +523,9 @@ def streamSwingTrial():
 
         #print "Direction Cosine Matrix:", directionMatrix[0]
 
-        print "Elevation angle", asin(directionMatrix[0][2]) * 57.3
-        elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
+        elevationAngle = asin(directionMatrix[0][2]) * 57.3
+        print "Elevation angle", elevationAngle
+        elevationAngles.append(elevationAngle)
 
 
 
@@ -535,6 +540,11 @@ def streamSwingTrial():
         previousEulerParameters = currentEulerParameters
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
+
+        aimAngle = atan(directionMatrix[0][1]/directionMatrix[0][0])
+        roll = eulerParametersNormalized[0]
+
+        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(roll, elevationAngle, aimAngle))
 
 
     # Once trial is finished, compute inertial velocity
