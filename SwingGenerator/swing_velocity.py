@@ -200,7 +200,9 @@ def computeInertialVelocity(inertialAccelerationVec,sampleTimes):
 
     # Find velocity at various points in time. The current setup yields velocity
 
+
     print "In computeInertial Velocity Function"
+    print inertialAccelerationVec
     print "Length of inertialVec", len(inertialAccelerationVec)
     print "Length of timeVector", len(sampleTimes)
 
