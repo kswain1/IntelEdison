@@ -213,7 +213,7 @@ def computeInertialVelocity(inertialAccelerationVec,sampleTimes):
     #                             yInertialVelocity,
     #                             zInertialVelocity])
 
-    return InertialVelocity
+    return InertialVelocity.tolist()
 
 
 def computeVelocityHistory(accelerationVector, timeVector):
@@ -237,8 +237,13 @@ def computeVelocityHistory(accelerationVector, timeVector):
         print "Accel. Interval"
         print lowerAccelerationLimit, upperAccelerationLimit
 
-        previousVelocity = velocityHistory[index-1]
-        velocityHistory.append(trapz([lowerAccelerationLimit, upperAccelerationLimit], [timeLowerLimit, timeUpperLimit]))
+        if index > 0:
+            previousVelocity = velocityHistory[index-1]
+        else:
+            previousVelocity = 0
+
+        velocityHistory.append(trapz([lowerAccelerationLimit, upperAccelerationLimit], [timeLowerLimit, timeUpperLimit])
+                               + previousVelocity)
         index = index + 1
 
     return velocityHistory
