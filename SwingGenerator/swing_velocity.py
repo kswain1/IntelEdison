@@ -179,6 +179,7 @@ def computeInertialAcceleration(imu, orientMat):
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
     inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - g * np.array([0, 0, 1])
 
+    print "inertial Acceleration:", inertialAcceleration
     xinertialAcceleration = inertialAcceleration[0]
     yinertialAcceleration = inertialAcceleration[1]
     zinertialAcceleration = inertialAcceleration[2]
@@ -232,10 +233,10 @@ def computeVelocityHistory(accelerationVector, timeVector):
         timeLowerLimit = timeVector[index]
         timeUpperLimit = timeVector[index+1]
 
-        print "Time Interval"
-        print timeLowerLimit, timeUpperLimit
-        print "Accel. Interval"
-        print lowerAccelerationLimit, upperAccelerationLimit
+        #print "Time Interval"
+        #print timeLowerLimit, timeUpperLimit
+        #print "Accel. Interval"
+        #print lowerAccelerationLimit, upperAccelerationLimit
 
         if index > 0:
             previousVelocity = velocityHistory[index-1]
