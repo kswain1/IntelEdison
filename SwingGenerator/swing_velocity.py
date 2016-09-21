@@ -36,7 +36,7 @@ def initialize():
     # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
     # Gyroscope Options: "245DPS", "500DPS", "2000DPS"
 
-    imu.accel_range("16G")
+    imu.accel_range("2G")
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
 
@@ -85,9 +85,9 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = imu.ax * 9.81
-    accelVec[1] = imu.ay * 9.81
-    accelVec[2] = imu.az * 9.81
+    accelVec[0] = imu.ax
+    accelVec[1] = imu.ay
+    accelVec[2] = imu.az
 
     return accelVec
 
