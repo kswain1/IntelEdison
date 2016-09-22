@@ -231,7 +231,7 @@ def computeVelocityHistory(accelerationVector, timeVector):
     print timeVector
     while index < len(accelerationVector):
 
-        velocity_final = velocityHistory[index - 1] + (accelerationVector[index] + accelerationVector[index-1])/2
+        velocity_final = velocityHistory[index - 1] + ((accelerationVector[index] + accelerationVector[index-1])/2)*timeVector[index]
         index = index + 1
         velocityHistory.append(velocity_final)
 
