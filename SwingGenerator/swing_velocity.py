@@ -463,6 +463,7 @@ def streamSwingTrial():
     elevationAngles = [0]
     timeVector = [0]
     timeVectors = [0]
+    sampleTimes = [0]
 
     # Initialize useful computation variables
     previousEpochTime = initialTime  # t0
@@ -489,6 +490,7 @@ def streamSwingTrial():
 
         currentEpochTime = tm.time()
         currentElapsedSampleTime = currentEpochTime - previousEpochTime
+        sampleTimes.append(currentElapsedSampleTime)
         timeVectors.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History TODO: CHANGE NAME TO AVOID CONFUSION
         timeVector = [0, currentElapsedSampleTime]
 
@@ -537,9 +539,9 @@ def streamSwingTrial():
     #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
     #                                                                                  zinertialAccelerationVector, timeVectors)
 
-    xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, timeVectors)
-    yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, timeVectors)
-    zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, timeVectors)
+    xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
+    yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
+    zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
 
     # Data must be received in the same order sent
