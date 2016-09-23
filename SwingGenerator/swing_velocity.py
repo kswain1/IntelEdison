@@ -184,7 +184,7 @@ def computeInertialAcceleration(imu, orientMat):
     #inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - (g * np.array([0, 0, 1]).transpose())
 
     #Create Direction Matrix Transpose
-    orientMatTranspose = np.array([3, 3]) # Initialize array with equal dimensions
+    orientMatTranspose = np.zeros([3, 3])  # Initialize array with equal dimensions
     orientMatTranspose[0][0] = orientMat[0][0]
     orientMatTranspose[0][1] = orientMat[1][0]
     orientMatTranspose[0][2] = orientMat[2][0]
