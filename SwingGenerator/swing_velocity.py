@@ -176,6 +176,8 @@ def computeInertialAcceleration(imu, orientMat):
 
     g = 9.81  # m/s^2 Remember to change if we switch to ft/s^2
 
+    print orientMat
+
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
     ax = localAcceleration[0]
     ay = localAcceleration[1]
