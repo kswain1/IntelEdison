@@ -103,7 +103,7 @@ def readAngularVelocity(imu):
 
     imu.read_gyro()
     angularVelocityVec = np.zeros(3)  # 3x1 Column Vector
-    angularVelocityVec[0] = (imu.gx * (pi/180)) + 0.045
+    angularVelocityVec[0] = (imu.gx * (pi/180)) + 0.045 #Should the angular velocity equation be in radians/sec or degrees/sec?
     angularVelocityVec[1] = (imu.gy * (pi/180)) - 0.170
     angularVelocityVec[2] = (imu.gz * (pi/180)) + 0.207
 
@@ -177,7 +177,32 @@ def computeInertialAcceleration(imu, orientMat):
     g = 9.81  # m/s^2 Remember to change if we switch to ft/s^2
 
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
-    inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - (g * np.array([0, 0, 1]).transpose())
+    ax = localAcceleration[0]
+    ay = localAcceleration[1]
+    az = localAcceleration[2]
+
+    #inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - (g * np.array([0, 0, 1]).transpose())
+
+    #Create Direction Matrix Transpose
+    orientMatTranspose = np.array([3, 3]) # Initialize array with equal dimensions
+    orientMatTranspose[0][0] = orientMat[0][0]
+    orientMatTranspose[0][1] = orientMat[1][0]
+    orientMatTranspose[0][2] = orientMat[2][0]
+    orientMatTranspose[1][0] = orientMat[0][1]
+    orientMatTranspose[1][1] = orientMat[1][1]
+    orientMatTranspose[1][2] = orientMat[2][1]
+    orientMatTranspose[2][0] = orientMat[0][2]
+    orientMatTranspose[2][1] = orientMat[1][2]
+    orientMatTranspose[2][2] = orientMat[2][2]
+
+    #Perform matrix multiplication
+    inertialAcceleration = np.array(3)
+    inertialAcceleration[0] = orientMatTranspose[0][0]*ax + orientMatTranspose[0][1]*ay + orientMatTranspose[0][2]*az
+    inertialAcceleration[1] = orientMatTranspose[1][0]*ax + orientMatTranspose[1][1]*ay + orientMatTranspose[2][2]*az
+    inertialAcceleration[2] = orientMatTranspose[2][0]*ax + orientMatTranspose[2][1]*ay + orientMatTranspose[2][2]*az
+
+    #Compensate for gravity
+    inertialAcceleration[2] -= (-9.81)
 
 
     print "inertial Acceleration:", inertialAcceleration
@@ -441,14 +466,9 @@ def streamSwingTrial():
 
     initialTime = tm.time() # Time
 
-    #imu.accel_mode(0b010)  # Switch to Stream mode
-    #imu.gyro_mode(0b010)
-
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
     angularVelocity = readAngularVelocity(imu)
-    inertialVelocityVector = [0]
-    inertialAccelerationVector = [0]
     xinertialAccelerationVector = [0]
     yinertialAccelerationVector = [0]
     zinertialAccelerationVector = [0]
@@ -487,16 +507,12 @@ def streamSwingTrial():
         yAngularVelocity.append(currentAngularVelocity[1])
         zAngularVelocity.append(currentAngularVelocity[2])
 
-        #print "Angular Velocity", currentAngularVelocity
-        #print "Current Acceleration", currentAcceleration
-
         currentEpochTime = tm.time()
         currentElapsedSampleTime = currentEpochTime - previousEpochTime
         sampleTimes.append(currentElapsedSampleTime)
         timeVectors.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History TODO: CHANGE NAME TO AVOID CONFUSION
         timeVector = [0, currentElapsedSampleTime]
 
-        #print "TimeVector:", timeVector
 
         # TODO:Do we have to normalize the quaternion?
         # TODO:Can we use this same solver or do we have to switch
@@ -514,7 +530,6 @@ def streamSwingTrial():
 
         print "Elevation angle", asin(directionMatrix[0][2]) * 57.3
         elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
-
 
 
         # Get Inertial Acceleration snd Velocity
@@ -541,6 +556,7 @@ def streamSwingTrial():
     #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
     #                                                                                  zinertialAccelerationVector, timeVectors)
 
+    # Compute Velocity
     xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
@@ -566,10 +582,6 @@ def streamSwingTrial():
 
 
 
-
-    #print time vector
-
-    #print "Elevation Angles:", elevationAngles
 
 #valueStream()
 streamSwingTrial()

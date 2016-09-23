@@ -106,7 +106,7 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                 'y - Linear Acceleration',
                 'z - Linear Acceleration'],
                loc='lower left')
-    plt.ylabel('Linear Acceleration [G[s]]')
+    plt.ylabel('Linear Acceleration [m/s^2]')
     plt.xlabel('Time [seconds]')
 
     plt.subplot(3, 2, 2)
