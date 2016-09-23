@@ -204,6 +204,8 @@ def computeInertialAcceleration(imu, orientMat):
     inertialAcceleration[2] = orientMatTranspose[2][0]*ax + orientMatTranspose[2][1]*ay + orientMatTranspose[2][2]*az
 
     #Compensate for gravity
+    inertialAcceleration[0] -= 0.25 # STRICTLY EXPERIMENTAL NO THEORY
+    inertialAcceleration[1] += 0.45 # STRICTLY EXPERIMENTAL NO THEORY
     inertialAcceleration[2] -= (-9.81)
 
 
