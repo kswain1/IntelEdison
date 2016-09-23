@@ -548,7 +548,7 @@ def streamSwingTrial():
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
-        aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0])
+        aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0]) * 57.3
         roll = currentEulerParameters[3]
 
         aimAngleVector.append(aimAngle)
