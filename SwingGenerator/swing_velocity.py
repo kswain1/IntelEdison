@@ -200,7 +200,7 @@ def computeInertialAcceleration(imu, orientMat):
     #Perform matrix multiplication
     inertialAcceleration = np.zeros(3)
     inertialAcceleration[0] = orientMatTranspose[0][0]*ax + orientMatTranspose[0][1]*ay + orientMatTranspose[0][2]*az
-    inertialAcceleration[1] = orientMatTranspose[1][0]*ax + orientMatTranspose[1][1]*ay + orientMatTranspose[2][2]*az
+    inertialAcceleration[1] = orientMatTranspose[1][0]*ax + orientMatTranspose[1][1]*ay + orientMatTranspose[1][2]*az
     inertialAcceleration[2] = orientMatTranspose[2][0]*ax + orientMatTranspose[2][1]*ay + orientMatTranspose[2][2]*az
 
     #Compensate for gravity
