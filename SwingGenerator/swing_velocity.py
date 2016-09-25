@@ -532,9 +532,6 @@ def streamSwingTrial():
 
         #print "Direction Cosine Matrix:", directionMatrix[0]
 
-        print "Elevation angle", asin(directionMatrix[0][2]) * 57.3
-        elevationAngles.append(asin(directionMatrix[0][2]) * 57.3)
-
 
         # Get Inertial Acceleration snd Velocity
         xinertialAcceleration, yinertialAcceleration, zinertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
@@ -548,9 +545,15 @@ def streamSwingTrial():
         previousEpochTime = currentEpochTime
         previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
+        #Calculate Yaw, pitch and roll
+        elevationAngle = asin(directionMatrix[0][2]) * 57.3
         aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0]) * 57.3
-        roll = currentEulerParameters[3] * 57.3
+        roll = currentEulerParameters[4]**2 - currentEulerParameters[1]**2 \
+               - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
 
+        roll *= 57.3
+
+        elevationAngles.append(elevationAngle)
         aimAngleVector.append(aimAngle)
         rollVector.append(roll)
 
