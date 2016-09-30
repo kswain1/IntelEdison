@@ -511,7 +511,6 @@ def streamSwingTrial():
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
-        velocityMagnitude = computeVelocityMagnitude(currentAcceleration)
         xAccelerationVector.append(currentAcceleration[0])
         yAccelerationVector.append(currentAcceleration[1])
         zAccelerationVector.append(currentAcceleration[2])
@@ -564,7 +563,7 @@ def streamSwingTrial():
         elevationAngles.append(elevationAngle)
         aimAngleVector.append(aimAngle)
         rollVector.append(roll)
-        velocityMagnitudeVector.append(velocityMagnitude)
+
 
         #outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(roll, elevationAngle, aimAngle))
 
@@ -578,6 +577,13 @@ def streamSwingTrial():
     xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
+
+    #Compute Velocity Magnitude
+    index = 0
+    while index < len(xinertialVelocity):
+        inertialVelocity = [xinertialVelocity[index], yinertialVelocity[index], zinertialVelocity[index]]
+        velocityMagnitude = computeVelocityMagnitude(inertialVelocity)
+        velocityMagnitudeVector.append(velocityMagnitude)
 
 
     # Data must be received in the same order sent
