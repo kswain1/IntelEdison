@@ -563,7 +563,7 @@ def streamSwingTrial():
         aimAngleVector.append(aimAngle)
         rollVector.append(roll)
 
-        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(roll, elevationAngle, aimAngle))
+        #outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(roll, elevationAngle, aimAngle))
 
 
     # Once trial is finished, compute inertial velocity
