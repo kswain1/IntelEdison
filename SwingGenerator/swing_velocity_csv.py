@@ -584,6 +584,7 @@ def streamSwingTrial():
         inertialVelocity = [xinertialVelocity[index], yinertialVelocity[index], zinertialVelocity[index]]
         velocityMagnitude = computeVelocityMagnitude(inertialVelocity)
         velocityMagnitudeVector.append(velocityMagnitude)
+        index = index + 1
 
 
     # Data must be received in the same order sent
