@@ -53,6 +53,7 @@ def obtainSwingData():
     zInertialAcceleration = readData()
     aimAngles = readData()
     rolls = readData()
+    velocityMagnitude = readData()
 
     print elevationAngles
 
@@ -69,7 +70,7 @@ def obtainSwingData():
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
-                   aimAngles, rolls)
+                   aimAngles, rolls,velocityMagnitude)
 
 
 def csv_writer(rolls, pitchs, yaws):
@@ -84,7 +85,8 @@ def csv_writer(rolls, pitchs, yaws):
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
-                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls):
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls,
+                   velocityMagnitude):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
@@ -157,7 +159,8 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     plt.subplot(3, 2, 4)
     plt.plot(timeVector, xInertialVelocity, 'b',
              timeVector, yInertialVelocity, 'g',
-             timeVector, zInertialVelocity, 'r')
+             timeVector, zInertialVelocity, 'r',
+             timeVector, velocityMagnitude, 'o')
 
     plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
     plt.ylabel('Inertial Velocity [m/s]')
