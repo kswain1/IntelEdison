@@ -577,10 +577,10 @@ def streamSwingTrial():
     xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
-
+    print xinertialVelocity
     #Compute Velocity Magnitude
     index = 0
-    while index <= len(xinertialVelocity)-1:
+    while index <= len(xinertialVelocity):
         inertialVelocity = [xinertialVelocity[index], yinertialVelocity[index], zinertialVelocity[index]]
         velocityMagnitude = computeVelocityMagnitude(inertialVelocity)
         velocityMagnitudeVector.append(velocityMagnitude)
