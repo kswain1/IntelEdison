@@ -156,6 +156,8 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                 'Aim',
                 'Roll'], loc='lower left')
 
+    print len(timeVector)
+    print len(velocityMagnitude)
     plt.subplot(3, 2, 4)
     plt.plot(timeVector, xInertialVelocity, 'b',
              timeVector, yInertialVelocity, 'g',
