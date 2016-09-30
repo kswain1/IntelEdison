@@ -499,9 +499,9 @@ def streamSwingTrial():
     index = 0
 
 
-    outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW", 'w')
+    #outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW.csv", 'w')
     # File header
-    outFile_accel.write("roll, pitch, yaw\n")
+    #outFile_accel.write("roll, pitch, yaw\n")
 
 
     # Loop for 10 seconds
