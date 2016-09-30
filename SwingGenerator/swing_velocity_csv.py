@@ -275,7 +275,7 @@ def computeVelocityMagnitude(Velocity):
     :return:
     """
 
-    return sqrt(angularVelocity[0]**2 + angularVelocity[1]**2 + angularVelocity[2]**2)
+    return sqrt(Velocity[0]**2 + Velocity[1]**2 + Velocity[2]**2)
 
 
 def normalizeAngularVelocityVector(angularVelocity):
@@ -597,6 +597,7 @@ def streamSwingTrial():
     sendData(zinertialAccelerationVector)
     sendData(aimAngleVector)
     sendData(rollVector)
+    sendData(velocityMagnitudeVector)
 
 
 
