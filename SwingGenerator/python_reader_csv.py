@@ -3,6 +3,7 @@ from sys import platform as _platform
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import butter, lfilter, freqz
+from euler_parametrization import EulerParametrization
 import time
 
 # Open Serial Port
@@ -64,10 +65,13 @@ def obtainSwingData():
 
     csv_writer(rolls, elevationAngles, aimAngles)
 
+    e = EulerParametrization('guzman_logs/accel_ROLLPITCHYAW.csv')
+    e.animation()
+    e.show()
 
 
 def csv_writer(rolls, pitchs, yaws):
-    outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW", 'w')
+    outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW.csv", 'w')
     # File header
     outFile_accel.write("roll, pitch, yaw\n")
     # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
