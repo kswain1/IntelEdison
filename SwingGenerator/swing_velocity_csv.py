@@ -268,8 +268,8 @@ def computeVelocityHistory(accelerationVector, timeVector):
     return velocityHistory
 
 
-def computeAngularVelocityMagnitude(angularVelocity):
-    """Computes angular velocity vector magnitude
+def computeVelocityMagnitude(Velocity):
+    """Computes velocity vector magnitude
 
     :param angularVelocity:
     :return:
@@ -473,6 +473,7 @@ def streamSwingTrial():
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
     angularVelocity = readAngularVelocity(imu)
+    velocityMagnitudeVector = [0]
     xinertialAccelerationVector = [0]
     yinertialAccelerationVector = [0]
     zinertialAccelerationVector = [0]
@@ -510,6 +511,7 @@ def streamSwingTrial():
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
         currentAcceleration = readAcceleration(imu)
+        velocityMagnitude = computeVelocityMagnitude(currentAcceleration)
         xAccelerationVector.append(currentAcceleration[0])
         yAccelerationVector.append(currentAcceleration[1])
         zAccelerationVector.append(currentAcceleration[2])
@@ -562,6 +564,7 @@ def streamSwingTrial():
         elevationAngles.append(elevationAngle)
         aimAngleVector.append(aimAngle)
         rollVector.append(roll)
+        velocityMagnitudeVector.append(velocityMagnitude)
 
         #outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(roll, elevationAngle, aimAngle))
 
