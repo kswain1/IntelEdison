@@ -53,15 +53,21 @@ def obtainSwingData():
     zInertialAcceleration = readData()
     aimAngles = readData()
     rolls = readData()
+    velocityMagnitude = readData()
 
     print elevationAngles
-
 
     csv_writer(rolls, elevationAngles, aimAngles)
 
     e = EulerParametrization('guzman_logs/accel_ROLLPITCHYAW.csv')
-    e.animation()
     e.show()
+    e.animation()
+
+    plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
+                   xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                   xInertialVelocity, yInertialVelocity, zInertialVelocity,
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
+                   aimAngles, rolls,velocityMagnitude)
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
@@ -82,7 +88,8 @@ def csv_writer(rolls, pitchs, yaws):
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
-                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls):
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls,
+                   velocityMagnitude):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
@@ -152,10 +159,13 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                 'Aim',
                 'Roll'], loc='lower left')
 
+    print len(timeVector)
+    print len(velocityMagnitude)
     plt.subplot(3, 2, 4)
     plt.plot(timeVector, xInertialVelocity, 'b',
              timeVector, yInertialVelocity, 'g',
-             timeVector, zInertialVelocity, 'r')
+             timeVector, zInertialVelocity, 'r',
+             timeVector, velocityMagnitude, 'o')
 
     plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
     plt.ylabel('Inertial Velocity [m/s]')

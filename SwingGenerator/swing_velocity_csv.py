@@ -268,14 +268,14 @@ def computeVelocityHistory(accelerationVector, timeVector):
     return velocityHistory
 
 
-def computeAngularVelocityMagnitude(angularVelocity):
-    """Computes angular velocity vector magnitude
+def computeVelocityMagnitude(Velocity):
+    """Computes velocity vector magnitude
 
     :param angularVelocity:
     :return:
     """
 
-    return sqrt(angularVelocity[0]**2 + angularVelocity[1]**2 + angularVelocity[2]**2)
+    return sqrt(Velocity[0]**2 + Velocity[1]**2 + Velocity[2]**2)
 
 
 def normalizeAngularVelocityVector(angularVelocity):
@@ -350,7 +350,7 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     xAngularVelocity = currentAngularVelocity[0]
     yAngularVelocity = currentAngularVelocity[1]
     zAngularVelocity = currentAngularVelocity[2]
-    angularVelocityMagnitude = computeAngularVelocityMagnitude(currentAngularVelocity)
+    angularVelocityMagnitude = computeVelocityMagnitude(currentAngularVelocity)
     elapsedTime = timeVector[1]
 
     # Compute new quaternion
@@ -473,6 +473,7 @@ def streamSwingTrial():
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
     angularVelocity = readAngularVelocity(imu)
+    velocityMagnitudeVector = [0]
     xinertialAccelerationVector = [0]
     yinertialAccelerationVector = [0]
     zinertialAccelerationVector = [0]
@@ -563,6 +564,7 @@ def streamSwingTrial():
         aimAngleVector.append(aimAngle)
         rollVector.append(roll)
 
+
         #outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(roll, elevationAngle, aimAngle))
 
 
@@ -575,6 +577,14 @@ def streamSwingTrial():
     xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
+    print xinertialVelocity
+    #Compute Velocity Magnitude
+    index = 1
+    while index <= (len(xinertialVelocity)-1):
+        inertialVelocity = [xinertialVelocity[index], yinertialVelocity[index], zinertialVelocity[index]]
+        velocityMagnitude = computeVelocityMagnitude(inertialVelocity)
+        velocityMagnitudeVector.append(velocityMagnitude)
+        index = index + 1
 
 
     # Data must be received in the same order sent
@@ -594,6 +604,7 @@ def streamSwingTrial():
     sendData(zinertialAccelerationVector)
     sendData(aimAngleVector)
     sendData(rollVector)
+    sendData(velocityMagnitudeVector)
 
 
 
