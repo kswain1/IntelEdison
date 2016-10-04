@@ -9,11 +9,7 @@
 # September, 2016
 #
 
-import math
-import numpy
 import pandas
-import plotly
-import itertools
 
 from matplotlib import pyplot
 from matplotlib import animation
@@ -22,95 +18,72 @@ from mpl_toolkits.mplot3d import Axes3D
 
 import utilities
 
+from rectangular_prism import RectangularPrism
+
 
 class EulerParametrization(object):
 
     def __init__(self,
-                 data_file=None,
-                 rectangle_color='b',
-                 axes_size_factor=1.5,
+                 rotation_data_file=None,
+                 object_3D=RectangularPrism(),
                  interval=30,
                  jupyter=False):
         self._current_index = 0
-        if not data_file:
-            #data_file = "./data.csv"
-            data_file = "./accel_roll_pitch.csv"
-        self._rotation_data = pandas.read_csv(data_file)
-        self._axes_size_factor = axes_size_factor
-        self._rectangle_color = rectangle_color
-        self._jupyter = jupyter
-        self._interval = interval
-        self._setup_3D_object_properties()
-        self._setup_3D_object_data()
+        if not rotation_data_file:
+            rotation_data_file = "./data.csv"
+        self.rotation_data = pandas.read_csv(rotation_data_file)
+        self.jupyter = jupyter
+        self.interval = interval
+        self.object_3D = object_3D
+        self.data = self.object_3D.data
         self._setup_figure_and_axes()
 
     @property
     def number_of_rows(self):
-        return(self._rotation_data.shape[0])
+        return(self.rotation_data.shape[0])
 
     def animation(self, jupyter_notebook=False):
         return(animation.FuncAnimation(
             self._figure,
             self._animate,
             frames=self.number_of_rows,
-            interval=self._interval,
+            interval=self.interval,
             repeat=True
         ))
 
     def show(self):
-        self._figure.show()
+        pyplot.show(block=True)
 
-    def rotation(self, iteration):
-        roll, pitch, yaw = list(self._rotation_data.loc[iteration])
-        if not self._jupyter:
+    def get_rotation(self, iteration):
+        roll, pitch, yaw = list(self.rotation_data.loc[iteration])
+        if not self.jupyter:
             print("{0}, Roll: {1:.3f}, Pitch: {2:.3f}, Yaw: {3:.3f}".format(
                 iteration, roll, pitch, yaw
             ))
-        #
-        # TODO: Do roll, pitch, and yaw seem to behave correctly?
-        #       There are various ways of setting up the model
-        #       and I need to verify this with Kehlin:
-        #       - http://mathworld.wolfram.com/EulerAngles.html
-        #       - https://en.wikipedia.org/wiki/Euler_angles
-        #       - http://matthew-brett.github.io/transforms3d/gimbal_lock.html#example
-        #
         return(roll, pitch, yaw)
 
     def interactive_plot(self, roll, pitch, yaw):
-        self._setup_3D_object_data()
         self._rotate_3D_object_data(roll, pitch, yaw)
-        self._add_correct_sides_to_plot()
+        self._update_plot_lines()
 
     def _animate(self, index):
-        self._rotate_3D_object_data(*self.rotation(index))
-        self._add_correct_sides_to_plot()
+        self._rotate_3D_object_data(*self.get_rotation(index))
+        self._update_plot_lines()
 
-    def _add_correct_sides_to_plot(self):
+    def _rotate_3D_object_data(self, roll, pitch, yaw):
+        self.data = self.object_3D.data
+        for idx, line in enumerate(self.data):
+            self.data[idx][0] = self._rotate_vector(line[0], roll, pitch, yaw)
+            self.data[idx][1] = self._rotate_vector(line[1], roll, pitch, yaw)
+
+    def _update_plot_lines(self):
         self._remove_lines_in_plot()
-        for index, line in enumerate(self._object_data):
+        for index, line in enumerate(self.data):
             start, end = line
-            if self._approximately_correct_distance(start, end):
-                self._axes.plot3D(*zip(start, end), color=self._rectangle_color)
+            self._axes.plot3D(*zip(start, end), color=self.object_3D.color)
 
     def _remove_lines_in_plot(self):
         self._axes.lines = []
-
-    def _setup_3D_object_data(self):
-        #
-        # This creates the 3D object
-        # If you want a different shape, make the change here
-        #
-        data = list(itertools.product(self._length, self._width, self._height))
-        data = list(itertools.combinations(numpy.array(data), 2))
-        data = utilities.list_of_tuples_to_list_of_lists(data)
-        self._object_data = data
-
-    def _setup_3D_object_properties(self, long_s=10, medium_s=6, short_s=2):
-        self._adjacent_distances = [2 * long_s, 2 * medium_s, 2 * short_s]
-        self._length = [-long_s, long_s]
-        self._width  = [-medium_s, medium_s]
-        self._height = [-short_s, short_s]
-        self._long_side = long_s
 
     def _setup_figure_and_axes(self):
         figure = pyplot.figure()
@@ -120,7 +93,7 @@ class EulerParametrization(object):
         axes.set_ylabel('Y')
         axes.set_zlabel('Z')
 
-        length = self._axes_size_factor * self._long_side
+        length = self.object_3D.axis_length
         axes.set_xlim((-length, length))
         axes.set_ylim((-length, length))
         axes.set_zlim((-length, length))
@@ -128,18 +101,7 @@ class EulerParametrization(object):
         self._figure = figure
         self._axes = axes
 
-    def _rotate_3D_object_data(self, roll, pitch, yaw):
-        for idx, line in enumerate(self._object_data):
-            self._object_data[idx][0] = self._rotate_vector(line[0], roll, pitch, yaw)
-            self._object_data[idx][1] = self._rotate_vector(line[1], roll, pitch, yaw)
-
     def _rotate_vector(self, vector, roll, pitch, yaw, degrees=True):
-        #
-        # vector := x
-        # b := rotated_vector
-        # rotation_matrix := A (R)
-        # A*x = b  ~~ rotation_matrix.dot(vector)
-        #
         if degrees:
             pitch = utilities.degrees_to_radians(pitch)
             roll = utilities.degrees_to_radians(roll)
@@ -147,10 +109,3 @@ class EulerParametrization(object):
         rotation_matrix = euler.euler2mat(roll, pitch, yaw, 'sxyz')
         rotated_vector = rotation_matrix.dot(vector)
         return(rotated_vector)
-
-    def _approximately_correct_distance(self, start, end):
-        line_distance = math.sqrt(sum(pow(start - end, 2)))
-        for adjacent_distance in self._adjacent_distances:
-            if abs(line_distance - adjacent_distance) < 0.1:
-                return(True)
-        return(False)
