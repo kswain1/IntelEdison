@@ -57,17 +57,17 @@ def obtainSwingData():
     print elevationAngles
 
 
-    plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
-                   xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
-                   xInertialVelocity, yInertialVelocity, zInertialVelocity,
-                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
-                   aimAngles, rolls)
-
     csv_writer(rolls, elevationAngles, aimAngles)
 
     e = EulerParametrization('guzman_logs/accel_ROLLPITCHYAW.csv')
     e.animation()
     e.show()
+
+    plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
+                   xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                   xInertialVelocity, yInertialVelocity, zInertialVelocity,
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
+                   aimAngles, rolls)
 
 
 def csv_writer(rolls, pitchs, yaws):
