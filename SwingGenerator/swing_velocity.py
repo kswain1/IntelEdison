@@ -448,6 +448,7 @@ def sendData(data, interface=1):
             s.recv(1024)
 
         s.send('\n')
+        s.recv(1024)
         print "Transmission Successful"
 
 
