@@ -551,7 +551,7 @@ def streamSwingTrial():
         roll = currentEulerParameters[3]**2 - currentEulerParameters[1]**2 \
                - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
 
-        roll = acos(roll) * 57.3
+        roll = acos(roll)
 
         elevationAngles.append(elevationAngle)
         aimAngleVector.append(aimAngle)
