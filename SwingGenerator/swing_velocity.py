@@ -11,6 +11,9 @@ import socket
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
 
+s = socket.socket()  # Create a socket object
+port = 80  # Reserve a port for your service.
+s.connect(('192.168.0.11', port))
 
 
 def initialize():
@@ -439,9 +442,7 @@ def sendData(data, interface=1):
         ser.write('\n')  # Send EOF Character
         print "Transmission successful"
     else:
-        s = socket.socket()  # Create a socket object
-        port = 80  # Reserve a port for your service.
-        s.connect(('192.168.0.11', port))
+
 
         for number in data:
             s.send(str(number) + '\n')
