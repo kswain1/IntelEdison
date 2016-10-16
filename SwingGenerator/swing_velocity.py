@@ -6,10 +6,13 @@ from scipy.integrate import trapz
 import serial
 import numpy as np
 import time as tm
+import socket
 
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
 
+s = socket.socket()         # Create a socket object
+port = 80                # Reserve a port for your service.
 
 def initialize():
     """Creates and initializes the IMU object
@@ -420,21 +423,27 @@ def sendData(data, interface=0):
     :param interface: integer denoting interface to select
     :return:
     """
+    #Serial
+    if interface is 0:
+        uart = mraa.Uart(0)  # Enable UART for serial port usage
+        ser = serial.Serial(
+            port='/dev/ttyMFD2',  # Port dependant on hardware block
+            baudrate=115200,
+            parity=serial.PARITY_EVEN)
 
-    uart = mraa.Uart(0)  # Enable UART for serial port usage
-    ser = serial.Serial(
-        port='/dev/ttyMFD2',  # Port dependant on hardware block
-        baudrate=115200,
-        parity=serial.PARITY_EVEN)
+        # Send each number in the list
+        for number in data:
+            #print "Sending:", number
+            bytesSent = ser.write(str(number) + '\n')
+            #print "Bytes Sent:", bytesSent
 
-    # Send each number in the list
-    for number in data:
-        #print "Sending:", number
-        bytesSent = ser.write(str(number) + '\n')
-        #print "Bytes Sent:", bytesSent
+        ser.write('\n')  # Send EOF Character
+        print "Transmission successful"
+    else:
+        for number in data:
+            s.send(str(number))
+            s.send('\n')
 
-    ser.write('\n')  # Send EOF Character
-    print "Transmission successful"
 
 
 def valueStream():
@@ -592,3 +601,4 @@ def streamSwingTrial():
 
 #valueStream()
 streamSwingTrial()
+s.close()
