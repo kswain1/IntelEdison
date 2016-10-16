@@ -3,6 +3,7 @@ from sys import platform as _platform
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import butter, lfilter, freqz
+from euler_parametrization import EulerParametrization
 import time
 
 # Open Serial Port
@@ -54,6 +55,12 @@ def obtainSwingData():
     rolls = readData()
 
     print elevationAngles
+
+    csv_writer(rolls, elevationAngles, aimAngles)
+
+    e = EulerParametrization('guzman_logs/accel_ROLLPITCHYAW.csv')
+    e.show()
+    e.animation()
 
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
@@ -200,6 +207,14 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
     b, a = butter_lowpass(cutoff, fs, order=order)
     y = lfilter(b, a, data)
     return y
+
+def csv_writer(rolls, pitchs, yaws):
+    outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW.csv", 'w')
+    # File header
+    outFile_accel.write("roll, pitch, yaw\n")
+    # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
+    for i in range(0,len(rolls)):
+        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(rolls[i], pitchs[i], yaws[i]))
 
 
 
