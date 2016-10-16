@@ -444,7 +444,7 @@ def sendData(data, interface=1):
         s.connect(('192.168.0.11', port))
 
         for number in data:
-            s.send(str(number))
+            s.send(str(number) + '\n')
 
         s.send('\n')
 
