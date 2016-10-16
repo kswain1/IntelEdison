@@ -445,6 +445,7 @@ def sendData(data, interface=1):
 
         for number in data:
             s.send(str(number) + '\n')
+            s.recv(1024)
 
         s.send('\n')
         print "Transmission Successful"
