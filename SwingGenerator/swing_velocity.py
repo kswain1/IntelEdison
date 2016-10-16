@@ -447,6 +447,7 @@ def sendData(data, interface=1):
             s.send(str(number) + '\n')
 
         s.send('\n')
+        print "Transmission Successful"
 
 
 
@@ -605,4 +606,4 @@ def streamSwingTrial():
 
 #valueStream()
 streamSwingTrial()
-s.close()
+#s.close()
