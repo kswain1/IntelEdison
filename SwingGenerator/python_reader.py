@@ -3,6 +3,7 @@ from sys import platform as _platform
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import butter, lfilter, freqz
+import socket
 from euler_parametrization import EulerParametrization
 import time
 
@@ -27,6 +28,12 @@ print "Flushing Serial Input Buffer.."
 print "Waiting for Data.."
 ser.flushInput()
 
+#Init Server
+s = socket.socket()         # Create a socket object
+port = 80                # Reserve a port for your service.
+s.bind(('', port))        # Bind to the port
+
+
 
 def obtainSwingData():
     """Obtains all the data from the edison
@@ -37,30 +44,30 @@ def obtainSwingData():
     :return:
     """
 
-    xAccelerationVector = readData()
-    yAccelerationVector = readData()
-    zAccelerationVector = readData()
-    xAngularVelocity = readData()
-    yAngularVelocity = readData()
-    zAngularVelocity = readData()
-    elevationAngles = readData()
-    timeVector = readData() # TODO: Change name to avoid confusion
-    xInertialVelocity = readData()
-    yInertialVelocity = readData()
-    zInertialVelocity = readData()
-    xInertialAcceleration = readData()
-    yInertialAcceleration = readData()
-    zInertialAcceleration = readData()
-    aimAngles = readData()
-    rolls = readData()
+    interface = input("Recieve Data serially or through wifi?")
+
+    xAccelerationVector = readData(interface)
+    yAccelerationVector = readData(interface)
+    zAccelerationVector = readData(interface)
+    xAngularVelocity = readData(interface)
+    yAngularVelocity = readData(interface)
+    zAngularVelocity = readData(interface)
+    elevationAngles = readData(interface)
+    timeVector = readData(interface) # TODO: Change name to avoid confusion
+    xInertialVelocity = readData(interface)
+    yInertialVelocity = readData(interface)
+    zInertialVelocity = readData(interface)
+    xInertialAcceleration = readData(interface)
+    yInertialAcceleration = readData(interface)
+    zInertialAcceleration = readData(interface)
+    aimAngles = readData(interface)
+    rolls = readData(interface)
 
     print elevationAngles
 
     csv_writer(rolls, elevationAngles, aimAngles)
 
-    e = EulerParametrization('guzman_logs/accel_ROLLPITCHYAW.csv')
-    e.show()
-    e.animation()
+
 
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
@@ -68,6 +75,10 @@ def obtainSwingData():
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
                    aimAngles, rolls)
+
+    #e = EulerParametrization('guzman_logs/accel_ROLLPITCHYAW.csv')
+    #e.show()
+    #e.animation()
 
 
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
@@ -174,26 +185,44 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     plt.show()
 
 
-def readData():
+def readData(interface=0):
     """Reads data into a list until EOF character is detected
     :param
     :return: Data received [Numpy Array]
     """
 
-    dataList = []
-    while True:
+    #Serial
+    if interface is 0:
+        dataList = []
+        while True:
 
-        if ser.in_waiting >= 1:
-            out = ser.readline()
+            if ser.in_waiting >= 1:
+                out = ser.readline()
 
-            if out == "\n":
+                if out == "\n":
+                    print "EOL Character Received:"
+                    #print out
+                    break
+
+                else:
+                    dataList.append(float(out))
+                    #print out
+    else:
+        s.listen(5)  # Now wait for client connection.
+        dataList = []
+        while True:
+            c, addr = s.accept()  # Establish connection with client.
+            print 'Got connection from', addr
+            print c.recv(1024)
+            if c.recv(1024) == "\n":
                 print "EOL Character Received:"
-                #print out
                 break
 
             else:
-                dataList.append(float(out))
-                #print out
+                dataList.append(float(c.recv(1024)))
+                # print out
+
+            c.close()  # Close the connection
 
     return np.asarray(dataList)
 
