@@ -411,7 +411,7 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     return newEulerParameters
 
 
-def sendData(data, interface=0):
+def sendData(data, interface=1):
     """Send data through selected interface. Interface is
     selected according to the chart below
 
