@@ -445,7 +445,8 @@ def sendData(data, interface=1):
 
         for number in data:
             s.send(str(number))
-            s.send('\n')
+
+        s.send('\n')
 
 
 
