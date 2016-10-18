@@ -87,9 +87,11 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = (imu.ax * 9.81)  + 0.8 #Constants are for 2G mode
-    accelVec[1] = (imu.ay * 9.81) + 0.75
-    accelVec[2] = (imu.az * 9.81) +0.44
+    accelVec[0] = (imu.ax * 9.81) #Constants are for 2G mode
+    accelVec[1] = (imu.ay * 9.81)
+    accelVec[2] = (imu.az * 9.81)
+
+
 
     return accelVec
 
