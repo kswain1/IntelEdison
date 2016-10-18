@@ -38,7 +38,7 @@ def initialize():
     # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
     # Gyroscope Options: "245DPS", "500DPS", "2000DPS"
 
-    imu.accel_range("2G")
+    imu.accel_range("16G")
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
 
@@ -440,7 +440,6 @@ def sendData(data, interface=1):
         print "Transmission successful"
     else:
 
-
         for number in data:
             s = socket.socket()  # Create a socket object
             port = 80  # Reserve a port for your service.
@@ -453,7 +452,6 @@ def sendData(data, interface=1):
         s.connect(('192.168.0.11', port))
         s.send('\n')
         print "Transmission Successful"
-
 
 
 def valueStream():
