@@ -8,31 +8,34 @@ from euler_parametrization import EulerParametrization
 import time
 
 # Open Serial Port
-if _platform == "linux" or _platform == "linux2":
-    #Linux
-    print "Linux Detected"
+interface = input("Recieve Data serially or through wifi?")
 
-elif _platform == "darwin":
-    #MAC OS X
-    print "OSX Detected"
-    ser = serial.Serial(port='/dev/tty.usbserial-DNO1EW18', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
+if interface == 0:
+    if _platform == "linux" or _platform == "linux2":
+        #Linux
+        print "Linux Detected"
 
-elif _platform == "win32":
-   #Windows
-   print "Windows Detected"
-   ser = serial.Serial(port='COM6', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
+    elif _platform == "darwin":
+        #MAC OS X
+        print "OSX Detected"
+        ser = serial.Serial(port='/dev/tty.usbserial-DNO1EW18', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
 
-print "Port Open:", ser.is_open
-print "Port Name:", ser.name
-print "Flushing Serial Input Buffer.."
-print "Waiting for Data.."
-ser.flushInput()
+    elif _platform == "win32":
+       #Windows
+       print "Windows Detected"
+       ser = serial.Serial(port='COM6', baudrate=115200, parity=serial.PARITY_EVEN, timeout=20)
 
-#Init Server
-s = socket.socket()         # Create a socket object
-port = 80                # Reserve a port for your service.
-s.bind(('', port))        # Bind to the port
+       print "Port Open:", ser.is_open
+       print "Port Name:", ser.name
+       print "Flushing Serial Input Buffer.."
+       print "Waiting for Data.."
+       ser.flushInput()
 
+
+# Init Server
+s = socket.socket()  # Create a socket object
+port = 80  # Reserve a port for your service.
+s.bind(('', port))  # Bind to the port
 
 
 def obtainSwingData():
@@ -43,8 +46,6 @@ def obtainSwingData():
 
     :return:
     """
-
-    interface = input("Recieve Data serially or through wifi?")
 
     xAccelerationVector = readData(interface)
     yAccelerationVector = readData(interface)
@@ -68,17 +69,15 @@ def obtainSwingData():
     csv_writer(rolls, elevationAngles, aimAngles)
 
 
-
-
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
                    aimAngles, rolls)
 
-    #e = EulerParametrization('guzman_logs/accel_ROLLPITCHYAW.csv')
-    #e.show()
-    #e.animation()
+    e = EulerParametrization(rotation_data_file='/accel_ROLLPITCHYAW.csv')
+    _ = e.animation()
+    e.show()
 
 
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
@@ -185,7 +184,7 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     plt.show()
 
 
-def readData(interface=0):
+def readData(interface=1):
     """Reads data into a list until EOF character is detected
     :param
     :return: Data received [Numpy Array]
@@ -199,7 +198,7 @@ def readData(interface=0):
             if ser.in_waiting >= 1:
                 out = ser.readline()
 
-                if out == "\n":
+                if out == '\n':
                     print "EOL Character Received:"
                     #print out
                     break
@@ -208,21 +207,24 @@ def readData(interface=0):
                     dataList.append(float(out))
                     #print out
     else:
+        #Use the internet to send data
         s.listen(5)  # Now wait for client connection.
         dataList = []
         while True:
             c, addr = s.accept()  # Establish connection with client.
-            print 'Got connection from', addr
-            print c.recv(1024)
-            if c.recv(1024) == "\n":
+            #print 'Got connection from', addr
+            data = c.recv(1024)
+
+
+            if data == "\n":
                 print "EOL Character Received:"
                 break
 
             else:
-                dataList.append(float(c.recv(1024)))
-                # print out
+                dataList.append(float(data))
+                #print dataList
 
-            c.close()  # Close the connection
+            #c.close()  # Close the connection
 
     return np.asarray(dataList)
 
@@ -249,3 +251,4 @@ def csv_writer(rolls, pitchs, yaws):
 
 
 obtainSwingData()
+s.close()
