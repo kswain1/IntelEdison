@@ -88,8 +88,8 @@ def readAcceleration(imu):
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
     accelVec[0] = (imu.ax * 9.81)  + 0.8 #Constants are for 2G mode
-    accelVec[1] = imu.ay * 9.81 + 0.75
-    accelVec[2] = imu.az * 9.81 +0.44
+    accelVec[1] = (imu.ay * 9.81) + 0.75
+    accelVec[2] = (imu.az * 9.81) +0.44
 
     return accelVec
 
@@ -206,9 +206,9 @@ def computeInertialAcceleration(imu, orientMat):
     inertialAcceleration[2] = orientMatTranspose[2][0]*ax + orientMatTranspose[2][1]*ay + orientMatTranspose[2][2]*az
 
     #Compensate for gravity
-    inertialAcceleration[0] -= 0.25 # STRICTLY EXPERIMENTAL NO THEORY
-    inertialAcceleration[1] += 0.45 # STRICTLY EXPERIMENTAL NO THEORY
-    inertialAcceleration[2] -= (-9.81)
+    #inertialAcceleration[0] -= 0.25 # STRICTLY EXPERIMENTAL NO THEORY
+    #inertialAcceleration[1] += 0.45 # STRICTLY EXPERIMENTAL NO THEORY
+    #inertialAcceleration[2] -= (-9.81)
 
 
     print "inertial Acceleration:", inertialAcceleration
