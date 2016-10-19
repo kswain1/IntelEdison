@@ -34,7 +34,7 @@ class EulerParametrization(object):
         self._current_index = 0
         if not data_file:
             #data_file = "./data.csv"
-            data_file = "./accel_roll_pitch.csv"
+            data_file = "accel_roll_pitch.csv"
         self._rotation_data = pandas.read_csv(data_file)
         self._axes_size_factor = axes_size_factor
         self._rectangle_color = rectangle_color

@@ -178,7 +178,7 @@ def computeInertialAcceleration(imu, orientMat):
     :return:
     """
 
-    g = 9.81  # m/s^2 Remember to change if we switch to ft/s^2
+    g = -9.81  # m/s^2 Remember to change if we switch to ft/s^2
 
     print orientMat
 
@@ -205,8 +205,8 @@ def computeInertialAcceleration(imu, orientMat):
     inertialAcceleration = np.zeros(3)
     inertialAcceleration[0] = orientMatTranspose[0][0]*ax + orientMatTranspose[0][1]*ay + orientMatTranspose[0][2]*az
     inertialAcceleration[1] = orientMatTranspose[1][0]*ax + orientMatTranspose[1][1]*ay + orientMatTranspose[1][2]*az
-    inertialAcceleration[2] = orientMatTranspose[2][0]*ax + orientMatTranspose[2][1]*ay + orientMatTranspose[2][2]*az
-    inertialAcceleration[2] = inertialAcceleration[2] - g # Compensate for gravity
+    inertialAcceleration[2] = (orientMatTranspose[2][0]*ax + orientMatTranspose[2][1]*ay + orientMatTranspose[2][2]*az) - g
+    #inertialAcceleration[2] = inertialAcceleration[2] - g # Compensate for gravity
 
     #Compensate for gravity
     #inertialAcceleration[0] -= 0.25 # STRICTLY EXPERIMENTAL NO THEORY
