@@ -307,7 +307,7 @@ def normalizeAngularVelocityVector(angularVelocity):
     return normalizedQuaternion
 
 
-def computeSweetSpotVelocity(imu, localVelocity, angularVelocity):
+def computeSweetSpotVelocity(localVelocity, angularVelocity):
     """Computes sweet spot velocity on the bat
     Returns a 3x1 numpy column vector with (x,y,z) sweet spot velocity components
     :param imu:
@@ -315,7 +315,7 @@ def computeSweetSpotVelocity(imu, localVelocity, angularVelocity):
     """
     sweetSpotDistance = 0.7  # meters TODO:VERIFY SWEET SPOT DISTANCE
     sweetDistanceVector = np.array([1, 0, 0])
-    sweetSpotVelocity = localVelocity + np.cross(angularVelocity,sweetDistanceVector)
+    sweetSpotVelocity = localVelocity + np.cross(angularVelocity, sweetDistanceVector)
     return sweetSpotVelocity
 
 
@@ -499,6 +499,7 @@ def streamSwingTrial():
     xinertialAccelerationVector = [0]
     yinertialAccelerationVector = [0]
     zinertialAccelerationVector = [0]
+    sweetSpotVelocityVector = [0]
     xAccelerationVector = [acceleration[0]]
     yAccelerationVector = [acceleration[1]]
     zAccelerationVector = [acceleration[2]]
@@ -593,6 +594,8 @@ def streamSwingTrial():
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
+    sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity], currentAngularVelocity)
+    sweetSpotVelocityVector.append(sweetSpotVelocity)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
@@ -611,6 +614,7 @@ def streamSwingTrial():
     sendData(zinertialAccelerationVector)
     sendData(aimAngleVector)
     sendData(rollVector)
+    sendData(sweetSpotVelocityVector)
 
 
 

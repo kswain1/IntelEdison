@@ -63,6 +63,7 @@ def obtainSwingData():
     zInertialAcceleration = readData(interface)
     aimAngles = readData(interface)
     rolls = readData(interface)
+    sweetSpotVelocity = readData(interface)
 
     print elevationAngles
 
@@ -73,9 +74,9 @@ def obtainSwingData():
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
-                   aimAngles, rolls)
+                   aimAngles, rolls, sweetSpotVelocity)
 
-    e = EulerParametrization(rotation_data_file='accel_ROLLPITCHYAW.csv')
+    e = EulerParametrization(rotation_data_file='accel_ROLLPITCHYAW')
     _ = e.animation()
     e.show()
 
@@ -83,7 +84,7 @@ def obtainSwingData():
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
-                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls):
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls, sweetSpotVelocity):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
