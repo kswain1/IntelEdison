@@ -283,7 +283,7 @@ def computeVelocityMagnitude(velocity):
     :return:
     """
 
-    return sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2)
+    return sqrt((velocity[0] ** 2) + (velocity[1] ** 2) + (velocity[2] ** 2))
 
 
 def normalizeAngularVelocityVector(angularVelocity):
