@@ -179,6 +179,7 @@ def computeInertialAcceleration(imu, orientMat):
     """
 
     g = -9.81  # m/s^2 Remember to change if we switch to ft/s^2
+    #TODO: ADD G CORRECTIVE FACTOR FOR CALIBRATION
 
     print orientMat
 
@@ -186,6 +187,8 @@ def computeInertialAcceleration(imu, orientMat):
     ax = localAcceleration[0]
     ay = localAcceleration[1]
     az = localAcceleration[2]
+
+
 
     #inertialAcceleration = np.dot(orientMat.transpose(), localAcceleration) - (g * np.array([0, 0, 1]).transpose())
 
@@ -571,7 +574,7 @@ def streamSwingTrial():
         roll = currentEulerParameters[3]**2 - currentEulerParameters[1]**2 \
                - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
 
-        roll = acos(roll)
+        roll = acos(roll) * 57.3
 
         elevationAngles.append(elevationAngle)
         aimAngleVector.append(aimAngle)
