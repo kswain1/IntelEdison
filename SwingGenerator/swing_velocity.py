@@ -576,7 +576,7 @@ def streamSwingTrial():
 
         #roll = acos(roll) * 57.3
 
-        roll = atan(directionMatrix[0][1]/directionMatrix[0][0])
+        roll = atan(directionMatrix[0][1]/directionMatrix[0][0]) * 57.3
 
         elevationAngles.append(elevationAngle)
         aimAngleVector.append(aimAngle)
