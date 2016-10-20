@@ -276,14 +276,14 @@ def computeVelocityHistory(accelerationVector, timeVector):
     return velocityHistory
 
 
-def computeAngularVelocityMagnitude(angularVelocity):
+def computeVelocityMagnitude(velocity):
     """Computes angular velocity vector magnitude
 
-    :param angularVelocity:
+    :param velocity:
     :return:
     """
 
-    return sqrt(angularVelocity[0]**2 + angularVelocity[1]**2 + angularVelocity[2]**2)
+    return sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2)
 
 
 def normalizeAngularVelocityVector(angularVelocity):
@@ -358,7 +358,7 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     xAngularVelocity = currentAngularVelocity[0]
     yAngularVelocity = currentAngularVelocity[1]
     zAngularVelocity = currentAngularVelocity[2]
-    angularVelocityMagnitude = computeAngularVelocityMagnitude(currentAngularVelocity)
+    angularVelocityMagnitude = computeVelocityMagnitude(currentAngularVelocity)
     elapsedTime = timeVector[1]
 
     # Compute new quaternion
@@ -500,6 +500,7 @@ def streamSwingTrial():
     yinertialAccelerationVector = [0]
     zinertialAccelerationVector = [0]
     sweetSpotVelocityVector = [0]
+    velocityMagnitudeVector = [0]
     xAccelerationVector = [acceleration[0]]
     yAccelerationVector = [acceleration[1]]
     zAccelerationVector = [acceleration[2]]
@@ -594,6 +595,8 @@ def streamSwingTrial():
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
+    velocityMagnitude = computeVelocityMagnitude([xinertialVelocity, yinertialVelocity, zinertialVelocity])
+    velocityMagnitudeVector.append(velocityMagnitude)
     sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity], currentAngularVelocity)
     sweetSpotVelocityVector.append(sweetSpotVelocity)
 
@@ -615,6 +618,7 @@ def streamSwingTrial():
     sendData(aimAngleVector)
     sendData(rollVector)
     sendData(sweetSpotVelocityVector)
+    sendData(velocityMagnitude)
 
 
 
