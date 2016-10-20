@@ -572,7 +572,7 @@ def streamSwingTrial():
         elevationAngle = asin(directionMatrix[0][2]) * 57.3
         aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0]) * 57.3
         #roll = currentEulerParameters[3]**2 - currentEulerParameters[1]**2 \
-               - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
+        #       - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
 
         #roll = acos(roll) * 57.3
 
