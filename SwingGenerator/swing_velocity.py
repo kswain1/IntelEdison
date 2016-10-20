@@ -598,10 +598,10 @@ def streamSwingTrial():
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
-    velocityMagnitude = computeVelocityMagnitude([xinertialVelocity, yinertialVelocity, zinertialVelocity])
-    velocityMagnitudeVector.append(velocityMagnitude)
-    sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity], currentAngularVelocity)
-    sweetSpotVelocityVector.append(sweetSpotVelocity)
+    #velocityMagnitude = computeVelocityMagnitude([xinertialVelocity, yinertialVelocity, zinertialVelocity])
+    #velocityMagnitudeVector.append(velocityMagnitude)
+    #sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity], currentAngularVelocity)
+    #sweetSpotVelocityVector.append(sweetSpotVelocity)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
