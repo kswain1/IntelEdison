@@ -276,24 +276,21 @@ def computeVelocityHistory(accelerationVector, timeVector):
     return velocityHistory
 
 
-def computeVelocityMagnitude(velocity):
+def computeVelocityMagnitude(xVelocity, yVelocity, zVelocity):
     """Computes angular velocity vector magnitude
 
     :param velocity:
     :return:
     """
-    xVelVector = velocity[0]
-    yVelVector = velocity[1]
-    zVelVector = velocity[2]
 
     velocityMagnitudeVector  = [0]
 
     index = 0
-    for number in len(xVelVector):
+    for number in len(xVelocity):
 
-        xVel = xVelVector[index]
-        yVel = yVelVector[index]
-        zVel = zVelVector[index]
+        xVel = xVelocity[index]
+        yVel = yVelocity[index]
+        zVel = zVelocity[index]
 
         velocityMagnitudeVector.append(sqrt((xVel ** 2) + (yVel ** 2) + (zVel ** 2))) #Compute Magnitude
         index = index + 1
@@ -632,7 +629,7 @@ def streamSwingTrial():
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
     #TODO: FIX THIS
-    velocityMagnitude = computeVelocityMagnitude([xinertialVelocity, yinertialVelocity, zinertialVelocity])
+    velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
     velocityMagnitudeVector.append(velocityMagnitude)
     sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
                                                  [xAngularVelocity, yAngularVelocity, zAngularVelocity])
