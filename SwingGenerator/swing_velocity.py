@@ -331,7 +331,7 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
     index = 0
     localVelocity = np.zeros([3, 3])
     angularVelocity = np.zeros([3, 3])
-    sweetSpotVector = np.zeros([3, 3])
+    sweetSpotVector = [0]
 
     for x in inertialVelocityVector[0]:
 
