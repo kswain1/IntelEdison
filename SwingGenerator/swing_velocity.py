@@ -349,6 +349,7 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
         index = index + 1
         sweetSpotVector.append(sweetSpotVelocity)
 
+    sweetSpotVector = np.array(sweetSpotVector.tolist())
     return sweetSpotVector
 
 
