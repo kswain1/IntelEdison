@@ -26,11 +26,11 @@ class EulerParametrization(object):
     def __init__(self,
                  rotation_data_file=None,
                  object_3D=RectangularPrism(),
-                 interval=30,
+                 interval=5,
                  jupyter=False):
         self._current_index = 0
         if not rotation_data_file:
-            rotation_data_file = "./data.csv"
+            rotation_data_file = "accel_ROLLPITCHYAW.csv"
         self.rotation_data = pandas.read_csv(rotation_data_file)
         self.jupyter = jupyter
         self.interval = interval

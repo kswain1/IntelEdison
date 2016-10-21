@@ -14,14 +14,14 @@
 # October, 2016
 #
 
-from triangular_prism import TriangularPrism
+#from triangular_prism import TriangularPrism
 from euler_parametrization import EulerParametrization
 
 # To use the default rectangular prism use this:
 # e = EulerParametrization()
 
 # To inject a new 3D object of your choosing use this:
-e = EulerParametrization(rotation_data_file='accel.csv')
+e = EulerParametrization(rotation_data_file='data.csv')
 
 _ = e.animation()
 e.show()
