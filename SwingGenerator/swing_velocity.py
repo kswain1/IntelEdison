@@ -286,7 +286,7 @@ def computeVelocityMagnitude(xVelocity, yVelocity, zVelocity):
     velocityMagnitudeVector  = [0]
 
     index = 0
-    for number in len(xVelocity):
+    for number in range(0, 3):
 
         xVel = xVelocity[index]
         yVel = yVelocity[index]
