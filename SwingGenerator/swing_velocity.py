@@ -286,7 +286,7 @@ def computeVelocityMagnitude(xVelocity, yVelocity, zVelocity):
     velocityMagnitudeVector  = [0]
 
     index = 0
-    for number in range(0, 3):
+    for number in range(0, len((xVelocity))):
 
         xVel = xVelocity[index]
         yVel = yVelocity[index]
@@ -391,7 +391,9 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     xAngularVelocity = currentAngularVelocity[0]
     yAngularVelocity = currentAngularVelocity[1]
     zAngularVelocity = currentAngularVelocity[2]
-    angularVelocityMagnitude = computeVelocityMagnitude(xAngularVelocity, yAngularVelocity, zAngularVelocity)
+    angularVelocityMagnitude = sqrt(xAngularVelocity**2
+                                    +yAngularVelocity**2
+                                    +zAngularVelocity**2)
     elapsedTime = timeVector[1]
 
     # Compute new quaternion
