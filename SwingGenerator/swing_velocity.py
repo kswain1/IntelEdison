@@ -282,11 +282,24 @@ def computeVelocityMagnitude(velocity):
     :param velocity:
     :return:
     """
-    xVel = velocity[0]
-    yVel = velocity[1]
-    zVel = velocity[2]
+    xVelVector = velocity[0]
+    yVelVector = velocity[1]
+    zVelVector = velocity[2]
 
-    return sqrt((xVel ** 2) + (yVel ** 2) + (zVel ** 2))
+    velocityMagnitudeVector  = [0]
+
+    index = 0
+    for number in xVelVector:
+
+        xVel = xVelVector[index]
+        yVel = yVelVector[index]
+        zVel = zVelVector[index]
+
+        velocityMagnitudeVector.append(sqrt((xVel ** 2) + (yVel ** 2) + (zVel ** 2))) #Compute Magnitude
+        index = index + 1
+
+
+    return velocityMagnitudeVector
 
 
 def normalizeAngularVelocityVector(angularVelocity):
@@ -310,16 +323,36 @@ def normalizeAngularVelocityVector(angularVelocity):
     return normalizedQuaternion
 
 
-def computeSweetSpotVelocity(localVelocity, angularVelocity):
+def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
     """Computes sweet spot velocity on the bat
     Returns a 3x1 numpy column vector with (x,y,z) sweet spot velocity components
     :param imu:
     :return:
     """
-    sweetSpotDistance = 0.7  # meters TODO:VERIFY SWEET SPOT DISTANCE
-    sweetDistanceVector = np.array([1, 0, 0])
-    sweetSpotVelocity = localVelocity + np.cross(angularVelocity, sweetDistanceVector)
-    return sweetSpotVelocity
+
+    #For each element in the x-velocity vector
+    index = 0
+    localVelocity = np.zeros([3, 3])
+    angularVelocity = np.zeros([3, 3])
+    sweetSpotVector = np.zeros([3, 3])
+
+    for x in inertialVelocityVector[0]:
+
+        localVelocity = [inertialVelocityVector[0][index],
+                         inertialVelocityVector[1][index],
+                         inertialVelocityVector[2][index]]
+
+        angularVelocity = [angularVelocityVector[0][index],
+                           angularVelocityVector[1][index],
+                           angularVelocityVector[2][index]]
+
+        sweetSpotDistance = 0.7  # meters TODO:VERIFY SWEET SPOT DISTANCE
+        sweetDistanceVector = np.array([1, 0, 0])
+        sweetSpotVelocity = localVelocity + np.cross(angularVelocity, sweetDistanceVector)
+        index = index + 1
+        sweetSpotVector.append(sweetSpotVelocity)
+
+    return sweetSpotVector
 
 
 def normalizeEulerParameters(eulerParameters):
@@ -598,10 +631,12 @@ def streamSwingTrial():
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
-    #velocityMagnitude = computeVelocityMagnitude([xinertialVelocity, yinertialVelocity, zinertialVelocity])
-    #velocityMagnitudeVector.append(velocityMagnitude)
-    #sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity], currentAngularVelocity)
-    #sweetSpotVelocityVector.append(sweetSpotVelocity)
+    #TODO: FIX THIS
+    velocityMagnitude = computeVelocityMagnitude([xinertialVelocity, yinertialVelocity, zinertialVelocity])
+    velocityMagnitudeVector.append(velocityMagnitude)
+    sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
+                                                 [xAngularVelocity, yAngularVelocity, zAngularVelocity])
+    sweetSpotVelocityVector.append(sweetSpotVelocity)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
