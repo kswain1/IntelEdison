@@ -346,6 +346,7 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
         sweetSpotDistance = 0.7  # meters TODO:VERIFY SWEET SPOT DISTANCE
         sweetDistanceVector = np.array([1, 0, 0])
         sweetSpotVelocity = localVelocity + np.cross(angularVelocity, sweetDistanceVector)
+        sweetSpotVelocityMag = computeVelocityMagnitude(sweetSpotVelocity[0],sweetSpotVelocity[1],sweetSpotVelocity[2])
         index = index + 1
         print sweetSpotVelocity
         print type(sweetSpotVelocity)
