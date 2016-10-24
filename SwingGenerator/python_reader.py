@@ -66,6 +66,14 @@ def obtainSwingData():
     sweetSpotVelocity = readData(interface)
     velocityMagnitude = readData(interface)
 
+    print "Sweet Spot Velocity Vector"
+    print type(sweetSpotVelocity)
+    print sweetSpotVelocity
+
+    print "Sweet Velocity Magnitude Vector"
+    print type(velocityMagnitude)
+    print velocityMagnitude
+
     print elevationAngles
 
     csv_writer(rolls, elevationAngles, aimAngles)
@@ -234,6 +242,7 @@ def readData(interface=1):
                 break
 
             else:
+                #print dataList
                 dataList.append(float(data))
                 #print dataList
 

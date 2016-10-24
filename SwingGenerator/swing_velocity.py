@@ -87,9 +87,13 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = (imu.ax * 9.81) * 1.462 #Constants are for 2G mode
+    accelVec[0] = (imu.ax * 9.81) * 1.462 # Constants are for 2G mode
     accelVec[1] = (imu.ay * 9.81) * 1.462
     accelVec[2] = (imu.az * 9.81) * 1.462
+
+    accelVec[0] = round(accelVec[0], 3)
+    accelVec[1] = round(accelVec[1], 3)
+    accelVec[2] = round(accelVec[2], 3)
 
 
 
@@ -110,6 +114,10 @@ def readAngularVelocity(imu):
     angularVelocityVec[0] = (imu.gx * (pi/180)) + 0.045 #Should the angular velocity equation be in radians/sec or degrees/sec?
     angularVelocityVec[1] = (imu.gy * (pi/180)) - 0.170
     angularVelocityVec[2] = (imu.gz * (pi/180)) + 0.207
+
+    angularVelocityVec[0] = round(angularVelocityVec[0], 3)
+    angularVelocityVec[1] = round(angularVelocityVec[1], 3)
+    angularVelocityVec[2] = round(angularVelocityVec[2], 3)
 
     return angularVelocityVec
 
@@ -348,14 +356,18 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
         sweetSpotVelocity = localVelocity + np.cross(angularVelocity, sweetDistanceVector)
         sweetSpotVelMag = sqrt(sweetSpotVelocity[0]**2+sweetSpotVelocity[1]**2+sweetSpotVelocity[2]**2)
         index = index + 1
+        sweetSpotVector.append(sweetSpotVelMag)
         print "Sweet Spot Velocity"
         print sweetSpotVelocity
         print type(sweetSpotVelocity)
         print "sweet Spot vel Mag"
         print sweetSpotVelMag
+
         
-        sweetSpotVector.append(sweetSpotVelMag)
+
         print sweetSpotVector
+
+
 
 
     return sweetSpotVector
