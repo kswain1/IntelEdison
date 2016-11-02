@@ -118,6 +118,7 @@ def readAngularVelocity(imu):
     angularVelocityVec[0] = round(angularVelocityVec[0], 3)
     angularVelocityVec[1] = round(angularVelocityVec[1], 3)
     angularVelocityVec[2] = round(angularVelocityVec[2], 3)
+    print angularVelocityVec[2]
 
     return angularVelocityVec
 
@@ -363,9 +364,10 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
         print "sweet Spot vel Mag"
         print sweetSpotVelMag
 
-        
-
-        print sweetSpotVector
+        print sweetSpotVector        
+        print type(sweetSpotVector)
+        print len(sweetSpotVector)
+        raw_input("Press Enter to Continue")
 
 
 
@@ -503,10 +505,15 @@ def sendData(data, interface=1):
     else:
 
         for number in data:
+            print data
+            print type(data)
+            print len(data)
+            print number
+            print type(number)
             s = socket.socket()  # Create a socket object
             port = 80  # Reserve a port for your service.
             s.connect(('192.168.0.11', port))
-            s.send(str(number) + '\n')
+            s.send(str(float(number)) + '\n')
             s.close()
 
         s = socket.socket()  # Create a socket object
@@ -555,7 +562,6 @@ def streamSwingTrial():
     xinertialAccelerationVector = [0]
     yinertialAccelerationVector = [0]
     zinertialAccelerationVector = [0]
-    sweetSpotVelocityVector = [0]
     velocityMagnitudeVector = [0]
     xAccelerationVector = [acceleration[0]]
     yAccelerationVector = [acceleration[1]]
@@ -654,9 +660,8 @@ def streamSwingTrial():
     #TODO: FIX THIS
     velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
     velocityMagnitudeVector.append(velocityMagnitude)
-    sweetSpotVelocity = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
+    sweetSpotVelocityVector = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
                                                  [xAngularVelocity, yAngularVelocity, zAngularVelocity])
-    sweetSpotVelocityVector.append(sweetSpotVelocity)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
@@ -675,6 +680,7 @@ def streamSwingTrial():
     sendData(zinertialAccelerationVector)
     sendData(aimAngleVector)
     sendData(rollVector)
+    raw_input("Pres enter to continue yo")
     sendData(sweetSpotVelocityVector)
     sendData(velocityMagnitude)
 
