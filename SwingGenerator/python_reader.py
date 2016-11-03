@@ -233,6 +233,7 @@ def readData(interface=1):
     else:
         #Use the internet to send data
         s.listen(5)  # Now wait for client connection.
+        socket.setdefaulttimeout(5)
         dataList = []
         while True:
             c, addr = s.accept()  # Establish connection with client.
