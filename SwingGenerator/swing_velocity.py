@@ -550,7 +550,7 @@ def listToString(list):
         longString = longString + str(number) + "\n"
         index = index + 1
 
-    pring longString
+    print longString
     return longString
 
 
