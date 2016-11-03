@@ -698,6 +698,8 @@ def streamSwingTrial():
     roundEntries(sweetSpotVelocityVector)
     roundEntries(velocityMagnitude)
 
+    listToString(xAngularVelocity)
+
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
     sendData(yAccelerationVector)
