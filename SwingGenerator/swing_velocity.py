@@ -540,6 +540,23 @@ def roundEntries(list):
 
     return list
 
+def listToString(list):
+    """Returns Concatenated string from list elements"""
+
+    index = 0
+    longString = ""
+
+    for number in list:
+        longString = longString + str(number) + "\n"
+        index = index + 1
+        print longString
+
+    return longString
+
+
+
+
+
 
 def streamSwingTrial():
     """Runs a swing trial event and computes important bat metrics
