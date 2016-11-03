@@ -295,7 +295,7 @@ def computeVelocityMagnitude(xVelocity, yVelocity, zVelocity):
     velocityMagnitudeVector  = [0]
 
     index = 0
-    for number in range(0, len((xVelocity))):
+    for number in range(0, len((xVelocity))-1):
 
         xVel = xVelocity[index]
         yVel = yVelocity[index]
@@ -340,7 +340,7 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
     index = 0
     localVelocity = np.zeros([3, 3])
     angularVelocity = np.zeros([3, 3])
-    sweetSpotVector = [0]
+    sweetSpotVector = []
 
     for x in inertialVelocityVector[0]:
 
@@ -358,16 +358,6 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
         sweetSpotVelMag = sqrt(sweetSpotVelocity[0]**2+sweetSpotVelocity[1]**2+sweetSpotVelocity[2]**2)
         index = index + 1
         sweetSpotVector.append(sweetSpotVelMag)
-        print "Sweet Spot Velocity"
-        print sweetSpotVelocity
-        print type(sweetSpotVelocity)
-        print "sweet Spot vel Mag"
-        print sweetSpotVelMag
-
-        print sweetSpotVector        
-        print type(sweetSpotVector)
-        print len(sweetSpotVector)
-        raw_input("Press Enter to Continue")
 
 
 
@@ -505,11 +495,6 @@ def sendData(data, interface=1):
     else:
 
         for number in data:
-            print data
-            print type(data)
-            print len(data)
-            print number
-            print type(number)
             s = socket.socket()  # Create a socket object
             port = 80  # Reserve a port for your service.
             s.connect(('192.168.0.11', port))
@@ -680,7 +665,6 @@ def streamSwingTrial():
     sendData(zinertialAccelerationVector)
     sendData(aimAngleVector)
     sendData(rollVector)
-    raw_input("Pres enter to continue yo")
     sendData(sweetSpotVelocityVector)
     sendData(velocityMagnitude)
 
