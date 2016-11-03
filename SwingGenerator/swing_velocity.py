@@ -549,8 +549,8 @@ def listToString(list):
     for number in list:
         longString = longString + str(number) + "\n"
         index = index + 1
-        print longString
 
+    pring longString
     return longString
 
 
