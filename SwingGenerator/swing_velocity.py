@@ -527,6 +527,17 @@ def valueStream():
         tm.sleep(1)
 
 
+def roundEntries(list):
+    """Rounds entries in list to the third decimal place"""
+    index = 0
+    for number in list:
+        list[index] = round(number, 3)
+        index = index + 1
+
+
+    return list
+
+
 def streamSwingTrial():
     """Runs a swing trial event and computes important bat metrics
 
@@ -647,6 +658,25 @@ def streamSwingTrial():
     velocityMagnitudeVector.append(velocityMagnitude)
     sweetSpotVelocityVector = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
                                                  [xAngularVelocity, yAngularVelocity, zAngularVelocity])
+
+
+    roundEntries(yAccelerationVector)
+    roundEntries(zAccelerationVector)
+    roundEntries(xAngularVelocity)
+    roundEntries(yAngularVelocity)
+    roundEntries(zAngularVelocity)
+    roundEntries(elevationAngles)
+    roundEntries(timeVectors)
+    roundEntries(xinertialVelocity)
+    roundEntries(yinertialVelocity)
+    roundEntries(zinertialVelocity)
+    roundEntries(xinertialAccelerationVector)
+    roundEntries(yinertialAccelerationVector)
+    roundEntries(zinertialAccelerationVector)
+    roundEntries(aimAngleVector)
+    roundEntries(rollVector)
+    roundEntries(sweetSpotVelocityVector)
+    roundEntries(velocityMagnitude)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)

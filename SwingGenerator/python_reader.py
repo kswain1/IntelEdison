@@ -74,7 +74,10 @@ def obtainSwingData():
     print type(velocityMagnitude)
     print velocityMagnitude
 
-    print elevationAngles
+    print "Sweetspotvelocity length"
+    print len(sweetSpotVelocity)
+    print "VelocityMagnitude length"
+    print len(velocityMagnitude)
 
     csv_writer(rolls, elevationAngles, aimAngles)
 
