@@ -236,7 +236,7 @@ def readData(interface=1):
         socket.setdefaulttimeout(5)
         dataList = []
         while True:
-            c, addr = s.accept()  # Establish connection with client.
+            #c, addr = s.accept()  # Establish connection with client.
             #print 'Got connection from', addr
             data = c.recv(1024)
 

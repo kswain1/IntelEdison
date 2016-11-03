@@ -498,9 +498,10 @@ def sendData(data, interface=1):
         # Create a socket object
         port = 80  # Reserve a port for your service.
         s.connect(('192.168.0.11', port))
-
+        socket.setdefaulttimeout(5)
         for number in data:
-            s.sendto(str(float(number)) + '\n', port ,'192.168.0.11')
+
+            s.send(str(float(number)) + '\n')
 
         s.close()
         s = socket.socket()  # Create a socket object
