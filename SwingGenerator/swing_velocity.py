@@ -494,13 +494,15 @@ def sendData(data, interface=1):
         print "Transmission successful"
     else:
 
-        for number in data:
-            s = socket.socket()  # Create a socket object
-            port = 80  # Reserve a port for your service.
-            s.connect(('192.168.0.11', port))
-            s.send(str(float(number)) + '\n')
-            s.close()
+        s = socket.socket()
+        # Create a socket object
+        port = 80  # Reserve a port for your service.
+        s.connect(('192.168.0.11', port))
 
+        for number in data:
+            s.send(str(float(number)) + '\n')
+
+        s.close()
         s = socket.socket()  # Create a socket object
         port = 80  # Reserve a port for your service.
         s.connect(('192.168.0.11', port))
