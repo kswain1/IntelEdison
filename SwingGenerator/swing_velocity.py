@@ -697,7 +697,7 @@ def streamSwingTrial():
     roundEntries(rollVector)
     roundEntries(sweetSpotVelocityVector)
     roundEntries(velocityMagnitude)
-"""
+    """
     listToString(xAccelerationVector)
     listToString(yAccelerationVector)
     listToString(zAccelerationVector)
