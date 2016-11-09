@@ -239,7 +239,7 @@ def readData(interface=1):
         while True:
               # Establish connection with client.
             #print 'Got connection from', addr
-            data = c.recv(1024)
+            data = c.recvfrom(1024)
 
 
             if data == "\n":

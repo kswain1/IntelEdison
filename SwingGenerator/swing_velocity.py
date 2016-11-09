@@ -501,7 +501,7 @@ def sendData(data, interface=1):
         socket.setdefaulttimeout(5)
         for number in data:
 
-            s.send(str(float(number)) + '\n')
+            s.sendall(str(float(number)) + '\n')
 
         s.close()
         s = socket.socket()  # Create a socket object
@@ -698,7 +698,24 @@ def streamSwingTrial():
     roundEntries(sweetSpotVelocityVector)
     roundEntries(velocityMagnitude)
 
+    listToString(xAccelerationVector)
+    listToString(yAccelerationVector)
+    listToString(zAccelerationVector)
     listToString(xAngularVelocity)
+    listToString(yAngularVelocity)
+    listToString(zAngularVelocity)
+    listToString(elevationAngles)
+    listToString(timeVectors)
+    listToString(xinertialVelocity)
+    listToString(yinertialVelocity)
+    listToString(zinertialVelocity)
+    listToString(xinertialAccelerationVector)
+    listToString(yinertialAccelerationVector)
+    listToString(zinertialAccelerationVector)
+    listToString(aimAngleVector)
+    listToString(rollVector)
+    listToString(sweetSpotVelocityVector)
+    listToString(velocityMagnitude)
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
