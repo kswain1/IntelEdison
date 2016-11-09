@@ -697,7 +697,7 @@ def streamSwingTrial():
     roundEntries(rollVector)
     roundEntries(sweetSpotVelocityVector)
     roundEntries(velocityMagnitude)
-
+"""
     listToString(xAccelerationVector)
     listToString(yAccelerationVector)
     listToString(zAccelerationVector)
@@ -716,6 +716,7 @@ def streamSwingTrial():
     listToString(rollVector)
     listToString(sweetSpotVelocityVector)
     listToString(velocityMagnitude)
+    """
 
     # Data must be received in the same order sent
     sendData(xAccelerationVector)
