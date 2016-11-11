@@ -499,14 +499,15 @@ def sendData(data, interface=1):
         port = 80  # Reserve a port for your service.
         s.connect(('192.168.0.11', port))
         socket.setdefaulttimeout(5)
-        for number in data:
+        s.sendall(data)
+        #for number in data:
 
-            s.sendall(str(float(number)) + '\n')
-
-        s.close()
-        s = socket.socket()  # Create a socket object
-        port = 80  # Reserve a port for your service.
-        s.connect(('192.168.0.11', port))
+            #s.sendall(str(float(number)) + '\n')
+            s.sendall(data)
+        #s.close()
+        #s = socket.socket()  # Create a socket object
+        #port = 80  # Reserve a port for your service.
+        #s.connect(('192.168.0.11', port))
         s.send('\n')
         print "Transmission Successful"
 
