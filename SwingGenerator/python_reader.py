@@ -239,7 +239,10 @@ def readData(interface=1):
         while True:
               # Establish connection with client.
             #print 'Got connection from', addr
+
             data = c.recvfrom(1024)
+            #print "Data Recieved:"
+            #print data
 
 
             if data == "\n":
@@ -248,12 +251,20 @@ def readData(interface=1):
 
             else:
                 #print dataList
-                dataList.append(float(data))
+                #dataList.append(float(data))
+                dataList.append(data)
                 #print dataList
 
             #c.close()  # Close the connection
+        print dataList
 
     return np.asarray(dataList)
+
+
+def stringToList(dataList):
+    """Converts a string with entries seperated with newlines into a list"""
+
+
 
 def butter_lowpass(cutoff, fs, order=5):
     nyq = 0.5 * fs

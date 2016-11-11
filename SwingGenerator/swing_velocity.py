@@ -697,6 +697,7 @@ def streamSwingTrial():
     roundEntries(rollVector)
     roundEntries(sweetSpotVelocityVector)
     roundEntries(velocityMagnitude)
+
     """
     listToString(xAccelerationVector)
     listToString(yAccelerationVector)
@@ -707,7 +708,7 @@ def streamSwingTrial():
     listToString(elevationAngles)
     listToString(timeVectors)
     listToString(xinertialVelocity)
-    listToString(yinertialVelocity)
+    listToString(yinertialVelocity)l
     listToString(zinertialVelocity)
     listToString(xinertialAccelerationVector)
     listToString(yinertialAccelerationVector)
@@ -719,24 +720,24 @@ def streamSwingTrial():
     """
 
     # Data must be received in the same order sent
-    sendData(xAccelerationVector)
-    sendData(yAccelerationVector)
-    sendData(zAccelerationVector)
-    sendData(xAngularVelocity)
-    sendData(yAngularVelocity)
-    sendData(zAngularVelocity)
-    sendData(elevationAngles)
-    sendData(timeVectors)
-    sendData(xinertialVelocity)
-    sendData(yinertialVelocity)
-    sendData(zinertialVelocity)
-    sendData(xinertialAccelerationVector)
-    sendData(yinertialAccelerationVector)
-    sendData(zinertialAccelerationVector)
-    sendData(aimAngleVector)
-    sendData(rollVector)
-    sendData(sweetSpotVelocityVector)
-    sendData(velocityMagnitude)
+    sendData(listToString(xAccelerationVector))
+    sendData(listToString(yAccelerationVector))
+    sendData(listToString(zAccelerationVector))
+    sendData(listToString(xAngularVelocity))
+    sendData(listToString(yAngularVelocity))
+    sendData(listToString(zAngularVelocity))
+    sendData(listToString(elevationAngles))
+    sendData(listToString(timeVectors))
+    sendData(listToString(xinertialVelocity))
+    sendData(listToString(yinertialVelocity))
+    sendData(listToString(zinertialVelocity))
+    sendData(listToString(xinertialAccelerationVector))
+    sendData(listToString(yinertialAccelerationVector))
+    sendData(listToString(zinertialAccelerationVector))
+    sendData(listToString(aimAngleVector))
+    sendData(listToString(rollVector))
+    sendData(listToString(sweetSpotVelocityVector))
+    sendData(listToString(velocityMagnitude))
 
 
 
