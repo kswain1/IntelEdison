@@ -33,9 +33,7 @@ if interface == 0:
 
 
 # Init Server
-s = socket.socket()  # Create a socket object
-port = 80  # Reserve a port for your service.
-s.bind(('', port))  # Bind to the port
+
 
 
 def obtainSwingData():
@@ -79,7 +77,8 @@ def obtainSwingData():
     print "VelocityMagnitude length"
     print len(velocityMagnitude)
 
-    csv_writer(rolls, elevationAngles, aimAngles)
+    #csv_writer(rolls, elevationAngles, aimAngles)
+    print type(xAngularVelocity)
 
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
@@ -232,16 +231,21 @@ def readData(interface=1):
                     #print out
     else:
 
+        s = socket.socket()  # Create a socket object
+        port = 80  # Reserve a port for your service.
+        s.bind(('', port))  # Bind to the port
+
         s.listen(5)
-        socket.setdefaulttimeout(5)
+        socket.setdefaulttimeout(10)
 
         dataList = []
         c, addr = s.accept()
 
         data = c.recv(4096)
+        dataList = data.split()
 
-        print "I recieved:"
-        print data
+        #print "I recieved:"
+        #print data
 
         c.close()
         s.close()
@@ -269,7 +273,8 @@ def readData(interface=1):
 
             #c.close()  # Close the connection
         print dataList"""
-
+        print "The dataList is:"
+        print dataList
     return np.asarray(dataList)
 
 
@@ -295,7 +300,7 @@ def csv_writer(rolls, pitchs, yaws):
     outFile_accel.write("roll, pitch, yaw\n")
     # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
     for i in range(0,len(rolls)):
-        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(rolls[i], pitchs[i], yaws[i]))
+        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(float(rolls[i]), float(pitchs[i]), float(yaws[i])))
 
 
 

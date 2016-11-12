@@ -1,0 +1,19 @@
+import socket
+
+s = socket.socket()
+port = 80
+s.bind(('', port))
+
+s.listen(5)
+socket.setdefaulttimeout(5)
+
+dataList = []
+c, addr = s.accept()
+
+data = c.recv(1024)
+
+print "I recieved:"
+print data
+
+c.close()
+s.close()
