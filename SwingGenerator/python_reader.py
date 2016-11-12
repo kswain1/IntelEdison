@@ -231,18 +231,30 @@ def readData(interface=1):
                     dataList.append(float(out))
                     #print out
     else:
-        #Use the internet to send data
-        s.listen(5)  # Now wait for client connection.
+
+        s.listen(5)
         socket.setdefaulttimeout(5)
+
         dataList = []
         c, addr = s.accept()
-        while True:
+
+        data = c.recv(4096)
+
+        print "I recieved:"
+        print data
+
+        c.close()
+        s.close()
+
+
+
+        """while True:
               # Establish connection with client.
             #print 'Got connection from', addr
 
-            data = c.recvfrom(1024)
-            #print "Data Recieved:"
-            #print data
+            data = c.recvfrom(4096)
+            print "Data Recieved:"
+            print data
 
 
             if data == "\n":
@@ -256,7 +268,7 @@ def readData(interface=1):
                 #print dataList
 
             #c.close()  # Close the connection
-        print dataList
+        print dataList"""
 
     return np.asarray(dataList)
 

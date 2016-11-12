@@ -500,15 +500,18 @@ def sendData(data, interface=1):
         s.connect(('192.168.0.11', port))
         socket.setdefaulttimeout(5)
         s.sendall(data)
+        s.close()
+
         #for number in data:
 
             #s.sendall(str(float(number)) + '\n')
-            s.sendall(data)
+            #s.sendall(data)
         #s.close()
         #s = socket.socket()  # Create a socket object
         #port = 80  # Reserve a port for your service.
         #s.connect(('192.168.0.11', port))
-        s.send('\n')
+        #s.send('\n')
+
         print "Transmission Successful"
 
 
