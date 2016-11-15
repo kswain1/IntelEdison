@@ -476,6 +476,9 @@ def sendData(data, interface=1):
     :param interface: integer denoting interface to select
     :return:
     """
+
+    print "My length is "
+
     #Serial
     if interface is 0:
         uart = mraa.Uart(0)  # Enable UART for serial port usage
@@ -499,7 +502,7 @@ def sendData(data, interface=1):
         port = 80  # Reserve a port for your service.
         s.connect(('192.168.0.11', port))
         socket.setdefaulttimeout(10)
-        s.sendall(data)
+        print s.sendall(data)
         s.close()
 
         #for number in data:

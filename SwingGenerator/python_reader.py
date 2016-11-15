@@ -80,6 +80,43 @@ def obtainSwingData():
     #csv_writer(rolls, elevationAngles, aimAngles)
     print type(xAngularVelocity)
 
+    print "xAccelerationVector:"
+    listEntryTypes(xAccelerationVector)
+    print "yAccelerationVector"
+    listEntryTypes(yAccelerationVector)
+    print "zAccelerationVector"
+    listEntryTypes(zAccelerationVector)
+    print "xAngularVelocity"
+    listEntryTypes(xAngularVelocity)
+    print "yAngularVelocity"
+    listEntryTypes(yAngularVelocity)
+    print "zAngularVelocity"
+    listEntryTypes(zAngularVelocity)
+    print "elevationAngles"
+    listEntryTypes(elevationAngles)
+    print "timeVector:"
+    listEntryTypes(timeVector)
+    print "xInertialAcceleration"
+    listEntryTypes(xInertialAcceleration)
+    print "yInertialAcceleration"
+    listEntryTypes(yInertialAcceleration)
+    print "zInertialAcceleration"
+    listEntryTypes(zInertialAcceleration)
+    print "xInertialVelocity"
+    listEntryTypes(xInertialVelocity)
+    print "yInertialVelocity"
+    listEntryTypes(yInertialVelocity)
+    print "zInertialVelocity"
+    listEntryTypes(zInertialVelocity)
+    print "aimAngles"
+    listEntryTypes(aimAngles)
+    print "rolls"
+    listEntryTypes(rolls)
+    print "sweetSpotVelocity"
+    listEntryTypes(sweetSpotVelocity)
+    print "velocityMagnitude"
+    listEntryTypes(velocityMagnitude)
+
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
@@ -123,6 +160,8 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
 
     print "Time length", len(timeVector)
     print "Acceleration Length", len(xAccelerationVector)
+
+    #timeVector = timeVector[0:len(xAccelerationVector)]
 
 
     plt.subplot(3, 2, 1)
@@ -206,6 +245,22 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     plt.grid()
     plt.show()
 
+def listEntryTypes(dataList):
+    """Reads the type of each entry in the list"""
+    counter = 0
+
+    for entry in dataList:
+        print "Entry" + str(counter) + " type:"
+        print "Entry value:"
+        print entry
+        print type(entry)
+
+        dataList[counter] = float(entry)
+        print type(dataList[counter])
+        counter = counter + 1
+
+    return dataList
+    #return dataList.astype(np.float)
 
 def readData(interface=1):
     """Reads data into a list until EOF character is detected
@@ -244,7 +299,7 @@ def readData(interface=1):
         data = c.recv(4096)
         dataList = data.split()
 
-        #print "I recieved:"
+        print "I recieved:"
         #print data
 
         c.close()
@@ -275,7 +330,9 @@ def readData(interface=1):
         print dataList"""
         print "The dataList is:"
         print dataList
-    return np.asarray(dataList)
+
+    return dataList
+    #return np.asarray(dataList)
 
 
 def stringToList(dataList):
