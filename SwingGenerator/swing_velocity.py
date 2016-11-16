@@ -476,8 +476,8 @@ def sendData(data, interface=1):
     :param interface: integer denoting interface to select
     :return:
     """
-
-    print "My length is "
+    print "My length is:"
+    print len(data)
 
     #Serial
     if interface is 0:
@@ -502,7 +502,7 @@ def sendData(data, interface=1):
         port = 80  # Reserve a port for your service.
         s.connect(('192.168.0.11', port))
         socket.setdefaulttimeout(10)
-        print s.sendall(data)
+        s.sendall(data)
         s.close()
 
         #for number in data:
@@ -557,7 +557,7 @@ def listToString(list):
         longString = longString + str(number) + "\n"
         index = index + 1
 
-    print longString
+    #print longString
     return longString
 
 
@@ -745,6 +745,11 @@ def streamSwingTrial():
     sendData(listToString(rollVector))
     sendData(listToString(sweetSpotVelocityVector))
     sendData(listToString(velocityMagnitude))
+    print "Time Vector Length"
+    print len(timeVectors)
+    print "Velocity Mag type"
+    print type(velocityMagnitude)
+    print len(velocityMagnitude)
 
 
 
