@@ -476,6 +476,9 @@ def sendData(data, interface=1):
     :param interface: integer denoting interface to select
     :return:
     """
+    print "My length is:"
+    print len(data)
+
     #Serial
     if interface is 0:
         uart = mraa.Uart(0)  # Enable UART for serial port usage
@@ -554,7 +557,7 @@ def listToString(list):
         longString = longString + str(number) + "\n"
         index = index + 1
 
-    print longString
+    #print longString
     return longString
 
 
@@ -742,6 +745,11 @@ def streamSwingTrial():
     sendData(listToString(rollVector))
     sendData(listToString(sweetSpotVelocityVector))
     sendData(listToString(velocityMagnitude))
+    print "Time Vector Length"
+    print len(timeVectors)
+    print "Velocity Mag type"
+    print type(velocityMagnitude)
+    print len(velocityMagnitude)
 
 
 
