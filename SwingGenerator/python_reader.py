@@ -44,24 +44,41 @@ def obtainSwingData():
 
     :return:
     """
-
+    print "xAccel Vector:"
     xAccelerationVector = readData(interface)
+    print "yAccel Vector:"
     yAccelerationVector = readData(interface)
+    print "zAccel Vector:"
     zAccelerationVector = readData(interface)
+    print "xAngular Velocity Vector:"
     xAngularVelocity = readData(interface)
+    print "yAngular Velocity Vector:"
     yAngularVelocity = readData(interface)
+    print "zAngular Velocity Vector:"
     zAngularVelocity = readData(interface)
+    print "elevation Angles"
     elevationAngles = readData(interface)
+    print "time vectors"
     timeVector = readData(interface) # TODO: Change name to avoid confusion
+    print "xinertial velocity"
     xInertialVelocity = readData(interface)
+    print "yinertial Velocity"
     yInertialVelocity = readData(interface)
+    print "zinertial Velocity"
     zInertialVelocity = readData(interface)
+    print "x inertial Acceleration Vector"
     xInertialAcceleration = readData(interface)
+    print "y inertial Acceleration Vector"
     yInertialAcceleration = readData(interface)
+    print "z inertial Acceleration Vector"
     zInertialAcceleration = readData(interface)
+    print "aim angle vector"
     aimAngles = readData(interface)
+    print "roll vectors"
     rolls = readData(interface)
+    print "sweet spot velocity vector"
     sweetSpotVelocity = readData(interface)
+    print "velocity magnitude vector"
     velocityMagnitude = readData(interface)
 
     print "Sweet Spot Velocity Vector"
@@ -291,12 +308,12 @@ def readData(interface=1):
         s.bind(('', port))  # Bind to the port
 
         s.listen(5)
-        socket.setdefaulttimeout(10)
+        #socket.setdefaulttimeout(10)
 
         dataList = []
         c, addr = s.accept()
 
-        data = c.recv(4096)
+        data = c.recv(10000)
         dataList = data.split()
 
         print "I recieved:"
