@@ -559,7 +559,7 @@ def listToString(list):
 
     print "String Length:"
     print len(longString)
-    #print longString
+    print longString
     return longString
 
 
@@ -729,23 +729,41 @@ def streamSwingTrial():
     """
 
     # Data must be received in the same order sentgit
+    print "xAccel Vector:"
     sendData(listToString(xAccelerationVector))
+    print "yAccel Vector:"
     sendData(listToString(yAccelerationVector))
+    print "zAccel Vector:"
     sendData(listToString(zAccelerationVector))
+    print "xAngular Velocity Vector:"
     sendData(listToString(xAngularVelocity))
+    print "yAngular Velocity Vector:"
     sendData(listToString(yAngularVelocity))
+    print "zAngular Velocity Vector:"
     sendData(listToString(zAngularVelocity))
+    print "elevation Angles"
     sendData(listToString(elevationAngles))
+    print "time vectors"
     sendData(listToString(timeVectors))
+    print "xinertial velocity"
     sendData(listToString(xinertialVelocity))
+    print "yinertial Velocity"
     sendData(listToString(yinertialVelocity))
+    print "zinertial Velocity"
     sendData(listToString(zinertialVelocity))
+    print "x inertial Acceleration Vector"
     sendData(listToString(xinertialAccelerationVector))
+    print "y inertial Acceleration Vector"
     sendData(listToString(yinertialAccelerationVector))
+    print "z inertial Acceleration Vector"
     sendData(listToString(zinertialAccelerationVector))
+    print "aim angle vector"
     sendData(listToString(aimAngleVector))
+    print "roll vectors"
     sendData(listToString(rollVector))
+    print "sweet spot velocity vector"
     sendData(listToString(sweetSpotVelocityVector))
+    print "velocity magnitude vector"
     sendData(listToString(velocityMagnitude))
     print "Time Vector Length"
     print len(timeVectors)
