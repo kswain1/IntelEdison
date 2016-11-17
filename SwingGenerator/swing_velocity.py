@@ -557,9 +557,9 @@ def listToString(list):
         longString = longString + str(number) + "\n"
         index = index + 1
 
-    print "String Length:"
-    print len(longString)
-    print longString
+    #print "String Length:"
+    #print len(longString)
+    #print longString
     return longString
 
 
