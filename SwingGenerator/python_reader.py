@@ -44,6 +44,27 @@ def obtainSwingData():
 
     :return:
     """
+
+    #Wait for initialization signal from edison
+    s = socket.socket()  # Create a socket object
+    port = 80  # Reserve a port for your service.
+    s.bind(('', port))  # Bind to the port
+
+    s.listen(5)
+    socket.setdefaulttimeout(20)
+
+    dataList = []
+
+    c, addr = s.accept()
+    print "Connection accepted"
+
+    #loop until
+    beginTransmission = False
+    while(~beginTransmission):
+        data = c.recv(10000)
+        if data ~= '\n\n':
+            break
+
     print "xAccel Vector:"
     xAccelerationVector = readData(interface)
     print "yAccel Vector:"
@@ -308,12 +329,15 @@ def readData(interface=1):
         s.bind(('', port))  # Bind to the port
 
         s.listen(5)
-        #socket.setdefaulttimeout(10)
+        socket.setdefaulttimeout(20)
 
         dataList = []
-        c, addr = s.accept()
 
+        c, addr = s.accept()
+        print "Connection accepted"
         data = c.recv(10000)
+        print "Data recieved:"
+        print data
         dataList = data.split()
 
         print "I recieved:"

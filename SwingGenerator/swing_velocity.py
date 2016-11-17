@@ -728,6 +728,7 @@ def streamSwingTrial():
     listToString(velocityMagnitude)
     """
 
+    sendData('\n\n')
     # Data must be received in the same order sentgit
     print "xAccel Vector:"
     sendData(listToString(xAccelerationVector))
