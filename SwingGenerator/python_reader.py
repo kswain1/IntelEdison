@@ -62,7 +62,7 @@ def obtainSwingData():
     beginTransmission = False
     while(~beginTransmission):
         data = c.recv(10000)
-        if data ~= '\n\n':
+        if data == '\n\n':
             break
 
     print "xAccel Vector:"
