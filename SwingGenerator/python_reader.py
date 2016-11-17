@@ -45,7 +45,7 @@ def obtainSwingData():
     :return:
     """
 
-    #Wait for initialization signal from edison
+   """ #Wait for initialization signal from edison
     s = socket.socket()  # Create a socket object
     port = 80  # Reserve a port for your service.
     s.bind(('', port))  # Bind to the port
@@ -65,6 +65,11 @@ def obtainSwingData():
         if data == '\n\n':
             break
 
+    c.close()
+    s.close()
+
+    print "Transmission Character Rx'd"
+    """
     print "xAccel Vector:"
     xAccelerationVector = readData(interface)
     print "yAccel Vector:"
