@@ -12,6 +12,9 @@ import socket
 # WE ARE WORKING IN METERS NOT FEET!
 
 
+s = socket.socket()
+# Create a socket object
+port = 80  # Reserve a port for your service.
 
 def initialize():
     """Creates and initializes the IMU object
@@ -42,9 +45,7 @@ def initialize():
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
 
-    s = socket.socket()
-    # Create a socket object
-    port = 80  # Reserve a port for your service.
+
 
     return imu
 
