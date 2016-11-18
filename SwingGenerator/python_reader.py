@@ -33,6 +33,10 @@ if interface == 0:
 
 
 # Init Server
+host = socket.gethostname()
+port = 80
+s = socket.socket()  # Create a socket object
+s.bind((host, port))  # Bind to the port
 
 
 
@@ -45,31 +49,7 @@ def obtainSwingData():
     :return:
     """
 
-   """ #Wait for initialization signal from edison
-    s = socket.socket()  # Create a socket object
-    port = 80  # Reserve a port for your service.
-    s.bind(('', port))  # Bind to the port
 
-    s.listen(5)
-    socket.setdefaulttimeout(20)
-
-    dataList = []
-
-    c, addr = s.accept()
-    print "Connection accepted"
-
-    #loop until
-    beginTransmission = False
-    while(~beginTransmission):
-        data = c.recv(10000)
-        if data == '\n\n':
-            break
-
-    c.close()
-    s.close()
-
-    print "Transmission Character Rx'd"
-    """
     print "xAccel Vector:"
     xAccelerationVector = readData(interface)
     print "yAccel Vector:"
@@ -106,6 +86,7 @@ def obtainSwingData():
     sweetSpotVelocity = readData(interface)
     print "velocity magnitude vector"
     velocityMagnitude = readData(interface)
+    s.close()
 
     print "Sweet Spot Velocity Vector"
     print type(sweetSpotVelocity)
@@ -329,9 +310,7 @@ def readData(interface=1):
                     #print out
     else:
 
-        s = socket.socket()  # Create a socket object
-        port = 80  # Reserve a port for your service.
-        s.bind(('', port))  # Bind to the port
+
 
         s.listen(5)
         socket.setdefaulttimeout(20)
@@ -349,7 +328,7 @@ def readData(interface=1):
         #print data
 
         c.close()
-        s.close()
+
 
 
 

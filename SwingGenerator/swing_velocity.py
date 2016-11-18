@@ -42,6 +42,10 @@ def initialize():
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
 
+    s = socket.socket()
+    # Create a socket object
+    port = 80  # Reserve a port for your service.
+
     return imu
 
 
@@ -497,13 +501,11 @@ def sendData(data, interface=1):
         print "Transmission successful"
     else:
 
-        s = socket.socket()
-        # Create a socket object
-        port = 80  # Reserve a port for your service.
+
         s.connect(('192.168.0.11', port))
         #socket.setdefaulttimeout(10)
         s.sendall(data)
-        s.close()
+
 
         #for number in data:
 
@@ -766,6 +768,7 @@ def streamSwingTrial():
     sendData(listToString(sweetSpotVelocityVector))
     print "velocity magnitude vector"
     sendData(listToString(velocityMagnitude))
+    s.close()
     print "Time Vector Length"
     print len(timeVectors)
     print "Velocity Mag type"
