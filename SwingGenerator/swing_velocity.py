@@ -562,7 +562,7 @@ def listToString(list):
 
     #print "String Length:"
     #print len(longString)
-    #print longString
+    print longString
     return longString
 
 

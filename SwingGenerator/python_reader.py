@@ -317,11 +317,10 @@ def readData(interface=1):
 
         dataList = []
 
-
         #print "Connection accepted"
         data = c.recv(10000)
         print "Data recieved:"
-        print data
+        #print data
         dataList = data.split()
 
         print "I recieved:"
