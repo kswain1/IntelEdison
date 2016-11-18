@@ -768,7 +768,7 @@ def streamSwingTrial():
     transmitString = transmitString + listToString(sweetSpotVelocityVector)
     transmitString = transmitString + '!'
     transmitString = transmitString + listToString(velocityMagnitude)
-    transmitString = transmitString + '!'
+    #transmitString = transmitString + '!'
 
     sendData(transmitString)
     s.close()
