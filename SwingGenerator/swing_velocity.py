@@ -732,6 +732,27 @@ def streamSwingTrial():
     """
 
     s.connect(('192.168.0.11', port))
+    transmitString = listToString(xAccelerationVector)
+    transmitString = transmitString + listToString(yAccelerationVector)
+    transmitString = transmitString + listToString(zAccelerationVector)
+    transmitString = transmitString + listToString(xAccelerationVector)
+    transmitString = transmitString + listToString(yAngularVelocity)
+    transmitString = transmitString + listToString(zAngularVelocity)
+    transmitString = transmitString + listToString(elevationAngles)
+    transmitString = transmitString + listToString(timeVectors)
+    transmitString = transmitString + listToString(xinertialVelocity)
+    transmitString = transmitString + listToString(yinertialVelocity)
+    transmitString = transmitString + listToString(zinertialVelocity)
+    transmitString = transmitString + listToString(xinertialAccelerationVector)
+    transmitString = transmitString + listToString(yinertialAccelerationVector)
+    transmitString = transmitString + listToString(zinertialAccelerationVector)
+    transmitString = transmitString + listToString(aimAngleVector)
+    transmitString = transmitString + listToString(rollVector)
+    transmitString = transmitString + listToString(sweetSpotVelocityVector)
+    transmitString = transmitString + listToString(velocityMagnitude)
+
+    """
+
     print "Connection established"
     # Data must be received in the same order sentgit
     print "xAccel Vector:"
@@ -771,6 +792,9 @@ def streamSwingTrial():
     print "velocity magnitude vector"
     sendData(listToString(velocityMagnitude))
     s.close()
+
+    """
+
     print "Time Vector Length"
     print len(timeVectors)
     print "Velocity Mag type"
