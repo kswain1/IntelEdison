@@ -33,10 +33,10 @@ if interface == 0:
 
 
 # Init Server
-host = socket.gethostname()
+#host = socket.gethostname()
 port = 80
 s = socket.socket()  # Create a socket object
-s.bind((host, port))  # Bind to the port
+s.bind(('', port))  # Bind to the port
 s.listen(5)
 #socket.setdefaulttimeout(20)
 c, addr = s.accept()
@@ -318,7 +318,7 @@ def readData(interface=1):
         dataList = []
 
 
-        print "Connection accepted"
+        #print "Connection accepted"
         data = c.recv(10000)
         print "Data recieved:"
         print data
