@@ -40,6 +40,7 @@ s.bind((host, port))  # Bind to the port
 s.listen(5)
 #socket.setdefaulttimeout(20)
 c, addr = s.accept()
+print "Connection Accepted:"
 
 
 def obtainSwingData():
