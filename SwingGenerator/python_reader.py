@@ -323,6 +323,7 @@ def readData(interface=1):
         #print data
         dataList = data.split()
 
+
         print "I recieved:"
         #print data
 

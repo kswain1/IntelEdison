@@ -521,6 +521,7 @@ def sendData(data, interface=1):
         print "Transmission Successful"
 
 
+
 def valueStream():
     """Continuously displays linear acceleration and angular velocity values
 
