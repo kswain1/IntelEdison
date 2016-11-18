@@ -734,23 +734,41 @@ def streamSwingTrial():
 
     s.connect(('192.168.0.11', port))
     transmitString = listToString(xAccelerationVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(yAccelerationVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(zAccelerationVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(xAccelerationVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(yAngularVelocity)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(zAngularVelocity)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(elevationAngles)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(timeVectors)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(xinertialVelocity)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(yinertialVelocity)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(zinertialVelocity)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(xinertialAccelerationVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(yinertialAccelerationVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(zinertialAccelerationVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(aimAngleVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(rollVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(sweetSpotVelocityVector)
+    transmitString = transmitString + '!'
     transmitString = transmitString + listToString(velocityMagnitude)
+    transmitString = transmitString + '!'
 
     sendData(transmitString)
     s.close()

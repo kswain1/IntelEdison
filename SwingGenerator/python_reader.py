@@ -321,7 +321,7 @@ def readData(interface=1):
         data = c.recv(10000)
         print "Data recieved:"
         #print data
-        dataList = data.split()
+        dataList = data.split('!')
 
 
         print "I recieved:"
