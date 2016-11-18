@@ -15,6 +15,7 @@ import socket
 s = socket.socket()
 # Create a socket object
 port = 80  # Reserve a port for your service.
+s.connect(('192.168.0.11', port))
 
 def initialize():
     """Creates and initializes the IMU object
@@ -731,7 +732,7 @@ def streamSwingTrial():
     listToString(velocityMagnitude)
     """
 
-    s.connect(('192.168.0.11', port))
+
 
     # Data must be received in the same order sentgit
     print "xAccel Vector:"

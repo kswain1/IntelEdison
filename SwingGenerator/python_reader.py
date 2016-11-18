@@ -37,7 +37,9 @@ host = socket.gethostname()
 port = 80
 s = socket.socket()  # Create a socket object
 s.bind((host, port))  # Bind to the port
-
+s.listen(5)
+#socket.setdefaulttimeout(20)
+c, addr = s.accept()
 
 
 def obtainSwingData():
@@ -86,6 +88,7 @@ def obtainSwingData():
     sweetSpotVelocity = readData(interface)
     print "velocity magnitude vector"
     velocityMagnitude = readData(interface)
+    c.close()
     s.close()
 
     print "Sweet Spot Velocity Vector"
@@ -311,13 +314,9 @@ def readData(interface=1):
     else:
 
 
-
-        s.listen(5)
-        socket.setdefaulttimeout(20)
-
         dataList = []
 
-        c, addr = s.accept()
+
         print "Connection accepted"
         data = c.recv(10000)
         print "Data recieved:"
@@ -327,7 +326,7 @@ def readData(interface=1):
         print "I recieved:"
         #print data
 
-        c.close()
+
 
 
 
