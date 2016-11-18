@@ -31,16 +31,18 @@ if interface == 0:
        print "Waiting for Data.."
        ser.flushInput()
 
+else:
+    # Init Server
+    #host = socket.gethostname()
+    port = 80
+    s = socket.socket()  # Create a socket object
+    s.bind(('', port))  # Bind to the port
+    s.listen(5)
+    #socket.setdefaulttimeout(20)
+    c, addr = s.accept()
+    print "Connection Accepted:"
 
-# Init Server
-#host = socket.gethostname()
-port = 80
-s = socket.socket()  # Create a socket object
-s.bind(('', port))  # Bind to the port
-s.listen(5)
-#socket.setdefaulttimeout(20)
-c, addr = s.accept()
-print "Connection Accepted:"
+
 
 
 def obtainSwingData():
@@ -52,6 +54,7 @@ def obtainSwingData():
     :return:
     """
 
+    """
 
     print "xAccel Vector:"
     xAccelerationVector = readData(interface)
@@ -89,6 +92,35 @@ def obtainSwingData():
     sweetSpotVelocity = readData(interface)
     print "velocity magnitude vector"
     velocityMagnitude = readData(interface)
+    """
+
+    #Obtain the long transmission string and parse
+    recieveString = readData(interface)
+
+    xAccelerationVector = recieveString[0].split()
+    yAccelerationVector = recieveString[1].split()
+    zAccelerationVector = recieveString[2].split()
+    xAngularVelocity = recieveString[3].split()
+    yAngularVelocity = recieveString[4].split()
+    zAngularVelocity = recieveString[5].split()
+    elevationAngles = recieveString[6].split()
+    timeVector = recieveString[7].split()
+    xInertialAcceleration = recieveString[8].split()
+    yInertialAcceleration = recieveString[9].split()
+    zInertialAcceleration = recieveString[10].split()
+    xInertialVelocity = recieveString[11].split()
+    yInertialVelocity = recieveString[12].split()
+    zInertialVelocity = recieveString[13].split()
+    aimAngles = recieveString[14].split()
+    rolls = recieveString[15].split()
+    sweetSpotVelocity = recieveString[16].split()
+    velocityMagnitude = recieveString[17].split()
+
+
+    print "Recieve String:"
+    print recieveString
+    print "Recieve String Length:"
+    print len(recieveString)
     c.close()
     s.close()
 
@@ -316,45 +348,47 @@ def readData(interface=1):
 
 
         dataList = []
+        longString = ''
 
         #print "Connection accepted"
-        data = c.recv(10000)
-        print "Data recieved:"
-        #print data
-        dataList = data.split('!')
-
-
-        print "I recieved:"
-        #print data
-
-
-
-
-
-
-        """while True:
-              # Establish connection with client.
-            #print 'Got connection from', addr
-
-            data = c.recvfrom(4096)
-            print "Data Recieved:"
+        while True:
+            data = c.recv(100000)
+            print "Data recieved:"
             print data
 
-
-            if data == "\n":
-                print "EOL Character Received:"
+            if data == '':
                 break
 
-            else:
-                #print dataList
-                #dataList.append(float(data))
-                dataList.append(data)
-                #print dataList
+            longString = longString + data
 
-            #c.close()  # Close the connection
-        print dataList"""
-        print "The dataList is:"
-        print dataList
+            #print "I recieved:"
+            #print data
+
+            """while True:
+                  # Establish connection with client.
+                #print 'Got connection from', addr
+
+                data = c.recvfrom(4096)
+                print "Data Recieved:"
+                print data
+
+
+                if data == "\n":
+                    print "EOL Character Received:"
+                    break
+
+                else:
+                    #print dataList
+                    #dataList.append(float(data))
+                    dataList.append(data)
+                    #print dataList
+
+                #c.close()  # Close the connection
+            print dataList"""
+            #print "The dataList is:"
+            #print dataList
+
+        dataList = longString.split('!')
 
     return dataList
     #return np.asarray(dataList)

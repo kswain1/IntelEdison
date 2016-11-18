@@ -367,6 +367,7 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
 
 
 
+
     return sweetSpotVector
 
 
