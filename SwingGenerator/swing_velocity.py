@@ -751,10 +751,12 @@ def streamSwingTrial():
     transmitString = transmitString + listToString(sweetSpotVelocityVector)
     transmitString = transmitString + listToString(velocityMagnitude)
 
+    sendData(transmitString)
+    s.close()
     """
 
     print "Connection established"
-    # Data must be received in the same order sentgit
+    # Data must be received in the same order it was sent
     print "xAccel Vector:"
     sendData(listToString(xAccelerationVector))
     print "yAccel Vector:"
