@@ -503,7 +503,7 @@ def sendData(data, interface=1):
     else:
 
 
-        s.connect(('192.168.0.11', port))
+
         #socket.setdefaulttimeout(10)
         s.sendall(data)
 
@@ -731,7 +731,8 @@ def streamSwingTrial():
     listToString(velocityMagnitude)
     """
 
-    sendData('\n\n')
+    s.connect(('192.168.0.11', port))
+
     # Data must be received in the same order sentgit
     print "xAccel Vector:"
     sendData(listToString(xAccelerationVector))
