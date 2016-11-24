@@ -14,7 +14,7 @@ import socket
 
 s = socket.socket()
 # Create a socket object
-port = 80  # Reserve a port for your service.
+port = 81  # Reserve a port for your service.
 
 def initialize():
     """Creates and initializes the IMU object
