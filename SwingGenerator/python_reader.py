@@ -34,7 +34,7 @@ if interface == 0:
 else:
     # Init Server
     #host = socket.gethostname()
-    port = 80
+    port = 81
     s = socket.socket()  # Create a socket object
     s.bind(('', port))  # Bind to the port
     s.listen(5)
