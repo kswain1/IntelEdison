@@ -92,9 +92,9 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = (imu.ax * 9.81) * 1.401 # Constants are for 2G mode
-    accelVec[1] = (imu.ay * 9.81) * 1.401
-    accelVec[2] = (imu.az * 9.81) * 1.401
+    accelVec[0] = (imu.ax * 9.81) * 0.1# Constants are for 2G mode
+    accelVec[1] = (imu.ay * 9.81) * 0.1 
+    accelVec[2] = (imu.az * 9.81) * 1.456 
 
     accelVec[0] = round(accelVec[0], 3)
     accelVec[1] = round(accelVec[1], 3)
@@ -733,7 +733,7 @@ def streamSwingTrial():
     listToString(velocityMagnitude)
     """
 
-    s.connect(('192.168.0.11', port))
+    s.connect(('192.168.1.41', port))
     transmitString = listToString(xAccelerationVector)
     transmitString = transmitString + '!'
     transmitString = transmitString + listToString(yAccelerationVector)
