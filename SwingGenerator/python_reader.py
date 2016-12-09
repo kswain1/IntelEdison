@@ -54,9 +54,6 @@ def obtainSwingData():
     :return:
     """
 
-    """
-
-    print "xAccel Vector:"
     xAccelerationVector = readData(interface)
     print "yAccel Vector:"
     yAccelerationVector = readData(interface)
@@ -194,12 +191,12 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls, sweetSpotVelocity,
                    velocityMagnitude):
-    """ Plots Acceleration vs Time
+    ## Plots Acceleration vs Time
 
-    :param accelerationVector:
-    :param timeVector:
-    :return:
-    """
+    ##:param accelerationVector:
+    #:param timeVector:
+    #:return:
+    #"""
 
     # Filter requirements.
     order = 6
