@@ -16,7 +16,7 @@ import json
 
 s = socket.socket()
 # Create a socket object
-port = 81  # Reserve a port for your service.
+port = 80  # Reserve a port for your service.
 
 def initialize():
     """Creates and initializes the IMU object
@@ -275,7 +275,7 @@ def computePosition(inertialVelocity, sampleTimes):
 
     posVector = [0]
     index = 1
-    while index < len(inertialVelocity):
+    while index < len(sampleTimes):
 
         position_final = posVector[index - 1] + ((inertialVelocity[index] + inertialVelocity[index-1])/2)*sampleTimes[index]
         index = index + 1
@@ -853,8 +853,7 @@ def streamSwingTrial():
     print "Time Vector Length"
     print len(timeVectors)
     print "Velocity Mag type"
-    print type(velocityMagnitude)
-    print len(velocityMagnitude)
+    import pdb; pdb.set_trace()
 
 
 
