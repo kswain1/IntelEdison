@@ -184,7 +184,7 @@ def obtainSwingData():
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
                    aimAngles, rolls, sweetSpotVelocity, velocityMagnitude)
 
-    e = EulerParametrization(rotation_data_file='accel_ROLLPITCHYAW')
+    e = EulerParametrization(rotation_data_file='guzman_logs/accel_ROLLPITCHYAW.csv')
     _ = e.animation()
     e.show()
 
