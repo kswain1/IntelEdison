@@ -7,6 +7,8 @@ import serial
 import numpy as np
 import time as tm
 import socket
+import json
+
 
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
@@ -195,7 +197,7 @@ def computeInertialAcceleration(imu, orientMat):
     g = -9.81  # m/s^2 Remember to change if we switch to ft/s^2
     #TODO: ADD G CORRECTIVE FACTOR FOR CALIBRATION
 
-    print orientMat
+    #print orientMat
 
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
     ax = localAcceleration[0]
@@ -231,8 +233,8 @@ def computeInertialAcceleration(imu, orientMat):
     #inertialAcceleration[2] -= (-9.81)
 
 
-    print "inertial Acceleration:", inertialAcceleration
-    print "direction matrix:", orientMat
+    #print "inertial Acceleration:", inertialAcceleration
+    #print "direction matrix:", orientMat
 
     xinertialAcceleration = inertialAcceleration[0]
     yinertialAcceleration = inertialAcceleration[1]
@@ -253,10 +255,10 @@ def computeInertialVelocity(inertialAccelerationVec,sampleTimes):
     # Find velocity at various points in time. The current setup yields velocity
 
 
-    print "In computeInertial Velocity Function"
-    print inertialAccelerationVec
-    print "Length of inertialVec", len(inertialAccelerationVec)
-    print "Length of timeVector", len(sampleTimes)
+    #print "In computeInertial Velocity Function"
+    #print inertialAccelerationVec
+    #print "Length of inertialVec", len(inertialAccelerationVec)
+    #print "Length of timeVector", len(sampleTimes)
 
     InertialVelocity = trapz(inertialAccelerationVec, sampleTimes)  # I Beez in the trap
 
@@ -267,6 +269,20 @@ def computeInertialVelocity(inertialAccelerationVec,sampleTimes):
 
     return InertialVelocity.tolist()
 
+def computePosition(inertialVelocity, sampleTimes):
+    #params pass in the velocity of the component of choice
+    #returns the position vector
+
+    posVector = [0]
+    index = 1
+    while index < len(inertialVelocity):
+
+        position_final = posVector[index - 1] + ((inertialVelocity[index] + inertialVelocity[index-1])/2)*sampleTimes[index]
+        index = index + 1
+        posVector.append(position_final)
+
+
+    return posVector
 
 def computeVelocityHistory(accelerationVector, timeVector):
     """
@@ -278,8 +294,8 @@ def computeVelocityHistory(accelerationVector, timeVector):
 
     velocityHistory = [0]
     index = 1
-    print "The time vector is:"
-    print timeVector
+    #print "The time vector is:"
+    #print timeVector
     while index < len(accelerationVector):
 
         velocity_final = velocityHistory[index - 1] + ((accelerationVector[index] + accelerationVector[index-1])/2)*timeVector[index]
@@ -482,8 +498,8 @@ def sendData(data, interface=1):
     :param interface: integer denoting interface to select
     :return:
     """
-    print "My length is:"
-    print len(data)
+    #print "My length is:"
+    #print len(data)
 
     #Serial
     if interface is 0:
@@ -616,7 +632,7 @@ def streamSwingTrial():
     index = 0
 
     # Loop for 10 seconds
-    while (tm.time() - initialTime) < 10:
+    while (tm.time() - initialTime) < 2:
 
         # Read Angular Velocity and Acceleration
         currentAngularVelocity = readAngularVelocity(imu)
@@ -687,6 +703,13 @@ def streamSwingTrial():
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
+    #Compute Position(x,y,z)
+    xpositionVector = computePosition(xinertialVelocity, sampleTimes)
+    ypositionVector = computePosition(yinertialVelocity, sampleTimes)
+    zpositionVector = computePosition(zinertialVelocity, sampleTimes)
+
+    #import pdb
+    #pdb.set_trace()
     #TODO: FIX THIS
     velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
     velocityMagnitudeVector.append(velocityMagnitude)
@@ -711,6 +734,9 @@ def streamSwingTrial():
     roundEntries(rollVector)
     roundEntries(sweetSpotVelocityVector)
     roundEntries(velocityMagnitude)
+    roundEntries(xpositionVector)
+    roundEntries(ypositionVector)
+    roundEntries(zpositionVector)
 
     """
     listToString(xAccelerationVector)
@@ -733,7 +759,7 @@ def streamSwingTrial():
     listToString(velocityMagnitude)
     """
 
-    s.connect(('192.168.0.11', port))
+    s.connect(('192.168.1.41', port))
     transmitString = listToString(xAccelerationVector)
     transmitString = transmitString + '!'
     transmitString = transmitString + listToString(yAccelerationVector)
@@ -769,8 +795,15 @@ def streamSwingTrial():
     transmitString = transmitString + listToString(sweetSpotVelocityVector)
     transmitString = transmitString + '!'
     transmitString = transmitString + listToString(velocityMagnitude)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(xpositionVector)
+    transmitString = transmitString + '!'
+    ttransmitString = transmitString + listToString(ypositionVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(zpositionVector)
     #transmitString = transmitString + '!'
-
+    
+    
     sendData(transmitString)
     s.close()
     """
