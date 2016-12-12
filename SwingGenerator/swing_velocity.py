@@ -14,7 +14,7 @@ import socket
 
 s = socket.socket()
 # Create a socket object
-port = 80  # Reserve a port for your service.
+port = 81  # Reserve a port for your service.
 
 def initialize():
     """Creates and initializes the IMU object
@@ -92,9 +92,9 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = (imu.ax * 9.81) * 1.462 # Constants are for 2G mode
-    accelVec[1] = (imu.ay * 9.81) * 1.462
-    accelVec[2] = (imu.az * 9.81) * 1.462
+    accelVec[0] = (imu.ax * 9.81) * 1.401 # Constants are for 2G mode
+    accelVec[1] = (imu.ay * 9.81) * 1.401
+    accelVec[2] = (imu.az * 9.81) * 1.401
 
     accelVec[0] = round(accelVec[0], 3)
     accelVec[1] = round(accelVec[1], 3)
@@ -740,7 +740,7 @@ def streamSwingTrial():
     transmitString = transmitString + '!'
     transmitString = transmitString + listToString(zAccelerationVector)
     transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(xAccelerationVector)
+    transmitString = transmitString + listToString(xAngularVelocity)
     transmitString = transmitString + '!'
     transmitString = transmitString + listToString(yAngularVelocity)
     transmitString = transmitString + '!'
