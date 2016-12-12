@@ -12,6 +12,9 @@ import socket
 # WE ARE WORKING IN METERS NOT FEET!
 
 
+s = socket.socket()
+# Create a socket object
+port = 81  # Reserve a port for your service.
 
 def initialize():
     """Creates and initializes the IMU object
@@ -41,6 +44,8 @@ def initialize():
     imu.accel_range("16G")
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
+
+
 
     return imu
 
@@ -87,9 +92,9 @@ def readAcceleration(imu):
 
     imu.read_accel()
     accelVec = np.zeros(3)  # 3x1 Column Vector
-    accelVec[0] = (imu.ax * 9.81) * 1.462 # Constants are for 2G mode
-    accelVec[1] = (imu.ay * 9.81) * 1.462
-    accelVec[2] = (imu.az * 9.81) * 1.462
+    accelVec[0] = (imu.ax * 9.81) * 1.401 # Constants are for 2G mode
+    accelVec[1] = (imu.ay * 9.81) * 1.401
+    accelVec[2] = (imu.az * 9.81) * 1.401
 
     accelVec[0] = round(accelVec[0], 3)
     accelVec[1] = round(accelVec[1], 3)
@@ -362,6 +367,7 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
 
 
 
+
     return sweetSpotVector
 
 
@@ -497,13 +503,11 @@ def sendData(data, interface=1):
         print "Transmission successful"
     else:
 
-        s = socket.socket()
-        # Create a socket object
-        port = 80  # Reserve a port for your service.
-        s.connect(('192.168.0.11', port))
+
+
         #socket.setdefaulttimeout(10)
         s.sendall(data)
-        s.close()
+
 
         #for number in data:
 
@@ -516,6 +520,7 @@ def sendData(data, interface=1):
         #s.send('\n')
 
         print "Transmission Successful"
+
 
 
 def valueStream():
@@ -559,7 +564,7 @@ def listToString(list):
 
     #print "String Length:"
     #print len(longString)
-    #print longString
+    print longString
     return longString
 
 
@@ -728,8 +733,50 @@ def streamSwingTrial():
     listToString(velocityMagnitude)
     """
 
-    sendData('\n\n')
-    # Data must be received in the same order sentgit
+    s.connect(('192.168.0.11', port))
+    transmitString = listToString(xAccelerationVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(yAccelerationVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(zAccelerationVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(xAngularVelocity)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(yAngularVelocity)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(zAngularVelocity)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(elevationAngles)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(timeVectors)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(xinertialVelocity)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(yinertialVelocity)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(zinertialVelocity)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(xinertialAccelerationVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(yinertialAccelerationVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(zinertialAccelerationVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(aimAngleVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(rollVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(sweetSpotVelocityVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(velocityMagnitude)
+    #transmitString = transmitString + '!'
+
+    sendData(transmitString)
+    s.close()
+    """
+
+    print "Connection established"
+    # Data must be received in the same order it was sent
     print "xAccel Vector:"
     sendData(listToString(xAccelerationVector))
     print "yAccel Vector:"
@@ -766,6 +813,10 @@ def streamSwingTrial():
     sendData(listToString(sweetSpotVelocityVector))
     print "velocity magnitude vector"
     sendData(listToString(velocityMagnitude))
+    s.close()
+
+    """
+
     print "Time Vector Length"
     print len(timeVectors)
     print "Velocity Mag type"
