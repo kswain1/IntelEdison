@@ -1,0 +1,22 @@
+# Blender MTL File: 'baseballova palka.blend'
+# Material Count: 2
+
+newmtl Palka
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.186441 0.186441 0.186441
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\megaprdel\Desktop\Animace\Obrázky pro 3D\Textury\drevo palka.jpg
+
+newmtl Pasek.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\megaprdel\Desktop\Animace\Obrázky pro 3D\Textury\kuze.jpg
