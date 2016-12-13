@@ -617,12 +617,22 @@ def streamSwingTrial():
     zAngularVelocity = [angularVelocity[2]]
     aimAngleVector = [0]
     rollVector = [0]
-
     rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
     elevationAngles = [0]
     timeVector = [0]
     timeVectors = [0]
     sampleTimes = [0]
+
+    #initliaze Dictionary storage
+    motion_data = {'xinertialAccelerationVector':[0],'yinertialAccelerationVector':[0],
+                   'zinertialAcceletionVector':[0], 'velocityMagnitudeVector':[0],
+                   'xAccelerationVector':[acceleration[0]], 'yAccelerationVector':[acceleration[1]],
+                   'zAccelerationVector':[acceleration[2]], 'xAngularVelocity':[angularVelocity[0]],
+                   'yAngularVelocity':[angularVelocity[1]], 'zAngularVelocity':[angularVelocity[2]],
+                   'aimAngleVector':[0], 'rollVector':[0], 'elevationAngles':[0],'timeVectors':[0],
+                   'sweetSpotVelocityVector':[0],'velocityMagnitude':[0],'xpositionVector':[0],
+                   'ypositionVector':[0], 'zpositionVector':[0]}
+
 
     # Initialize useful computation variables
     previousEpochTime = initialTime  # t0
@@ -708,8 +718,7 @@ def streamSwingTrial():
     ypositionVector = computePosition(yinertialVelocity, sampleTimes)
     zpositionVector = computePosition(zinertialVelocity, sampleTimes)
 
-    #import pdb
-    #pdb.set_trace()
+
     #TODO: FIX THIS
     velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
     velocityMagnitudeVector.append(velocityMagnitude)
@@ -738,122 +747,45 @@ def streamSwingTrial():
     roundEntries(ypositionVector)
     roundEntries(zpositionVector)
 
-    """
-    listToString(xAccelerationVector)
-    listToString(yAccelerationVector)
-    listToString(zAccelerationVector)
-    listToString(xAngularVelocity)
-    listToString(yAngularVelocity)
-    listToString(zAngularVelocity)
-    listToString(elevationAngles)
-    listToString(timeVectors)
-    listToString(xinertialVelocity)
-    listToString(yinertialVelocity)l
-    listToString(zinertialVelocity)
-    listToString(xinertialAccelerationVector)
-    listToString(yinertialAccelerationVector)
-    listToString(zinertialAccelerationVector)
-    listToString(aimAngleVector)
-    listToString(rollVector)
-    listToString(sweetSpotVelocityVector)
-    listToString(velocityMagnitude)
-    """
+   #adding motion data to json object
+    motion_data['xAccelerationVector'] = xAccelerationVector
+    motion_data['yAccelerationVector'] = yAccelerationVector
+    motion_data['zAccelerationVector'] = zAccelerationVector
+    motion_data['xAngularVelocity'] = xAngularVelocity
+    motion_data['yAngularVelocity'] = yAngularVelocity
+    motion_data['zAngularVelocity'] = zAngularVelocity
+    motion_data['elevationAngles'] = elevationAngles
+    motion_data['timeVectors'] = timeVectors
+    motion_data['xinertialVelocity'] = xinertialVelocity
+    motion_data['yinertialVelocity'] = yinertialVelocity
+    motion_data['zinertialVelocity'] = zinertialVelocity
+    motion_data['xinertialAccelerationVector'] = xinertialAccelerationVector
+    motion_data['yinertialAccelerationVector'] = yinertialAccelerationVector
+    motion_data['zinertialAccelerationVector'] = zinertialAccelerationVector
+    motion_data['yAngularVelocity'] = yAngularVelocity
+    motion_data['zAngularVelocity'] = zAngularVelocity
+    motion_data['elevationAngles'] = elevationAngles
+    motion_data['aimAngleVector'] = aimAngleVector
+    motion_data['rollVector'] = rollVector
+    motion_data['sweetSpotVelocityVector'] = sweetSpotVelocityVector
+    motion_data['velocityMagnitude'] = velocityMagnitude
+    motion_data['xpositionVector'] = xpositionVector
+    motion_data['elevationAngles'] = elevationAngles
+    motion_data['ypositionVector'] = ypositionVector
+    motion_data['rollVector'] = rollVector
+    motion_data['zpositionVector'] = zpositionVector
 
+
+    import pdb; pdb.set_trace()  #debug statement
+    json_motion_data = json.dumps(motion_data)
     s.connect(('192.168.1.41', port))
-    transmitString = listToString(xAccelerationVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(yAccelerationVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(zAccelerationVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(xAngularVelocity)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(yAngularVelocity)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(zAngularVelocity)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(elevationAngles)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(timeVectors)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(xinertialVelocity)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(yinertialVelocity)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(zinertialVelocity)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(xinertialAccelerationVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(yinertialAccelerationVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(zinertialAccelerationVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(aimAngleVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(rollVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(sweetSpotVelocityVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(velocityMagnitude)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(xpositionVector)
-    transmitString = transmitString + '!'
-    ttransmitString = transmitString + listToString(ypositionVector)
-    transmitString = transmitString + '!'
-    transmitString = transmitString + listToString(zpositionVector)
-    #transmitString = transmitString + '!'
-    
-    
-    sendData(transmitString)
+    sendData(json_motion_data)
     s.close()
-    """
-
-    print "Connection established"
-    # Data must be received in the same order it was sent
-    print "xAccel Vector:"
-    sendData(listToString(xAccelerationVector))
-    print "yAccel Vector:"
-    sendData(listToString(yAccelerationVector))
-    print "zAccel Vector:"
-    sendData(listToString(zAccelerationVector))
-    print "xAngular Velocity Vector:"
-    sendData(listToString(xAngularVelocity))
-    print "yAngular Velocity Vector:"
-    sendData(listToString(yAngularVelocity))
-    print "zAngular Velocity Vector:"
-    sendData(listToString(zAngularVelocity))
-    print "elevation Angles"
-    sendData(listToString(elevationAngles))
-    print "time vectors"
-    sendData(listToString(timeVectors))
-    print "xinertial velocity"
-    sendData(listToString(xinertialVelocity))
-    print "yinertial Velocity"
-    sendData(listToString(yinertialVelocity))
-    print "zinertial Velocity"
-    sendData(listToString(zinertialVelocity))
-    print "x inertial Acceleration Vector"
-    sendData(listToString(xinertialAccelerationVector))
-    print "y inertial Acceleration Vector"
-    sendData(listToString(yinertialAccelerationVector))
-    print "z inertial Acceleration Vector"
-    sendData(listToString(zinertialAccelerationVector))
-    print "aim angle vector"
-    sendData(listToString(aimAngleVector))
-    print "roll vectors"
-    sendData(listToString(rollVector))
-    print "sweet spot velocity vector"
-    sendData(listToString(sweetSpotVelocityVector))
-    print "velocity magnitude vector"
-    sendData(listToString(velocityMagnitude))
-    s.close()
-
-    """
 
     print "Time Vector Length"
     print len(timeVectors)
     print "Velocity Mag type"
-    import pdb; pdb.set_trace()
+
 
 
 
