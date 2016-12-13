@@ -583,7 +583,10 @@ def listToString(list):
     print longString
     return longString
 
+def motion_data_dict(yAccelerationVector):
 
+    motion_data = {'yAccelerationVector':[yAccelerationVector]}
+    return motion_data
 
 
 
@@ -777,7 +780,7 @@ def streamSwingTrial():
 
 
     import pdb; pdb.set_trace()  #debug statement
-    json_motion_data = json.dumps(motion_data)
+    json_motion_data = json.dumps(motion_data_dict(yAccelerationVector)
     s.connect(('192.168.1.41', port))
     sendData(json_motion_data)
     s.close()
