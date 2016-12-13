@@ -16,7 +16,7 @@ import json
 
 s = socket.socket()
 # Create a socket object
-port = 80  # Reserve a port for your service.
+port = 81  # Reserve a port for your service.
 
 def initialize():
     """Creates and initializes the IMU object
@@ -524,7 +524,7 @@ def sendData(data, interface=1):
         #socket.setdefaulttimeout(10)
         s.sendall(data)
 
-
+        import pdb; pdb.set_trace()
         #for number in data:
 
             #s.sendall(str(float(number)) + '\n')
@@ -780,7 +780,7 @@ def streamSwingTrial():
 
 
     import pdb; pdb.set_trace()  #debug statement
-    json_motion_data = json.dumps(motion_data_dict(yAccelerationVector)
+    json_motion_data = json.dumps(motion_data_dict(yAccelerationVector))
     s.connect(('192.168.1.41', port))
     sendData(json_motion_data)
     s.close()
