@@ -184,10 +184,13 @@ def obtainSwingData():
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
                    aimAngles, rolls, sweetSpotVelocity, velocityMagnitude)
 
+    csv_writer(rolls, aimAngles, elevationAngles)
+   
     e = EulerParametrization(rotation_data_file='guzman_logs/accel_ROLLPITCHYAW.csv')
     _ = e.animation()
     e.show()
-
+    
+    csv_writer_id(rolls, aimAngles, elevationAngles)
 
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
@@ -222,7 +225,6 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     print "Acceleration Length", len(xAccelerationVector)
 
     #timeVector = timeVector[0:len(xAccelerationVector)]
-
 
     plt.subplot(3, 2, 1)
 
@@ -416,7 +418,17 @@ def csv_writer(rolls, pitchs, yaws):
     outFile_accel.write("roll, pitch, yaw\n")
     # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
     for i in range(0,len(rolls)):
-        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(float(rolls[i]), float(pitchs[i]), float(yaws[i])))
+        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(float(rolls[i]),float(pitchs[i]), float(yaws[i])))
+
+
+
+def csv_writer_id(rolls, pitchs, yaws):
+    outFile_accel = open("guzman_logs/id_accel_ROLLPITCHYAW.csv", 'w')
+    # File header
+    outFile_accel.write("id, roll, pitch, yaw\n")
+    # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
+    for i in range(0,len(rolls)):
+        outFile_accel.write("{:d},{:7.3f},{:7.3f},{:7.3f}\n".format(i,float(rolls[i]),float(pitchs[i]), float(yaws[i])))
 
 
 
