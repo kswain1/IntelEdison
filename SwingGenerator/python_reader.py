@@ -8,6 +8,7 @@ from euler_parametrization import EulerParametrization
 import time
 
 # Open Serial Port
+swing_file_name = raw_input("Please input the name of your swing file: ")
 interface = input("Recieve Data serially or through wifi?")
 
 if interface == 0:
@@ -186,11 +187,12 @@ def obtainSwingData():
 
     csv_writer(rolls, aimAngles, elevationAngles)
    
-    e = EulerParametrization(rotation_data_file='guzman_logs/accel_ROLLPITCHYAW.csv')
+    csv_writer_id(rolls, aimAngles, elevationAngles)
+    
+    e = EulerParametrization(rotation_data_file='guzman_logs/accel.csv')
     _ = e.animation()
     e.show()
     
-    csv_writer_id(rolls, aimAngles, elevationAngles)
 
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
@@ -413,7 +415,7 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
     return y
 
 def csv_writer(rolls, pitchs, yaws):
-    outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW.csv", 'w')
+    outFile_accel = open("guzman_logs/"+swing_file_name+".csv", 'w')
     # File header
     outFile_accel.write("roll, pitch, yaw\n")
     # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
@@ -423,7 +425,7 @@ def csv_writer(rolls, pitchs, yaws):
 
 
 def csv_writer_id(rolls, pitchs, yaws):
-    outFile_accel = open("guzman_logs/id_accel_ROLLPITCHYAW.csv", 'w')
+    outFile_accel = open("guzman_logs/id_"+swing_file_name+".csv", 'w')
     # File header
     outFile_accel.write("id, roll, pitch, yaw\n")
     # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
