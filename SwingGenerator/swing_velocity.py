@@ -289,6 +289,21 @@ def computeVelocityHistory(accelerationVector, timeVector):
 
     return velocityHistory
 
+def computePosition(inertialVelocity, sampleTimes):
+    #params pass in the velocity of the component of choice
+    #returns the position vector
+
+    posVector = [0]
+    index = 1
+    while index < len(sampleTimes):
+
+        position_final = posVector[index - 1] + ((inertialVelocity[index] + inertialVelocity[index-1])/2)*sampleTimes[index]
+        index = index + 1
+        posVector.append(position_final)
+
+
+    return posVector
+
 
 def computeVelocityMagnitude(xVelocity, yVelocity, zVelocity):
     """Computes angular velocity vector magnitude
@@ -687,6 +702,10 @@ def streamSwingTrial():
     yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
     zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
+    xpositionVector = computePosition(xinertialVelocity, sampleTimes)
+    ypositionVector = computePosition(yinertialVelocity, sampleTimes)
+    zpositionVector = computePosition(zinertialVelocity, sampleTimes)
+
     #TODO: FIX THIS
     velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
     velocityMagnitudeVector.append(velocityMagnitude)
@@ -711,6 +730,9 @@ def streamSwingTrial():
     roundEntries(rollVector)
     roundEntries(sweetSpotVelocityVector)
     roundEntries(velocityMagnitude)
+    roundEntries(xpositionVector)
+    roundEntries(ypositionVector)
+    roundEntries(zpositionVector)
 
     """
     listToString(xAccelerationVector)
@@ -769,12 +791,17 @@ def streamSwingTrial():
     transmitString = transmitString + listToString(sweetSpotVelocityVector)
     transmitString = transmitString + '!'
     transmitString = transmitString + listToString(velocityMagnitude)
-    #transmitString = transmitString + '!'
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(xpositionVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(ypositionVector)
+    transmitString = transmitString + '!'
+    transmitString = transmitString + listToString(zpositionVector)
 
     sendData(transmitString)
     s.close()
-    """
 
+    """
     print "Connection established"
     # Data must be received in the same order it was sent
     print "xAccel Vector:"
@@ -813,9 +840,11 @@ def streamSwingTrial():
     sendData(listToString(sweetSpotVelocityVector))
     print "velocity magnitude vector"
     sendData(listToString(velocityMagnitude))
+    print "xPosition Vector"
+    sendData(listToString(xpositionVector))
     s.close()
-
     """
+
 
     print "Time Vector Length"
     print len(timeVectors)
