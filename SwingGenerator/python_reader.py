@@ -116,6 +116,9 @@ def obtainSwingData():
     rolls = recieveString[15].split()
     sweetSpotVelocity = recieveString[16].split()
     velocityMagnitude = recieveString[17].split()
+    xpositionVector = recieveString[18].split()
+    ypositionVector = recieveString[19].split()
+    zpositionVector = recieveString[20].split()
 
 
     print "Recieve String:"
@@ -177,13 +180,20 @@ def obtainSwingData():
     listEntryTypes(sweetSpotVelocity)
     print "velocityMagnitude"
     listEntryTypes(velocityMagnitude)
+    print "xposition vector"
+    listEntryTypes(xpositionVector)
+    print "yposition vector"
+    listEntryTypes(ypositionVector)
+    print "zposition vector"
+    listEntryTypes(zpositionVector)
 
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
-                   aimAngles, rolls, sweetSpotVelocity, velocityMagnitude)
+                   aimAngles, rolls, sweetSpotVelocity, velocityMagnitude, xpositionVector,
+                   ypositionVector, zpositionVector)
 
     csv_writer(rolls, aimAngles, elevationAngles)
    
@@ -198,7 +208,7 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls, sweetSpotVelocity,
-                   velocityMagnitude):
+                   velocityMagnitude, xpositionVector, ypositionVector, zPositionVector):
     """ Plots Acceleration vs Time
 
     :param accelerationVector:
@@ -302,6 +312,18 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     plt.xlabel('Time [seconds]')
     plt.legend(['Sweet Spot Velocity',
                 'Velocity Magnitude'],
+               loc='lower left')
+
+    plt.subplot(3, 2, 7)
+    plt.plot(timeVector, xpositionVector, 'b',
+             timeVector, ypositionVector, 'g',
+             timeVector, zPositionVector, 'r')
+    plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
+    plt.ylabel('Position [m]')
+    plt.xlabel('Time [seconds]')
+    plt.legend(['X-Position',
+                'Y-Position,'
+                'Z-Position'],
                loc='lower left')
 
 
