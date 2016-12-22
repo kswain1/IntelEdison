@@ -179,6 +179,8 @@ def obtainSwingData():
     listEntryTypes(velocityMagnitude)
 
 
+    csv_writer_id(rolls, aimAngles, elevationAngles)
+    
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
@@ -187,9 +189,8 @@ def obtainSwingData():
 
     csv_writer(rolls, aimAngles, elevationAngles)
    
-    csv_writer_id(rolls, aimAngles, elevationAngles)
     
-    e = EulerParametrization(rotation_data_file='guzman_logs/accel.csv')
+    e = EulerParametrization(rotation_data_file='guzman_logs/'+swing_file_name)
     _ = e.animation()
     e.show()
     
