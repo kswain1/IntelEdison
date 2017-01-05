@@ -199,7 +199,7 @@ def obtainSwingData():
    
     csv_writer_id(rolls, aimAngles, elevationAngles)
     
-    e = EulerParametrization(rotation_data_file='guzman_logs/accel.csv')
+    e = EulerParametrization(rotation_data_file="guzman_logs/"+swing_file_name+".csv")
     _ = e.animation()
     e.show()
     
@@ -270,14 +270,15 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
 
     plt.subplot(3, 2, 3)
     plt.xlim(0, timeVector[-1]) # Last value in time vector as upper limit
-    plt.plot(timeVector, elevationAngles, 'b',
+    plt.plot(timeVector, rolls, 'b',
              timeVector, aimAngles, 'g',
-             timeVector, rolls, 'r')
+             timeVector, elevationAngles, 'r',
+             )
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
-    plt.legend(['Yaw',
+    plt.legend(['Roll',
                 'Pitch',
-                'Roll'], loc='lower left')
+                'Yaw'], loc='lower left')
 
     plt.subplot(3, 2, 4)
     plt.plot(timeVector, xInertialVelocity, 'b',
