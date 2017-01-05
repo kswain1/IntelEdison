@@ -275,8 +275,8 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
              timeVector, rolls, 'r')
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
-    plt.legend(['Elevation Angle',
-                'Aim',
+    plt.legend(['Yaw',
+                'Pitch',
                 'Roll'], loc='lower left')
 
     plt.subplot(3, 2, 4)
@@ -304,17 +304,17 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                 'z - Inertial Acceleration'],
                loc='lower left')
 
-    plt.subplot(3, 2, 6)
-    plt.plot(timeVector, sweetSpotVelocity, 'b',
-             timeVector, velocityMagnitude, 'r')
-    plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
-    plt.ylabel('Sweet Spot Velocity [m/s]')
-    plt.xlabel('Time [seconds]')
-    plt.legend(['Sweet Spot Velocity',
-                'Velocity Magnitude'],
-               loc='lower left')
+    # plt.subplot(3, 2, 6)
+    # plt.plot(timeVector, sweetSpotVelocity, 'b',
+    #          timeVector, velocityMagnitude, 'r')
+    # plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
+    # plt.ylabel('Sweet Spot Velocity [m/s]')
+    # plt.xlabel('Time [seconds]')
+    # plt.legend(['Sweet Spot Velocity',
+    #             'Velocity Magnitude'],
+    #            loc='lower left')
 
-    plt.subplot(3, 2, 7)
+    plt.subplot(3, 2, 6)
     plt.plot(timeVector, xpositionVector, 'b',
              timeVector, ypositionVector, 'g',
              timeVector, zPositionVector, 'r')
