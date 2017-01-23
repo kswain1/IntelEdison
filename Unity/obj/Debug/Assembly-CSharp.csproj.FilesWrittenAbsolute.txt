@@ -19,3 +19,24 @@
 /Users/isisashford/Desktop/Bat Path/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/isisashford/Desktop/Bat Path/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/isisashford/Desktop/Bat Path/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/obj/Debug/Assembly-CSharp.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEngine.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEditor.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEngine.Analytics.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEngine.PlaymodeTestsRunner.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEngine.HoloLens.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/UnityEngine.VR.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Mono.Cecil.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Unity.DataContract.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/kehlinswain/Desktop/IntelEdison/Unity/Temp/bin/Debug/Mono.Cecil.Mdb.dll

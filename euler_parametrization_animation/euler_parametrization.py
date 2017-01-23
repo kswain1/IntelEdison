@@ -72,15 +72,26 @@ class EulerParametrization(object):
 
     def _rotate_3D_object_data(self, roll, pitch, yaw):
         self.data = self.object_3D.data
+        pos = (0,0,0)
         for idx, line in enumerate(self.data):
             self.data[idx][0] = self._rotate_vector(line[0], roll, pitch, yaw)
             self.data[idx][1] = self._rotate_vector(line[1], roll, pitch, yaw)
+            # data_a = self._rotate_vector(line[0], roll, pitch, yaw)
+            # data_b = self._rotate_vector(line[1], roll, pitch, yaw)
+            # line_vector = line
+            # self.data[line][0] = (pos)
+            # self.data[line][1] =  (pos)
+            # pos += (1,1,1)
+
+
+
 
     def _update_plot_lines(self):
         self._remove_lines_in_plot()
         for index, line in enumerate(self.data):
             start, end = line
-            self._axes.plot3D(*zip(start, end), color=self.object_3D.color)
+            self._axes.plot3D(xs=0, ys=0, zs=1, color=self.object_3D.color)
+            # self._axes.plot3D(*zip(start, end),xs=0, ys=0, zs=1, color=self.object_3D.color)
 
     def _remove_lines_in_plot(self):
         self._axes.lines = []

@@ -5,6 +5,7 @@ import numpy as np
 from scipy.signal import butter, lfilter, freqz
 import socket
 from euler_parametrization import EulerParametrization
+import requests
 import time
 
 # Open Serial Port
@@ -186,7 +187,18 @@ def obtainSwingData():
     listEntryTypes(ypositionVector)
     print "zposition vector"
     listEntryTypes(zpositionVector)
+	
+    rolls = neg_pos_degree_converter(rolls)
+    aimAngles = neg_pos_degree_converter(aimAngles)
+    elevationAngles = neg_pos_degree_converter(elevationAngles)
 
+    payload = {"swingname": swing_file_name,"rotX":rolls, "rotY":aimAngles, "rotZ":elevationAngles,
+               "posX":xpositionVector, "posY":ypositionVector, "posZ":zpositionVector,
+               "speed":sweetSpotVelocity}
+
+    r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
+    print"your data has been posted"
+    import pdb;pdb.set_trace()
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
@@ -195,11 +207,14 @@ def obtainSwingData():
                    aimAngles, rolls, sweetSpotVelocity, velocityMagnitude, xpositionVector,
                    ypositionVector, zpositionVector)
 
+
+
     csv_writer(rolls, aimAngles, elevationAngles)
    
     csv_writer_id(rolls, aimAngles, elevationAngles)
-    
-    e = EulerParametrization(rotation_data_file='guzman_logs/accel.csv')
+
+
+    e = EulerParametrization(rotation_data_file='guzman_logs/'+swing_file_name+'.csv')
     _ = e.animation()
     e.show()
     
@@ -330,6 +345,15 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
 
     plt.grid()
     plt.show()
+
+def neg_pos_degree_converter(eulerangles):
+    angle = 0
+    for i in range(0,len(eulerangles)):
+	if eulerangles[i] < 0:
+	    angle = 360 - abs(eulerangles[i])
+	    eulerangles[i] = angle    
+	   
+    return eulerangles
 
 def listEntryTypes(dataList):
     """Reads the type of each entry in the list"""

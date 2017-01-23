@@ -2,3 +2,6 @@ sceneSetups:
 - path: Assets/_Scenes/BatGame.unity
   isLoaded: 1
   isActive: 1
+- path: Assets/baseball Player.unity
+  isLoaded: 1
+  isActive: 0

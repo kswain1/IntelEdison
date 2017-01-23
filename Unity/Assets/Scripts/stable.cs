@@ -22,7 +22,7 @@ using System.Collections.Generic;
 public class stable : MonoBehaviour {
 	public TextAsset File;
 
-	void Update()
+	void FixedUpdate()
 	{
 		Load(File);
 		Debug.Log (yaw_pitch_roll()[0]);
@@ -97,9 +97,9 @@ public class stable : MonoBehaviour {
 		{
 			Row row = new Row();
 			row.id = grid[i][0];
-			row. roll = grid[i][1];
-			row. pitch = grid[i][2];
-			row. yaw = grid[i][3];
+			row.roll = grid[i][1];
+			row.pitch = grid[i][2];
+			row.yaw = grid[i][3];
 
 			rowList.Add(row);
 		}
