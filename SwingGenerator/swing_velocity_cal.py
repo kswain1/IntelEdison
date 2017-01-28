@@ -575,6 +575,7 @@ angle = 0
 
 def cal_angle():
     global angle
+    swinging = 0
     if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
         c = sys.stdin.read(1)
         print c
@@ -597,7 +598,9 @@ def cal_angle():
         if c == '8':
             swinging = 160
         if c == '9':
-            swinging = 160
+            swinging = 180
+        if c == 'e':
+            swinging = 190
 
 
     return swinging
@@ -651,7 +654,7 @@ def streamSwingTrial():
     try:
         tty.setcbreak(sys.stdin.fileno())
         # Loop for 10 seconds
-        while (tm.time() - initialTime) < 10:
+        while (cal_angle() <= 180):
             #read callibration angles
             calibration_angles.append(cal_angle())
 
@@ -777,7 +780,7 @@ def streamSwingTrial():
         listToString(velocityMagnitude)
         """
 
-        s.connect(('192.168.0.11', port))
+        s.connect(('192.168.1.41', port))
         transmitString = listToString(xAccelerationVector)
         transmitString = transmitString + '!'
         transmitString = transmitString + listToString(yAccelerationVector)
@@ -826,11 +829,6 @@ def streamSwingTrial():
         s.close()
 
 
-        print "Time Vector Length"
-        print len(timeVectors)
-        print "Velocity Mag type"
-        print type(velocityMagnitude)
-        print len(velocityMagnitude)
     finally:
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
         
