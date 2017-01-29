@@ -575,35 +575,34 @@ angle = 0
 
 def cal_angle():
     global angle
-    swinging = 0
     if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
         c = sys.stdin.read(1)
         print c
         if c == '\x1b':
             exit(0)
         if c == '1':
-            swinging = 20
+            angle = 20
         if c == '2':
-            swinging = 40
+            angle = 40
         if c == '3':
-            swinging = 60
+            angle = 60
         if c == '4':
-            swinging = 80
+            angle = 80
         if c == '5':
-            swinging = 100
+            angle = 100
         if c == '6':
-            swinging = 120
+            angle = 120
         if c == '7':
-            swinging = 140
+            angle = 140
         if c == '8':
-            swinging = 160
+            angle = 160
         if c == '9':
-            swinging = 180
+            angle = 180
         if c == 'e':
-            swinging = 190
+            angle = 190
 
 
-    return swinging
+    return angle
 
 
 
