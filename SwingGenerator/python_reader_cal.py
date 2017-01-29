@@ -41,7 +41,7 @@ def obtainSwingData():
     xAngularVelocity = recieveString[3].split()
     yAngularVelocity = recieveString[4].split()
     zAngularVelocity = recieveString[5].split()
-    elevationAngles = recieveString[6].split()
+    pitchs = recieveString[6].split()
     timeVector = recieveString[7].split()
     xInertialAcceleration = recieveString[8].split()
     yInertialAcceleration = recieveString[9].split()
@@ -49,7 +49,7 @@ def obtainSwingData():
     xInertialVelocity = recieveString[11].split()
     yInertialVelocity = recieveString[12].split()
     zInertialVelocity = recieveString[13].split()
-    aimAngles = recieveString[14].split()
+    yaws = recieveString[14].split()
     rolls = recieveString[15].split()
     sweetSpotVelocity = recieveString[16].split()
     velocityMagnitude = recieveString[17].split()
@@ -67,22 +67,22 @@ def obtainSwingData():
     s.close()
 
     klistEntryTypes(xAccelerationVector,yAccelerationVector, zAccelerationVector, xAngularVelocity, yAngularVelocity,
-                    zAngularVelocity,elevationAngles, timeVector, xInertialAcceleration,yInertialAcceleration,
-                    zInertialAcceleration,xInertialVelocity, yInertialVelocity, zInertialVelocity, aimAngles,
+                    zAngularVelocity,pitchs, timeVector, xInertialAcceleration,yInertialAcceleration,
+                    zInertialAcceleration,xInertialVelocity, yInertialVelocity, zInertialVelocity, yaws,
                     rolls, sweetSpotVelocity, velocityMagnitude, xpositionVector, ypositionVector, zpositionVector,
                     calibration_angles)
 
 
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
-                   xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                   xAngularVelocity, yAngularVelocity, zAngularVelocity, pitchs,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
-                   aimAngles, rolls, sweetSpotVelocity, velocityMagnitude, xpositionVector,
+                   yaws, rolls, sweetSpotVelocity, velocityMagnitude, xpositionVector,
                    ypositionVector, zpositionVector, calibration_angles)
 
-    csv_writer(rolls, aimAngles, elevationAngles)
+    csv_writer(rolls, pitchs, yaws )
 
-    csv_writer_cal(rolls, aimAngles, elevationAngles, calibration_angles)
+    csv_writer_cal(rolls,  pitchs, yaws calibration_angles)
 
     e = EulerParametrization(rotation_data_file="guzman_logs/"+swing_file_name+".csv")
     _ = e.animation()
@@ -90,9 +90,9 @@ def obtainSwingData():
 
 
 def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
-                   xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
+                   xAngularVelocity, yAngularVelocity, zAngularVelocity, pitchs,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
-                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls, sweetSpotVelocity,
+                   xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, yaws, rolls, sweetSpotVelocity,
                    velocityMagnitude, xpositionVector, ypositionVector, zPositionVector, calibration_angles):
     """ Plots Acceleration vs Time
 
@@ -156,8 +156,8 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     plt.subplot(3, 2, 3)
     plt.xlim(0, timeVector[-1]) # Last value in time vector as upper limit
     plt.plot(timeVector, rolls, 'b',
-             timeVector, aimAngles, 'g',
-             timeVector, elevationAngles, 'r',
+             timeVector, pitchs, 'g',
+             timeVector, yaws, 'r',
              )
     plt.ylabel('Elevation Angle [degrees]')
     plt.xlabel('Time [seconds]')
@@ -167,7 +167,7 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
 
     plt.subplot(3, 2, 4)
     plt.plot(timeVector, calibration_angles, 'b',
-             timeVector, elevationAngles, 'g')
+             timeVector, yaws, 'g')
 
     plt.ylabel('Angle [degrees]')
     plt.xlabel('Time [seconds]')
