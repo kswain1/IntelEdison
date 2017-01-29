@@ -580,13 +580,13 @@ def keyboard():
         if c == '\x1b':
             exit(0)
         if c == '1':
-            angle = 20
+            angle = 'stop'
         if c == '2':
-            angle = 40
+            angle = 'kill'
         if c == '3':
-            angle = 60
+            angle = 'go'
         if c == '4':
-            angle = 80
+            angle = 10
         if c == '5':
             angle = 100
         if c == '6':
@@ -656,6 +656,7 @@ def streamSwingTrial():
     try:
         tty.setcbreak(sys.stdin.fileno())
         # Loop for 10 seconds
+        input('press 1 to stop program\n press 2 to kill recording\n press 3 to start recording \n press 4 to record at 10 deg')
         while (keyboard() != 'stop'):
             while (keyboard() != 'kill'):
                     #read callibration angles
