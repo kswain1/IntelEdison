@@ -573,11 +573,10 @@ def listToString(list):
 #     return swinging
 angle = 0
 
-def cal_angle():
+def keyboard():
     global angle
     if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
         c = sys.stdin.read(1)
-        print c
         if c == '\x1b':
             exit(0)
         if c == '1':
@@ -600,6 +599,10 @@ def cal_angle():
             angle = 180
         if c == 'e':
             angle = 190
+        if c == 'a':
+            angle = True
+        if c == 's':
+            angle = False
 
 
     return angle
@@ -653,67 +656,73 @@ def streamSwingTrial():
     try:
         tty.setcbreak(sys.stdin.fileno())
         # Loop for 10 seconds
-        while (cal_angle() <= 180):
-            #read callibration angles
-            calibration_angles.append(cal_angle())
+        while (keyboard() != 'stop'):
+            while (keyboard() != 'kill'):
+                    #read callibration angles
+                    tm.sleep(.5)
+                    calibration_angles.append(keyboard())
 
-            # Read Angular Velocity and Acceleration
-            currentAngularVelocity = readAngularVelocity(imu)
-            currentAcceleration = readAcceleration(imu)
-            xAccelerationVector.append(currentAcceleration[0])
-            yAccelerationVector.append(currentAcceleration[1])
-            zAccelerationVector.append(currentAcceleration[2])
-            xAngularVelocity.append(currentAngularVelocity[0])
-            yAngularVelocity.append(currentAngularVelocity[1])
-            zAngularVelocity.append(currentAngularVelocity[2])
+                    # Read Angular Velocity and Acceleration
+                    currentAngularVelocity = readAngularVelocity(imu)
+                    currentAcceleration = readAcceleration(imu)
+                    xAccelerationVector.append(currentAcceleration[0])
+                    yAccelerationVector.append(currentAcceleration[1])
+                    zAccelerationVector.append(currentAcceleration[2])
+                    xAngularVelocity.append(currentAngularVelocity[0])
+                    yAngularVelocity.append(currentAngularVelocity[1])
+                    zAngularVelocity.append(currentAngularVelocity[2])
 
-            currentEpochTime = tm.time()
-            currentElapsedSampleTime = currentEpochTime - previousEpochTime
-            sampleTimes.append(currentElapsedSampleTime)
-            timeVectors.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History TODO: CHANGE NAME TO AVOID CONFUSION
-            timeVector = [0, currentElapsedSampleTime]
-
-
-            # TODO:Do we have to normalize the quaternion?
-            # TODO:Can we use this same solver or do we have to switch
-
-            # Solve for current rotation matrix
-            currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
-            eulerParametersNormalized = currentEulerParameters
-            #eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
-
-            # Compute Direction Cosine Matrix
-            directionMatrix = computeDirectionCosineMatrix(eulerParametersNormalized)
-            rotationMatrices.append(directionMatrix)
-
-            #print "Direction Cosine Matrix:", directionMatrix[0]
+                    currentEpochTime = tm.time()
+                    currentElapsedSampleTime = currentEpochTime - previousEpochTime
+                    sampleTimes.append(currentElapsedSampleTime)
+                    timeVectors.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History TODO: CHANGE NAME TO AVOID CONFUSION
+                    timeVector = [0, currentElapsedSampleTime]
 
 
-            # Get Inertial Acceleration snd Velocity
-            xinertialAcceleration, yinertialAcceleration, zinertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
-            xinertialAccelerationVector.append(xinertialAcceleration)
-            yinertialAccelerationVector.append(yinertialAcceleration)
-            zinertialAccelerationVector.append(zinertialAcceleration)
+                    # TODO:Do we have to normalize the quaternion?
+                    # TODO:Can we use this same solver or do we have to switch
+
+                    # Solve for current rotation matrix
+                    currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
+                    eulerParametersNormalized = currentEulerParameters
+                    #eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
+
+                    # Compute Direction Cosine Matrix
+                    directionMatrix = computeDirectionCosineMatrix(eulerParametersNormalized)
+                    rotationMatrices.append(directionMatrix)
+
+                    #print "Direction Cosine Matrix:", directionMatrix[0]
 
 
-            # Stop collecting data once acceleration has reached zero again.
-            previousEulerParameters = currentEulerParameters
-            previousEpochTime = currentEpochTime
-            previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
+                    # Get Inertial Acceleration snd Velocity
+                    xinertialAcceleration, yinertialAcceleration, zinertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
+                    xinertialAccelerationVector.append(xinertialAcceleration)
+                    yinertialAccelerationVector.append(yinertialAcceleration)
+                    zinertialAccelerationVector.append(zinertialAcceleration)
 
-            #Calculate Yaw, pitch and roll
-            elevationAngle = asin(directionMatrix[0][2]) * 57.3
-            aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0]) * 57.3
-            #roll = currentEulerParameters[3]**2 - currentEulerParameters[1]**2 \
-            #       - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
 
-            #roll = acos(roll) * 57.3
+                    # Stop collecting data once acceleration has reached zero again.
+                    previousEulerParameters = currentEulerParameters
+                    previousEpochTime = currentEpochTime
+                    previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
-            roll = atan(directionMatrix[1][2]/directionMatrix[2][2]) * 57.3
+                    #Calculate Yaw, pitch and roll
+                    elevationAngle = asin(directionMatrix[0][2]) * 57.3
+                    aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0]) * 57.3
+                    #roll = currentEulerParameters[3]**2 - currentEulerParameters[1]**2 \
+                    #       - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
 
-            elevationAngles.append(elevationAngle)
-            aimAngleVector.append(aimAngle)
-            rollVector.append(roll)
+                    #roll = acos(roll) * 57.3
+
+                    roll = atan(directionMatrix[1][2]/directionMatrix[2][2]) * 57.3
+
+                    elevationAngles.append(elevationAngle)
+                    aimAngleVector.append(aimAngle)
+                    rollVector.append(roll)
+            # if keyboard() == "kill":
+            #     while(keyboard() is False):
+            #         continue
+                
 
 
         # Once trial is finished, compute inertial velocity
