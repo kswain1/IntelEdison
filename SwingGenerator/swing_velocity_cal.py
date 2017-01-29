@@ -584,23 +584,23 @@ def keyboard():
         if c == '2':
             angle = 'kill'
         if c == '3':
-            angle = 'go'
+            angle = 30
         if c == '4':
-            angle = 10
+            angle = 60
         if c == '5':
-            angle = 100
+            angle = 90
         if c == '6':
             angle = 120
         if c == '7':
-            angle = 140
+            angle = 150
         if c == '8':
-            angle = 160
-        if c == '9':
             angle = 180
+        if c == '0':
+            angle = 0
         if c == 'e':
             angle = 190
         if c == 'a':
-            angle = True
+            angle = 'stop'
         if c == 's':
             angle = False
 
