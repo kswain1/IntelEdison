@@ -661,7 +661,8 @@ def streamSwingTrial():
             while (keyboard() != 'kill'):
                     #read callibration angles
                     tm.sleep(.5)
-                    calibration_angles.append(keyboard())
+                    if keyboard() != 'kill':
+                        calibration_angles.append(keyboard())
 
                     # Read Angular Velocity and Acceleration
                     currentAngularVelocity = readAngularVelocity(imu)
