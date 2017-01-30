@@ -58,6 +58,8 @@ def obtainSwingData():
     zpositionVector = recieveString[20].split()
     calibration_angles = recieveString[21].split()
 
+    #update rotation angles
+    yaws = neg_pos_degree_converter(yaws)
 
     print "Recieve String:"
     print recieveString
@@ -82,7 +84,7 @@ def obtainSwingData():
 
     csv_writer(rolls, pitchs, yaws )
 
-    csv_writer_cal(rolls,  pitchs, yaws calibration_angles)
+    csv_writer_cal(rolls,  pitchs, yaws, calibration_angles)
 
     e = EulerParametrization(rotation_data_file="guzman_logs/"+swing_file_name+".csv")
     _ = e.animation()
@@ -175,16 +177,12 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                 'Yaw'], loc='lower left')
 
     plt.subplot(3, 2, 5)
-    plt.plot(timeVector, xInertialVelocity, 'b',
-             timeVector, yInertialVelocity, 'g',
-             timeVector, zInertialVelocity, 'r')
+    plt.plot(calibration_angles, yaws, 'b')
 
-    plt.xlim(0, timeVector[-1])  # Last value in time vector as upper limit
-    plt.ylabel('Inertial Velocity [m/s]')
-    plt.xlabel('Time [seconds]')
-    plt.legend(['x - Inertial Velocity',
-                'y - Inertial Velocity',
-                'z - Inertial Velocity'],
+    plt.xlim(0, calibration_angles[-1])  # Last value in time vector as upper limit
+    plt.ylabel('Sensor Angles')
+    plt.xlabel('Calibrated Angles')
+    plt.legend(['Expected Angles vs Sensor Angles'],
                loc='lower left')
 
     plt.subplot(3, 2, 6)
@@ -225,6 +223,15 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
 
     plt.grid()
     plt.show()
+
+def neg_pos_degree_converter(eulerangles):
+    angle = 0
+    for i in range(0,len(eulerangles)):
+        if float(eulerangles[i]) < 0:
+            angle = 180 - abs(float(eulerangles[i]))
+            eulerangles[i] = str(angle)
+
+    return eulerangles
 
 def klistEntryTypes(*args):
 
