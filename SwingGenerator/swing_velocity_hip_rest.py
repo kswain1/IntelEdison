@@ -7,7 +7,8 @@ import serial
 import numpy as np
 import time as tm
 import socket
-import request
+import requests
+
 
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
@@ -734,11 +735,11 @@ def streamSwingTrial():
     listToString(velocityMagnitude)
     """
 
-    payload = {"swingname": swing_file_name,"rotX":rolls, "rotY":aimAngles, "rotZ":elevationAngles,
-               "posX":xpositionVector, "posY":ypositionVector, "posZ":zpositionVector,
-               "speed":sweetSpotVelocity}
+    payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
+               "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
+               "accelz":yAccelerationVector}
 
-    r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
+    r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
 
     # s.connect(('192.168.1.41', port))
     # transmitString = listToString(xAccelerationVector)
