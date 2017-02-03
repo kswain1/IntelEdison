@@ -750,9 +750,8 @@ def streamSwingTrial():
                 roundEntries(zpositionVector)
 
 
-                payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
-                       "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
-                       "accelz":yAccelerationVector}
+                payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
+                       "accelz":yinertialAccelerationVector}
 
                 r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
         # s.connect(('192.168.1.41', port))

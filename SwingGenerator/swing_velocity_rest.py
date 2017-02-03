@@ -647,7 +647,7 @@ def streamSwingTrial():
             isSwinging = False
             while (keyboard() != 'kill'):
                     #read callibration angles
-                    tm.sleep(.5)
+                tm.sleep(.5)
                 if ((keyboard() != 'kill') and (keyboard() != 'stop')):
                     calibration_angles.append(keyboard())
 
@@ -750,11 +750,14 @@ def streamSwingTrial():
                 roundEntries(zpositionVector)
 
 
-                payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
-                       "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
-                       "accelz":yAccelerationVector}
+                # payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
+                #        "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
+                #        "accelz":yAccelerationVector}
 
-                r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
+                payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
+                       "accelz":yinertialAccelerationVector}
+
+                r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
         # transmitString = transmitString + '!'
