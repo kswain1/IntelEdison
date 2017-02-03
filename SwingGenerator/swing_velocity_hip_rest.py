@@ -171,7 +171,7 @@ def computeInertialAcceleration(imu, orientMat):
     g = -9.81  # m/s^2 Remember to change if we switch to ft/s^2
     #TODO: ADD G CORRECTIVE FACTOR FOR CALIBRATION
 
-    print orientMat
+    # print orientMat
 
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
     ax = localAcceleration[0]
@@ -642,9 +642,8 @@ def streamSwingTrial():
         tty.setcbreak(sys.stdin.fileno())
         # Loop for 10 seconds
         input('press 1 to stop program\n press 2 to kill recording\n press 3 to start recording \n press 4 to record at 10 deg')
-
+        isSwinging = False
         while (keyboard() != 'stop'):
-            isSwinging = False
             while (keyboard() != 'kill'):
                     #read callibration angles
                 tm.sleep(.5)
@@ -712,6 +711,7 @@ def streamSwingTrial():
 
 
                 # Compute Velocity
+            isSwinging = input('done with swing enter 1 or 0')
             if(isSwinging):
                 xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
                 yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
