@@ -171,7 +171,7 @@ def computeInertialAcceleration(imu, orientMat):
     g = -9.81  # m/s^2 Remember to change if we switch to ft/s^2
     #TODO: ADD G CORRECTIVE FACTOR FOR CALIBRATION
 
-    print orientMat
+    # print orientMat
 
     localAcceleration = readAcceleration(imu)  # TODO: This may be replaced with a local acceleration parameter
     ax = localAcceleration[0]
@@ -642,9 +642,8 @@ def streamSwingTrial():
         tty.setcbreak(sys.stdin.fileno())
         # Loop for 10 seconds
         input('press 1 to stop program\n press 2 to kill recording\n press 3 to start recording \n press 4 to record at 10 deg')
-
+        isSwinging = False
         while (keyboard() != 'stop'):
-            isSwinging = False
             while (keyboard() != 'kill'):
                     #read callibration angles
                 tm.sleep(.5)
@@ -750,14 +749,11 @@ def streamSwingTrial():
                 roundEntries(zpositionVector)
 
 
-                # payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
-                #        "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
-                #        "accelz":yAccelerationVector}
-
                 payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
                        "accelz":yinertialAccelerationVector}
 
                 r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
+                isSwinging = False
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
         # transmitString = transmitString + '!'
