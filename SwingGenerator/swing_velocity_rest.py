@@ -644,123 +644,117 @@ def streamSwingTrial():
         input('press 1 to stop program\n press 2 to kill recording\n press 3 to start recording \n press 4 to record at 10 deg')
 
         while (keyboard() != 'stop'):
+            isSwinging = False
             while (keyboard() != 'kill'):
                     #read callibration angles
                     tm.sleep(.5)
-                    if ((keyboard() != 'kill') and (keyboard() != 'stop')):
-                        calibration_angles.append(keyboard())
+                if ((keyboard() != 'kill') and (keyboard() != 'stop')):
+                    calibration_angles.append(keyboard())
 
-                        # Read Angular Velocity and Acceleration
-                        currentAngularVelocity = readAngularVelocity(imu)
-                        currentAcceleration = readAcceleration(imu)
-                        xAccelerationVector.append(currentAcceleration[0])
-                        yAccelerationVector.append(currentAcceleration[1])
-                        zAccelerationVector.append(currentAcceleration[2])
-                        xAngularVelocity.append(currentAngularVelocity[0])
-                        yAngularVelocity.append(currentAngularVelocity[1])
-                        zAngularVelocity.append(currentAngularVelocity[2])
+                    # Read Angular Velocity and Acceleration
+                    currentAngularVelocity = readAngularVelocity(imu)
+                    currentAcceleration = readAcceleration(imu)
+                    xAccelerationVector.append(currentAcceleration[0])
+                    yAccelerationVector.append(currentAcceleration[1])
+                    zAccelerationVector.append(currentAcceleration[2])
+                    xAngularVelocity.append(currentAngularVelocity[0])
+                    yAngularVelocity.append(currentAngularVelocity[1])
+                    zAngularVelocity.append(currentAngularVelocity[2])
 
-                        currentEpochTime = tm.time()
-                        currentElapsedSampleTime = currentEpochTime - previousEpochTime
-                        sampleTimes.append(currentElapsedSampleTime)
-                        timeVectors.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History TODO: CHANGE NAME TO AVOID CONFUSION
-                        timeVector = [0, currentElapsedSampleTime]
-
-
-                        # TODO:Do we have to normalize the quaternion?
-                        # TODO:Can we use this same solver or do we have to switch
-
-                        # Solve for current rotation matrix
-                        currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
-                        eulerParametersNormalized = currentEulerParameters
-                        #eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
-
-                        # Compute Direction Cosine Matrix
-                        directionMatrix = computeDirectionCosineMatrix(eulerParametersNormalized)
-                        rotationMatrices.append(directionMatrix)
-
-                        #print "Direction Cosine Matrix:", directionMatrix[0]
+                    currentEpochTime = tm.time()
+                    currentElapsedSampleTime = currentEpochTime - previousEpochTime
+                    sampleTimes.append(currentElapsedSampleTime)
+                    timeVectors.append(previousElapsedSampleTime+currentElapsedSampleTime)  # Time History TODO: CHANGE NAME TO AVOID CONFUSION
+                    timeVector = [0, currentElapsedSampleTime]
 
 
-                        # Get Inertial Acceleration snd Velocity
-                        xinertialAcceleration, yinertialAcceleration, zinertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
-                        xinertialAccelerationVector.append(xinertialAcceleration)
-                        yinertialAccelerationVector.append(yinertialAcceleration)
-                        zinertialAccelerationVector.append(zinertialAcceleration)
+                    # TODO:Do we have to normalize the quaternion?
+                    # TODO:Can we use this same solver or do we have to switch
+
+                    # Solve for current rotation matrix
+                    currentEulerParameters = computeEulerParameters(previousEulerParameters, timeVector, currentAngularVelocity)
+                    eulerParametersNormalized = currentEulerParameters
+                    #eulerPrametersNoramlized = normalizeEulerParameters(currentEulerParameters)
+
+                    # Compute Direction Cosine Matrix
+                    directionMatrix = computeDirectionCosineMatrix(eulerParametersNormalized)
+                    rotationMatrices.append(directionMatrix)
+
+                    #print "Direction Cosine Matrix:", directionMatrix[0]
 
 
-                        # Stop collecting data once acceleration has reached zero again.
-                        previousEulerParameters = currentEulerParameters
-                        previousEpochTime = currentEpochTime
-                        previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
-
-                        #Calculate Yaw, pitch and roll
-                        elevationAngle = asin(directionMatrix[0][2]) * 57.3
-                        aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0]) * 57.3
-                        #roll = currentEulerParameters[3]**2 - currentEulerParameters[1]**2 \
-                        #       - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
-
-                        #roll = acos(roll) * 57.3
-
-                        roll = atan(directionMatrix[1][2]/directionMatrix[2][2]) * 57.3
-
-                        elevationAngles.append(elevationAngle)
-                        aimAngleVector.append(aimAngle)
-                        rollVector.append(roll)
-                # if keyboard() == "kill":
-                #     while(keyboard() is False):
-                #         continue
+                    # Get Inertial Acceleration snd Velocity
+                    xinertialAcceleration, yinertialAcceleration, zinertialAcceleration = computeInertialAcceleration(imu, directionMatrix)
+                    xinertialAccelerationVector.append(xinertialAcceleration)
+                    yinertialAccelerationVector.append(yinertialAcceleration)
+                    zinertialAccelerationVector.append(zinertialAcceleration)
 
 
+                    # Stop collecting data once acceleration has reached zero again.
+                    previousEulerParameters = currentEulerParameters
+                    previousEpochTime = currentEpochTime
+                    previousElapsedSampleTime += currentElapsedSampleTime  # move to next step
 
-        # Once trial is finished, compute inertial velocity
+                    #Calculate Yaw, pitch and roll
+                    elevationAngle = asin(directionMatrix[0][2]) * 57.3
+                    aimAngle = atan(directionMatrix[0][1] / directionMatrix[0][0]) * 57.3
+                    #roll = currentEulerParameters[3]**2 - currentEulerParameters[1]**2 \
+                    #       - currentEulerParameters[2]**2 - currentEulerParameters[3]**2
 
-        #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
-        #                                                                                  zinertialAccelerationVector, timeVectors)
+                    #roll = acos(roll) * 57.3
+
+                    roll = atan(directionMatrix[1][2]/directionMatrix[2][2]) * 57.3
+
+                    elevationAngles.append(elevationAngle)
+                    aimAngleVector.append(aimAngle)
+                    rollVector.append(roll)
+                    isSwinging = True
+
 
                 # Compute Velocity
-                    xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
-                    yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
-                    zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
+            if(isSwinging):
+                xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
+                yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
+                zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
-                    xpositionVector = computePosition(xinertialVelocity, sampleTimes)
-                    ypositionVector = computePosition(yinertialVelocity, sampleTimes)
-                    zpositionVector = computePosition(zinertialVelocity, sampleTimes)
+                xpositionVector = computePosition(xinertialVelocity, sampleTimes)
+                ypositionVector = computePosition(yinertialVelocity, sampleTimes)
+                zpositionVector = computePosition(zinertialVelocity, sampleTimes)
 
-                    #TODO: FIX THIS
-                    velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
-                    velocityMagnitudeVector.append(velocityMagnitude)
-                    sweetSpotVelocityVector = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
-                                                                 [xAngularVelocity, yAngularVelocity, zAngularVelocity])
-
-
-                    roundEntries(yAccelerationVector)
-                    roundEntries(zAccelerationVector)
-                    roundEntries(xAngularVelocity)
-                    roundEntries(yAngularVelocity)
-                    roundEntries(zAngularVelocity)
-                    roundEntries(elevationAngles)
-                    roundEntries(timeVectors)
-                    roundEntries(xinertialVelocity)
-                    roundEntries(yinertialVelocity)
-                    roundEntries(zinertialVelocity)
-                    roundEntries(xinertialAccelerationVector)
-                    roundEntries(yinertialAccelerationVector)
-                    roundEntries(zinertialAccelerationVector)
-                    roundEntries(aimAngleVector)
-                    roundEntries(rollVector)
-                    roundEntries(sweetSpotVelocityVector)
-                    roundEntries(velocityMagnitude)
-                    roundEntries(xpositionVector)
-                    roundEntries(ypositionVector)
-                    roundEntries(zpositionVector)
+                #TODO: FIX THIS
+                velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
+                velocityMagnitudeVector.append(velocityMagnitude)
+                sweetSpotVelocityVector = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
+                                                             [xAngularVelocity, yAngularVelocity, zAngularVelocity])
 
 
-                    payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
-                           "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
-                           "accelz":yAccelerationVector}
+                roundEntries(yAccelerationVector)
+                roundEntries(zAccelerationVector)
+                roundEntries(xAngularVelocity)
+                roundEntries(yAngularVelocity)
+                roundEntries(zAngularVelocity)
+                roundEntries(elevationAngles)
+                roundEntries(timeVectors)
+                roundEntries(xinertialVelocity)
+                roundEntries(yinertialVelocity)
+                roundEntries(zinertialVelocity)
+                roundEntries(xinertialAccelerationVector)
+                roundEntries(yinertialAccelerationVector)
+                roundEntries(zinertialAccelerationVector)
+                roundEntries(aimAngleVector)
+                roundEntries(rollVector)
+                roundEntries(sweetSpotVelocityVector)
+                roundEntries(velocityMagnitude)
+                roundEntries(xpositionVector)
+                roundEntries(ypositionVector)
+                roundEntries(zpositionVector)
 
-                    r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
+
+                payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
+                       "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
+                       "accelz":yAccelerationVector}
+
+                r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
         # transmitString = transmitString + '!'
