@@ -711,8 +711,7 @@ def streamSwingTrial():
 
 
                 # Compute Velocity
-            isSwinging = input('done with swing enter 1 or 0')
-            if(isSwinging == '1'):
+            if(isSwinging):
                 xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
                 yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
                 zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
@@ -754,6 +753,7 @@ def streamSwingTrial():
                        "accelz":yinertialAccelerationVector}
 
                 r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
+                isSwinging = False
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
         # transmitString = transmitString + '!'
