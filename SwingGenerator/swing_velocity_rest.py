@@ -11,6 +11,7 @@ import sys
 import select
 import termios
 import tty
+import requests
 
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
@@ -717,49 +718,49 @@ def streamSwingTrial():
         #xinertialVelocity, yinertialVelocity, zinertialVelocity = computeInertialVelocity(imu, xinertialAccelerationVector, yinertialAccelerationVector,
         #                                                                                  zinertialAccelerationVector, timeVectors)
 
-            # Compute Velocity
-            xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
-            yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
-            zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
+                # Compute Velocity
+                    xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
+                    yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
+                    zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
 
-            xpositionVector = computePosition(xinertialVelocity, sampleTimes)
-            ypositionVector = computePosition(yinertialVelocity, sampleTimes)
-            zpositionVector = computePosition(zinertialVelocity, sampleTimes)
+                    xpositionVector = computePosition(xinertialVelocity, sampleTimes)
+                    ypositionVector = computePosition(yinertialVelocity, sampleTimes)
+                    zpositionVector = computePosition(zinertialVelocity, sampleTimes)
 
-            #TODO: FIX THIS
-            velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
-            velocityMagnitudeVector.append(velocityMagnitude)
-            sweetSpotVelocityVector = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
-                                                         [xAngularVelocity, yAngularVelocity, zAngularVelocity])
-
-
-            roundEntries(yAccelerationVector)
-            roundEntries(zAccelerationVector)
-            roundEntries(xAngularVelocity)
-            roundEntries(yAngularVelocity)
-            roundEntries(zAngularVelocity)
-            roundEntries(elevationAngles)
-            roundEntries(timeVectors)
-            roundEntries(xinertialVelocity)
-            roundEntries(yinertialVelocity)
-            roundEntries(zinertialVelocity)
-            roundEntries(xinertialAccelerationVector)
-            roundEntries(yinertialAccelerationVector)
-            roundEntries(zinertialAccelerationVector)
-            roundEntries(aimAngleVector)
-            roundEntries(rollVector)
-            roundEntries(sweetSpotVelocityVector)
-            roundEntries(velocityMagnitude)
-            roundEntries(xpositionVector)
-            roundEntries(ypositionVector)
-            roundEntries(zpositionVector)
+                    #TODO: FIX THIS
+                    velocityMagnitude = computeVelocityMagnitude(xinertialVelocity, yinertialVelocity, zinertialVelocity)
+                    velocityMagnitudeVector.append(velocityMagnitude)
+                    sweetSpotVelocityVector = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
+                                                                 [xAngularVelocity, yAngularVelocity, zAngularVelocity])
 
 
-            payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
-                   "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
-                   "accelz":yAccelerationVector}
+                    roundEntries(yAccelerationVector)
+                    roundEntries(zAccelerationVector)
+                    roundEntries(xAngularVelocity)
+                    roundEntries(yAngularVelocity)
+                    roundEntries(zAngularVelocity)
+                    roundEntries(elevationAngles)
+                    roundEntries(timeVectors)
+                    roundEntries(xinertialVelocity)
+                    roundEntries(yinertialVelocity)
+                    roundEntries(zinertialVelocity)
+                    roundEntries(xinertialAccelerationVector)
+                    roundEntries(yinertialAccelerationVector)
+                    roundEntries(zinertialAccelerationVector)
+                    roundEntries(aimAngleVector)
+                    roundEntries(rollVector)
+                    roundEntries(sweetSpotVelocityVector)
+                    roundEntries(velocityMagnitude)
+                    roundEntries(xpositionVector)
+                    roundEntries(ypositionVector)
+                    roundEntries(zpositionVector)
 
-            r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
+
+                    payload = {"rotX":rollVector, "rotY":aimAngleVector, "rotZ":elevationAngles,
+                           "speed":sweetSpotVelocityVector, "accelx":xAccelerationVector, "accely":yAccelerationVector,
+                           "accelz":yAccelerationVector}
+
+                    r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
         # transmitString = transmitString + '!'
