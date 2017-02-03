@@ -753,7 +753,7 @@ def streamSwingTrial():
                 payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
                        "accelz":yinertialAccelerationVector}
 
-                r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
+                r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
         # transmitString = transmitString + '!'
