@@ -712,7 +712,7 @@ def streamSwingTrial():
 
                 # Compute Velocity
             isSwinging = input('done with swing enter 1 or 0')
-            if(isSwinging):
+            if(isSwinging == '1'):
                 xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
                 yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
                 zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
