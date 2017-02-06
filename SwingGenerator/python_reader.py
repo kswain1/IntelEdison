@@ -8,6 +8,7 @@ from euler_parametrization import EulerParametrization
 import time
 
 # Open Serial Port
+swing_file_name = raw_input("Please input the name of your swing file: ")
 interface = input("Recieve Data serially or through wifi?")
 
 if interface == 0:
@@ -50,10 +51,11 @@ def obtainSwingData():
     The order in which the data is read
     must be the same order in which it is
     sent. Data is then plotted
-
     :return:
     """
 
+    """
+    print "xAccel Vector:"
     xAccelerationVector = readData(interface)
     print "yAccel Vector:"
     yAccelerationVector = readData(interface)
@@ -175,13 +177,18 @@ def obtainSwingData():
     listEntryTypes(velocityMagnitude)
 
 
+    csv_writer_id(rolls, aimAngles, elevationAngles)
+
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration,
                    aimAngles, rolls, sweetSpotVelocity, velocityMagnitude)
 
-    e = EulerParametrization(rotation_data_file='accel_ROLLPITCHYAW')
+    csv_writer(rolls, aimAngles, elevationAngles)
+
+
+    e = EulerParametrization(rotation_data_file='guzman_logs/'+swing_file_name)
     _ = e.animation()
     e.show()
 
@@ -191,12 +198,11 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls, sweetSpotVelocity,
                    velocityMagnitude):
-    ## Plots Acceleration vs Time
-
-    ##:param accelerationVector:
-    #:param timeVector:
-    #:return:
-    #"""
+    """ Plots Acceleration vs Time
+    :param accelerationVector:
+    :param timeVector:
+    :return:
+    """
 
     # Filter requirements.
     order = 6
@@ -219,7 +225,6 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
     print "Acceleration Length", len(xAccelerationVector)
 
     #timeVector = timeVector[0:len(xAccelerationVector)]
-
 
     plt.subplot(3, 2, 1)
 
@@ -364,22 +369,17 @@ def readData(interface=1):
             """while True:
                   # Establish connection with client.
                 #print 'Got connection from', addr
-
                 data = c.recvfrom(4096)
                 print "Data Recieved:"
                 print data
-
-
                 if data == "\n":
                     print "EOL Character Received:"
                     break
-
                 else:
                     #print dataList
                     #dataList.append(float(data))
                     dataList.append(data)
                     #print dataList
-
                 #c.close()  # Close the connection
             print dataList"""
             #print "The dataList is:"
@@ -408,12 +408,22 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
     return y
 
 def csv_writer(rolls, pitchs, yaws):
-    outFile_accel = open("guzman_logs/accel_ROLLPITCHYAW.csv", 'w')
+    outFile_accel = open("guzman_logs/"+swing_file_name+".csv", 'w')
     # File header
     outFile_accel.write("roll, pitch, yaw\n")
     # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
     for i in range(0,len(rolls)):
-        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(float(rolls[i]), float(pitchs[i]), float(yaws[i])))
+        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f}\n".format(float(rolls[i]),float(pitchs[i]), float(yaws[i])))
+
+
+
+def csv_writer_id(rolls, pitchs, yaws):
+    outFile_accel = open("guzman_logs/id_"+swing_file_name+".csv", 'w')
+    # File header
+    outFile_accel.write("id, roll, pitch, yaw\n")
+    # for roll,elevationAngle, aimAngle in rolls, yaw, pitch:
+    for i in range(0,len(rolls)):
+        outFile_accel.write("{:d},{:7.3f},{:7.3f},{:7.3f}\n".format(i,float(rolls[i]),float(pitchs[i]), float(yaws[i])))
 
 
 

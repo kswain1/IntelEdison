@@ -243,7 +243,7 @@ def computeInertialVelocity(inertialAccelerationVec,sampleTimes):
     return InertialVelocity.tolist()
 
 
-def computeVelocityHistory(accelerationVector, timeVector):
+def computeVelocity(accelerationVector, timeVector):
     """
     Function computes Velocity using averages between the acceleration values
     :param accelerationVector:
@@ -353,9 +353,6 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
         sweetSpotVector.append(sweetSpotVelMag)
 
 
-
-
-
     return sweetSpotVector
 
 
@@ -373,9 +370,6 @@ def normalizeEulerParameters(eulerParameters):
     eulerParameters = np.asarray(eulerParameters)  # Convert to numpy array to perform element wise operation
 
     normalizedQuaternion = eulerParameters/quaternionMagnitude
-
-    #print sqrt(normalizedQuaternion[0]**2 + normalizedQuaternion[1]**2 +
-    #         normalizedQuaternion[2]**2 + normalizedQuaternion[3]**2)
 
     return normalizedQuaternion
 
@@ -436,16 +430,6 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     # New quaternion computed through multiplication
     newEulerParameters = np.dot(quaternionMultiplicationMatrix, e_current)  # Dot is used to multiply
 
-
-
-
-    # Solve for euler parameters
-    #eulerParameters = odeint(stateEquationModel, e_current, timeVector,
-    #                         (xAngularVelocity, yAngularVelocity, zAngularVelocity))
-    #eulerParameters = eulerParameters.tolist()[1]
-
-    #print "Obtained Euler Parameters:"
-    #print eulerParameters
 
     # TODO:Do we have to normalize the quaternion?
     # TODO:Can we use this same solver or do we have to switch
@@ -712,9 +696,9 @@ def streamSwingTrial():
 
                 # Compute Velocity
             if(isSwinging):
-                xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
-                yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
-                zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
+                xinertialVelocity = computeVelocity(xinertialAccelerationVector, sampleTimes)
+                yinertialVelocity = computeVelocity(yinertialAccelerationVector, sampleTimes)
+                zinertialVelocity = computeVelocity(zinertialAccelerationVector, sampleTimes)
 
                 xpositionVector = computePosition(xinertialVelocity, sampleTimes)
                 ypositionVector = computePosition(yinertialVelocity, sampleTimes)
