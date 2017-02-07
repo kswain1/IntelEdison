@@ -51,12 +51,10 @@ def obtainSwingData():
     The order in which the data is read
     must be the same order in which it is
     sent. Data is then plotted
-
     :return:
     """
 
     """
-
     print "xAccel Vector:"
     xAccelerationVector = readData(interface)
     print "yAccel Vector:"
@@ -181,6 +179,7 @@ def obtainSwingData():
 
     csv_writer_id(rolls, aimAngles, elevationAngles)
     
+
     plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector, timeVector,
                    xAngularVelocity, yAngularVelocity, zAngularVelocity, elevationAngles,
                    xInertialVelocity, yInertialVelocity, zInertialVelocity,
@@ -189,7 +188,6 @@ def obtainSwingData():
 
     csv_writer(rolls, aimAngles, elevationAngles)
    
-    
     e = EulerParametrization(rotation_data_file='guzman_logs/'+swing_file_name)
     _ = e.animation()
     e.show()
@@ -201,7 +199,6 @@ def plotEverything(xAccelerationVector, yAccelerationVector, zAccelerationVector
                    xInertialAcceleration, yInertialAcceleration, zInertialAcceleration, aimAngles, rolls, sweetSpotVelocity,
                    velocityMagnitude):
     """ Plots Acceleration vs Time
-
     :param accelerationVector:
     :param timeVector:
     :return:
@@ -372,22 +369,17 @@ def readData(interface=1):
             """while True:
                   # Establish connection with client.
                 #print 'Got connection from', addr
-
                 data = c.recvfrom(4096)
                 print "Data Recieved:"
                 print data
-
-
                 if data == "\n":
                     print "EOL Character Received:"
                     break
-
                 else:
                     #print dataList
                     #dataList.append(float(data))
                     dataList.append(data)
                     #print dataList
-
                 #c.close()  # Close the connection
             print dataList"""
             #print "The dataList is:"
