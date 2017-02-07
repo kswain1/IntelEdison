@@ -593,8 +593,6 @@ def keyboard():
 
     return angle
 
-
-
 # this is for non-blocking input
 old_settings = termios.tcgetattr(sys.stdin)
 
@@ -613,13 +611,13 @@ def streamSwingTrial():
 
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
+    angularVelocity = readAngularVelocity(imu)
     try:
         tty.setcbreak(sys.stdin.fileno())
         # Loop for 10 seconds
         input('press 1 to stop program\n press 2 to kill recording\n press 3 to start recording \n press 4 to record at 10 deg')
         isSwinging = False
         while (keyboard() != 'stop'):
-            angularVelocity = readAngularVelocity(imu)
             xinertialAccelerationVector = [0]
             yinertialAccelerationVector = [0]
             zinertialAccelerationVector = [0]
@@ -755,54 +753,6 @@ def streamSwingTrial():
 
                 r=requests.post('https://obscure-headland-45385.herokuapp.com/hips',json=payload)
                 isSwinging = False
-        # s.connect(('192.168.1.41', port))
-        # transmitString = listToString(xAccelerationVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(yAccelerationVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(zAccelerationVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(xAngularVelocity)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(yAngularVelocity)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(zAngularVelocity)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(elevationAngles)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(timeVectors)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(xinertialVelocity)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(yinertialVelocity)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(zinertialVelocity)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(xinertialAccelerationVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(yinertialAccelerationVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(zinertialAccelerationVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(aimAngleVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(rollVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(sweetSpotVelocityVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(velocityMagnitude)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(xpositionVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(ypositionVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(zpositionVector)
-        # transmitString = transmitString + '!'
-        # transmitString = transmitString + listToString(calibration_angles)
-        #
-        # sendData(transmitString)
-        s.close()
-
 
     finally:
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
