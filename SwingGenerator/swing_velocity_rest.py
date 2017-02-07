@@ -598,36 +598,36 @@ def streamSwingTrial():
     # Initialize Storage Vectors
     acceleration = readAcceleration(imu)
     angularVelocity = readAngularVelocity(imu)
-    xinertialAccelerationVector = [0]
-    yinertialAccelerationVector = [0]
-    zinertialAccelerationVector = [0]
-    velocityMagnitudeVector = [0]
-    xAccelerationVector = [acceleration[0]]
-    yAccelerationVector = [acceleration[1]]
-    zAccelerationVector = [acceleration[2]]
-    xAngularVelocity = [angularVelocity[0]]
-    yAngularVelocity = [angularVelocity[1]]
-    zAngularVelocity = [angularVelocity[2]]
-    aimAngleVector = [0]
-    rollVector = [0]
-    rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
-    elevationAngles = [0]
-    timeVectors = [0]
-    sampleTimes = [0]
-    calibration_angles = [0]
-
-    # Initialize useful computation variables
-    previousEpochTime = initialTime  # t0
-    previousElapsedSampleTime = 0
-    currentElapsedSampleTime = 0
-    previousEulerParameters = e_initial
-    index = 0
     try:
         tty.setcbreak(sys.stdin.fileno())
         # Loop for 10 seconds
         input('press 1 to stop program\n press 2 to kill recording\n press 3 to start recording \n press 4 to record at 10 deg')
         isSwinging = False
         while (keyboard() != 'stop'):
+            xinertialAccelerationVector = [0]
+            yinertialAccelerationVector = [0]
+            zinertialAccelerationVector = [0]
+            velocityMagnitudeVector = [0]
+            xAccelerationVector = [acceleration[0]]
+            yAccelerationVector = [acceleration[1]]
+            zAccelerationVector = [acceleration[2]]
+            xAngularVelocity = [angularVelocity[0]]
+            yAngularVelocity = [angularVelocity[1]]
+            zAngularVelocity = [angularVelocity[2]]
+            aimAngleVector = [0]
+            rollVector = [0]
+            rotationMatrices = [computeDirectionCosineMatrix(e_initial)]
+            elevationAngles = [0]
+            timeVectors = [0]
+            sampleTimes = [0]
+            calibration_angles = [0]
+
+            # Initialize useful computation variables
+            previousEpochTime = initialTime  # t0
+            previousElapsedSampleTime = 0
+            currentElapsedSampleTime = 0
+            previousEulerParameters = e_initial
+            index = 0
             while (keyboard() != 'kill'):
                     #read callibration angles
                 tm.sleep(.5)
