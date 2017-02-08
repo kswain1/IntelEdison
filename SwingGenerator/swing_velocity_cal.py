@@ -584,23 +584,41 @@ def keyboard():
         if c == '2':
             angle = 'kill'
         if c == '3':
-            angle = 30
+            angle = 10
         if c == '4':
-            angle = 60
+            angle = 20
         if c == '5':
-            angle = 90
+            angle = 30
         if c == '6':
-            angle = 120
+            angle = 40
         if c == '7':
-            angle = 150
+            angle = 50
         if c == '8':
-            angle = 180
-        if c == '0':
-            angle = 0
+            angle = 60
+        if c == '9':
+            angle = 70
+        if c == 'q':
+            angle = 80     
+        if c == 'w':
+            angle = 90
         if c == 'e':
-            angle = 190
+            angle = 100
+        if c == 'r':
+            angle = 110
+        if c == 't':
+            angle = 120
+        if c == 'y':
+            angle = 130 
+        if c == 'u':
+            angle = 140
+        if c == 'i':
+            angle = 150     
+        if c == 'o':
+            angle = 160     
+        if c == 'p':
+            angle = 170     
         if c == 'a':
-            angle = 'stop'
+            angle = 180     
         if c == 's':
             angle = False
 
@@ -790,7 +808,7 @@ def streamSwingTrial():
         listToString(velocityMagnitude)
         """
 
-        s.connect(('192.168.1.41', port))
+        s.connect(('192.168.1.89', port))
         transmitString = listToString(xAccelerationVector)
         transmitString = transmitString + '!'
         transmitString = transmitString + listToString(yAccelerationVector)
