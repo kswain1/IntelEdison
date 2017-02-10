@@ -5,7 +5,7 @@ from sklearn import metrics
 from sklearn.neighbors import KNeighborsClassifier
 
 # Training data
-data = pd.read_csv('./fusion/logs/accel_isiswing.csv', index_col=0)
+data = pd.read_csv('logs/accel_sfswing.csv', index_col=False)
 feature_cols = ['Ax', 'Ay', 'Az']
 X = data[feature_cols]
 Y = data['Swing']

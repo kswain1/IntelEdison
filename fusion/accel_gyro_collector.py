@@ -41,7 +41,7 @@ imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
 # Loop and read accel, mag, and gyro
 log_file = raw_input("Enter name of log file: ")
 #outFile = open("logs/"+log_file, 'w')
-outFile_accel = open("guzman_logs/accel_"+log_file, 'w') 
+outFile_accel = open("guzman_logs/accel_"+log_file, 'w')
 
 #File header 
 outFile_accel.write("ax, ay, az, gx, gy, gz \n")
@@ -59,6 +59,8 @@ def is_swinging():
         c = sys.stdin.read(1)
         if c == '\x1b':
             exit(0)
+        if c != 1:
+            return 0
         swinging = not swinging
     return swinging
 
