@@ -640,6 +640,8 @@ def streamSwingTrial():
             while (keyboard() != 'kill'):
                     #read callibration angles
                 tm.sleep(.5)
+                currentAcceleration = readAcceleration(imu)
+                outFile_accel.write("{:7.3},{:7.3},{:7.3},{:d}".format(currentAcceleration[0],currentAcceleration[1],currentAcceleration[2],isSwinging))
                 if ((keyboard() != 'kill') and (keyboard() != 'stop')):
                     calibration_angles.append(keyboard())
 
