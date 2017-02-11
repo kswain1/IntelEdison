@@ -32,6 +32,10 @@ class IsSwinging(object):
         accel_point = self._accel_vector
         return knn.predict(self._accel_vector)
 
+    def get_accel_vector(self):
+        return self._feature_cols
+
+
 
 #Example on how to use the class
 # ami = IsSwinging(accel_vector = [1,1,1])
