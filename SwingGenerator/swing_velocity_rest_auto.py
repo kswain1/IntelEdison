@@ -558,7 +558,7 @@ def keyboard():
         if c == '\x1b':
             exit(0)
         if c == '1':
-            angle = 'stop'
+            angle = '1'
         if c == '2':
             angle = 'kill'
         if c == '3':
@@ -642,12 +642,11 @@ def streamSwingTrial():
             index = 0
             s = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az])
             isSwinging = s.is_swinging()
-
             while (isSwinging):
                     #read callibration angles
                 tm.sleep(.5)
                 currentAcceleration = readAcceleration(imu)
-                outFile_accel.write("{:7.3},{:7.3},{:7.3},{:d}".format(currentAcceleration[0],currentAcceleration[1],currentAcceleration[2],isSwinging))
+                outFile_accel.write("{:7.3},{:7.3},{:7.3},{:d}\n".format(currentAcceleration[0],currentAcceleration[1],currentAcceleration[2],keyboard()))
                 if ((keyboard() != 'kill') and (keyboard() != 'stop')):
                     calibration_angles.append(keyboard())
 
@@ -710,7 +709,8 @@ def streamSwingTrial():
                     rollVector.append(roll)
                     a = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az]) ##creates
                     isSwinging = a.is_swinging()
-                    outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,isSwinging))
+                    isSwinging = False
+                    outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,keyboard()))
 
                 # Compute Velocity
             if(isSwinging):
