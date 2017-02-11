@@ -109,7 +109,7 @@ try:
         print "Mag: " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz)
         print "Gyro: " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz)
         print "Temperature: " + str(imu.temp)
-        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:7.3f}, {:7.3f}, {:7.3f}\n".format(imu.ax, imu.ay, imu.az, imu.gx, imu.gy, imu.gz))  
+        outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,is_swinging()))
         data = {"AX":str(imu.ax),"AY":str(imu.ay),"AZ":str(imu.az)}
 
            #outFile.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(fuse.heading, fuse.pitch, fuse.roll, is_swinging()))
