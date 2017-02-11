@@ -594,7 +594,7 @@ def streamSwingTrial():
     """Runs a swing trial event and computes important bat metrics
     Returns the bat metrics in an array
     """
-    outFile_accel = open("logs/accel_swing_training", 'w')
+    outFile_accel = open("guzman_logs/accel_swing_training", 'w')
     #File header
     outFile_accel.write("ax, ay, az, swinging\n")
 
@@ -641,7 +641,7 @@ def streamSwingTrial():
             previousEulerParameters = e_initial
             index = 0
             s = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az])
-            isSwinging = machine_learning_swing_no.is_swinging()
+            isSwinging = s.is_swinging()
 
             while (isSwinging):
                     #read callibration angles
@@ -710,7 +710,7 @@ def streamSwingTrial():
                     rollVector.append(roll)
                     a = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az]) ##creates
                     isSwinging = a.is_swinging()
-                    outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,isSwinging.))
+                    outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,isSwinging))
 
                 # Compute Velocity
             if(isSwinging):
