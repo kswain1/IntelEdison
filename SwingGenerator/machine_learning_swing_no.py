@@ -1,6 +1,5 @@
 #!/usr/bin/python2
 import numpy as np
-import pandas as pd
 from sklearn import metrics
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -17,7 +16,7 @@ class IsSwinging(object):
         read_data = str(read_lines).split()
         self._feature_cols = []
         self._output_data = []
-        self._accel_vector = accel_vector
+        self._accel_vector = np.reshape(accel_vector,1,3)
         for row in read_data[1:]:
             input = row.split(',')
             row = [float(i) for i in input[:3]]
