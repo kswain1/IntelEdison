@@ -16,7 +16,7 @@ class IsSwinging(object):
         read_data = str(read_lines).split()
         self._feature_cols = []
         self._output_data = []
-        self._accel_vector = np.array(accel_vector).reshape(len(accel_vector),1)
+        self._accel_vector = np.array(accel_vector)
         for row in read_data[1:]:
             input = row.split(',')
             row = [float(i) for i in input[:3]]
@@ -38,8 +38,8 @@ class IsSwinging(object):
 
 
 #Example on how to use the class
-# ami = IsSwinging(accel_vector = [1,1,1])
-# print ami.is_swinging()
+ami = IsSwinging(accel_vector = [1,1,1])
+print ami.is_swinging()
 
 
 
