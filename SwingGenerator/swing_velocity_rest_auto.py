@@ -11,7 +11,7 @@ import sys
 import select
 import termios
 import tty
-import machine_learning_swing
+import machine_learning_swing_no
 import requests
 
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
@@ -640,8 +640,8 @@ def streamSwingTrial():
             currentElapsedSampleTime = 0
             previousEulerParameters = e_initial
             index = 0
-            s = machine_learning_swing.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az])
-            isSwinging = machine_learning_swing.is_swinging()
+            s = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az])
+            isSwinging = machine_learning_swing_no.is_swinging()
 
             while (isSwinging):
                     #read callibration angles
@@ -708,7 +708,7 @@ def streamSwingTrial():
                     elevationAngles.append(elevationAngle)
                     aimAngleVector.append(aimAngle)
                     rollVector.append(roll)
-                    a = machine_learning_swing.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az]) ##creates
+                    a = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az]) ##creates
                     isSwinging = a.is_swinging()
                     outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,isSwinging.))
 
