@@ -25,9 +25,6 @@ class IsSwinging(object):
         accel_point = self._accel_vector
         return knn.predict(self._accel_vector)
 
-    def is_swinging(self):
-        knn = self.training_data()
-        return knn.predict(self.accel_vector)
 
 # # Training data
 # data = pd.read_csv('guzman_logs/accel_sfswing.csv', index_col=False)
@@ -46,8 +43,8 @@ class IsSwinging(object):
 #     else: print("Not Swinging")
 # print(metrics.accuracy_score(Y, y_pred))
 
-# ami = IsSwinging(accel_vector = [1,1,1])
-# print ami.training_data()
+ami = IsSwinging(accel_vector = [1,1,1])
+print ami.is_swinging()
 
 
 
