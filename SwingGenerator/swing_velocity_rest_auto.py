@@ -559,8 +559,8 @@ def keyboard():
             exit(0)
         if c == '1':
             angle = '1'
-        if c == '2':
-            angle = 'kill'
+        if c == '0':
+            angle = '0'
         if c == '3':
             angle = 30
         if c == '4':
@@ -647,7 +647,7 @@ def streamSwingTrial():
                 tm.sleep(.5)
                 currentAcceleration = readAcceleration(imu)
                 outFile_accel.write("{:7.3},{:7.3},{:7.3},{:d}\n".format(currentAcceleration[0],currentAcceleration[1],currentAcceleration[2],keyboard()))
-                if ((keyboard() != 'kill') and (keyboard() != 'stop')):
+                if ((keyboard() != '0') or (keyboard() != 'stop')):
                     calibration_angles.append(keyboard())
 
                     # Read Angular Velocity and Acceleration
@@ -803,7 +803,7 @@ def streamSwingTrial():
         # transmitString = transmitString + listToString(calibration_angles)
         #
         # sendData(transmitString)
-        s.close()
+        #s.close()
 
 
     finally:
