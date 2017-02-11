@@ -11,6 +11,7 @@ import sys
 import select
 import termios
 import tty
+import machine_learning_swing
 import requests
 
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
@@ -45,7 +46,7 @@ def initialize():
     # Magnetometer Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
     # Gyroscope Options: "245DPS", "500DPS", "2000DPS"
 
-    imu.accel_range("16G")
+    imu.accel_range("2G")   ##TODO create training data with 16G acceleration
     imu.mag_range("2GAUSS")
     imu.gyro_range("2000DPS")
 
@@ -549,6 +550,7 @@ def training_data_header():
     outFile_accel.write("ax, ay, az, swinging\n")
 
 
+
 def keyboard():
     global angle
     if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
@@ -613,6 +615,7 @@ def streamSwingTrial():
         input('press 1 to stop program\n press 2 to kill recording\n press 3 to start recording \n press 4 to record at 10 deg')
         isSwinging = False
         while (keyboard() != 'stop'):
+            raw_accel = [imu.ax, imu.ay, imu.az]
             xinertialAccelerationVector = [0]
             yinertialAccelerationVector = [0]
             zinertialAccelerationVector = [0]
@@ -637,7 +640,10 @@ def streamSwingTrial():
             currentElapsedSampleTime = 0
             previousEulerParameters = e_initial
             index = 0
-            while (keyboard() != 'kill'):
+            s = machine_learning_swing.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az])
+            isSwinging = machine_learning_swing.is_swinging()
+
+            while (isSwinging):
                     #read callibration angles
                 tm.sleep(.5)
                 currentAcceleration = readAcceleration(imu)
@@ -702,8 +708,9 @@ def streamSwingTrial():
                     elevationAngles.append(elevationAngle)
                     aimAngleVector.append(aimAngle)
                     rollVector.append(roll)
-                    isSwinging = True
-                    outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,isSwinging))
+                    a = machine_learning_swing.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az]) ##creates
+                    isSwinging = a.is_swinging()
+                    outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,isSwinging.))
 
                 # Compute Velocity
             if(isSwinging):
@@ -745,10 +752,10 @@ def streamSwingTrial():
                 # roundEntries(zpositionVector)
                 #
                 #
-                # payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
-                #        "accelz":yinertialAccelerationVector}
-                #
-                # r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
+                payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
+                       "accelz":yinertialAccelerationVector}
+
+                r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
                 isSwinging = False
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
