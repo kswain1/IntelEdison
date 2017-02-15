@@ -678,7 +678,7 @@ def streamSwingTrial():
         while (keyboard() != 'stop'):
             while (keyboard() != 'kill'):
                     #read callibration angles
-                    tm.sleep(.5)
+                    
                     if ((keyboard() != 'kill') and (keyboard() != 'stop')):
                         calibration_angles.append(keyboard())
 
@@ -808,7 +808,7 @@ def streamSwingTrial():
         listToString(velocityMagnitude)
         """
 
-        s.connect(('192.168.1.89', port))
+        s.connect(('172.20.10.2', port))
         transmitString = listToString(xAccelerationVector)
         transmitString = transmitString + '!'
         transmitString = transmitString + listToString(yAccelerationVector)
