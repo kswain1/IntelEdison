@@ -58,6 +58,9 @@ def obtainSwingData():
     zpositionVector = recieveString[20].split()
     calibration_angles = recieveString[21].split()
 
+    if 'kill' in calibration_angles:
+	calibration_angles.pop(calibration_angles.index('kill'))
+
     #update rotation angles
     yaws = neg_pos_degree_converter(yaws)
 
