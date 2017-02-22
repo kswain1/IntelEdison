@@ -65,7 +65,7 @@ class IMU:
     # Enables the accelerometer, 100 Hz continuous in X, Y, and Z
     def enable_accel(self):
         self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG1_XM, 0x12C)  # 100 Hz, XYZ changed to 300
+        self.x.writeReg(self.XM.CTRL_REG1_XM, 0x87)  # 100 Hz, XYZ changed to 300
         self.x.address(self.XM.ADDRESS)
         self.x.writeReg(self.XM.CTRL_REG5_XM, 0xF0)
 
