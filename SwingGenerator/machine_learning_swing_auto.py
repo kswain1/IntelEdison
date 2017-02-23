@@ -59,30 +59,12 @@ class IsSwinging(object):
         return knn.predict(self._accel_vector)
 
 
-# Training data
-data = pd.read_csv('accel_sfswing.csv', index_col=False)
-feature_cols = ['Ax', 'Ay', 'Az']
-X = data[feature_cols]
-print X.values[0]
-Y = data['Swing']
-knn = KNeighborsClassifier(n_neighbors=1)
-knn.fit(X, Y)
-
-#There are three cases
-# whensomeone is swinging 
-#    continue to save the recorded data into an array
-# when the swing is just completed
-#    send the recorded data of swinging 
-# when the bat is not swinging 
-#    wait until someone is swinging 
-# Predict whether we are swinging or not
-y_pred = knn.predict(X)
-# print knn.predict([1,1,1])
 record_data = []
 counter = 0
 x = 0 
 i = 0 
 imu = initialize()
+imu.read_accel()
 raw_accel = [imu.ax, imu.ay, imu.az]
 raw_accel_one = [imu.ax, imu.ay, imu.az]
 raw_accel_two = [imu.ax, imu.ay, imu.az]
@@ -100,6 +82,10 @@ while (i < 10000):
         #print "saving swing"
         while knn.predict(raw_accel) or knn.predict(raw_accel_one) or knn.predict(raw_accel_two):      
              record_data.append(raw_accel)
+             imu.read_accel()
+             raw_accel = [imu.ax, imu.ay, imu.az]
+             raw_accel_one = [imu.ax, imu.ay, imu.az]
+             raw_accel_two = [imu.ax, imu.ay, imu.az]
              x += 1
              zero_counter += 1
 
@@ -114,7 +100,11 @@ while (i < 10000):
         #import pdb; pdb.set_trace()
     # case three for when someone is not swinging the baseball bat currently not working because this value 
     else:
-        i += 1  
+        i += 1 
+        imu.read_accel()
+        raw_accel = [imu.ax, imu.ay, imu.az]
+        raw_accel_one = [imu.ax, imu.ay, imu.az]
+        raw_accel_two = [imu.ax, imu.ay, imu.az] 
 
 # while i+3 < len(X):
 #     zero_counter = 0
@@ -150,13 +140,7 @@ while (i < 10000):
     #   print("sending recorded information to the database")
      #  zero_counter = 0 
     #   with open('swing_log.txt', 'a') as outfile:
-     #      outfile.write("sending data to database\n")
 
-print(metrics.accuracy_score(Y, y_pred))
-
-#Example on how to use the class
-#ami = IsSwinging(accel_vector = [1,1,1])
-#print ami.is_swinging()
 
 
 
