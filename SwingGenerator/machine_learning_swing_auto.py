@@ -80,8 +80,6 @@ raw_accel_two = [imu.ax, imu.ay, imu.az]
 
 while (i < 10000):
     zero_counter = 0
-    swing = list(X.values[i])
-    print swing
     #import pdb; pdb.set_trace()
     #import pdb; pdb.set_trace()\
     if knn.predict(raw_accel) or knn.predict(raw_accel_one) or knn.predict(raw_accel_two):
