@@ -584,7 +584,9 @@ def keyboard():
 
 
     return angle
-
+def isSwinging(imu_accel_vals):
+    s = machine_learning_swing_no.IsSwinging(accel_vector=imu_accel_vals)
+    return s.is_swinging()
 
 
 # this is for non-blocking input
@@ -640,14 +642,18 @@ def streamSwingTrial():
             currentElapsedSampleTime = 0
             previousEulerParameters = e_initial
             index = 0
-            s = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az])
-            isSwinging = s.is_swinging()
-            while (isSwinging):
-                    #read callibration angles
-                tm.sleep(.5)
-                currentAcceleration = readAcceleration(imu)
-                outFile_accel.write("{:7.3},{:7.3},{:7.3},{:d}\n".format(currentAcceleration[0],currentAcceleration[1],currentAcceleration[2],keyboard()))
-                if ((keyboard() != '0') or (keyboard() != 'stop')):
+            imu_1 = [imu.ax,imu.ay,imu.az]
+            imu_2 = [imu.ax, imu.ay, imu.az]
+            imu_3 = [imu.ax, imu.ay, imu.az]
+            # There are multiple cases here to check if the next three samples are swinging predicitons that thre is a max range 
+            # five samples of whether or not someone is swing the baseball bat
+            if (isSwinging(imu_1) or isSwinging(imu_2) or isSwinging(imu_3)):
+            
+                while (isSwinging(imu_1) or isSwinging(imu_2) or isSwinging(imu_3)):
+                        #read callibration angles
+                    currentAcceleration = readAcceleration(imu)
+                    outFile_accel.write("{:7.3},{:7.3},{:7.3},{:d}\n".format(currentAcceleration[0],currentAcceleration[1],currentAcceleration[2],keyboard()))
+                    # if ((keyboard() != '0') or (keyboard() != 'stop')):
                     calibration_angles.append(keyboard())
 
                     # Read Angular Velocity and Acceleration
@@ -707,14 +713,17 @@ def streamSwingTrial():
                     elevationAngles.append(elevationAngle)
                     aimAngleVector.append(aimAngle)
                     rollVector.append(roll)
-                    a = machine_learning_swing_no.IsSwinging(accel_vector=[imu.ax,imu.ay,imu.az]) ##creates
-                    isSwinging = a.is_swinging()
-                    isSwinging = False
-                    outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,keyboard()))
+                    imu_1 = [imu.ax,imu.ay,imu.az]
+                    imu_2 = [imu.ax, imu.ay, imu.az]
+                    imu_3 = [imu.ax, imu.ay, imu.az]
+                    #develop better machine learning in the future 
+                    #outFile_accel.write("{:7.3f},{:7.3f},{:7.3f},{:d}\n".format(imu.ax, imu.ay, imu.az,keyboard()))
 
                 # Compute Velocity
-            if(isSwinging):
-                isSwinging = False
+                payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
+                   "accelz":yinertialAccelerationVector}
+
+                r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
                 # xinertialVelocity = computeVelocity(xinertialAccelerationVector, sampleTimes)
                 # yinertialVelocity = computeVelocity(yinertialAccelerationVector, sampleTimes)
                 # zinertialVelocity = computeVelocity(zinertialAccelerationVector, sampleTimes)
@@ -752,11 +761,6 @@ def streamSwingTrial():
                 # roundEntries(zpositionVector)
                 #
                 #
-                payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
-                       "accelz":yinertialAccelerationVector}
-
-                r=requests.post('https://obscure-headland-45385.herokuapp.com/swings',json=payload)
-                isSwinging = False
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
         # transmitString = transmitString + '!'

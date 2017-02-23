@@ -38,8 +38,8 @@ class IsSwinging(object):
 
 
 #Example on how to use the class
-ami = IsSwinging(accel_vector = [1,1,1])
-print ami.is_swinging()
+#ami = IsSwinging(accel_vector = [1,1,1])
+#print ami.is_swinging()
 
 
 
