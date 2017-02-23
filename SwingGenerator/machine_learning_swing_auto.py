@@ -58,6 +58,14 @@ class IsSwinging(object):
         accel_point = self._accel_vector
         return knn.predict(self._accel_vector)
 
+# Training data
+data = pd.read_csv('guzman_logs/accel_sfswing.csv', index_col=False)
+feature_cols = ['Ax', 'Ay', 'Az']
+X = data[feature_cols]
+print X.values[0]
+Y = data['Swing']
+knn = KNeighborsClassifier(n_neighbors=1)
+knn.fit(X, Y)
 
 record_data = []
 counter = 0
