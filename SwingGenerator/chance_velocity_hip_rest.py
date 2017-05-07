@@ -757,7 +757,7 @@ def streamSwingTrial():
 
                 payload = {"firstname":"Chance", "swing_speed_mag":Magnitude, "swing_speed":list_magnitude}
 
-                r=requests.post('https://chanceswing.herokuapp.com/contacts',json=payload)
+                r=requests.post('https://chanceswing.herokuapp.com/hips',json=payload)
                 isSwinging = False
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
