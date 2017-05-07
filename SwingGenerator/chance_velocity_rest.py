@@ -536,7 +536,7 @@ def listMagnitude(xinertialAcceleration,yinertialAcceleration,zinertialAccelerat
     list_magnitude = []
     for i in range(len(xinertialAcceleration)):
         list_magnitude.append(sqrt(pow(xinertialAcceleration[i],2)+pow(yinertialAcceleration[i],2)+pow(zinertialAcceleration[i],2)))
-    return round(list_magnitude)
+    return roundEntries(list_magnitude)
 
 
 
