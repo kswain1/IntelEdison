@@ -243,7 +243,7 @@ def computeInertialVelocity(inertialAccelerationVec,sampleTimes):
     return InertialVelocity.tolist()
 
 
-def computeVelocityHistory(accelerationVector, timeVector):
+def computeVelocity(accelerationVector, timeVector):
     """
     Function computes Velocity using averages between the acceleration values
     :param accelerationVector:
@@ -353,9 +353,6 @@ def computeSweetSpotVelocity(inertialVelocityVector, angularVelocityVector):
         sweetSpotVector.append(sweetSpotVelMag)
 
 
-
-
-
     return sweetSpotVector
 
 
@@ -373,9 +370,6 @@ def normalizeEulerParameters(eulerParameters):
     eulerParameters = np.asarray(eulerParameters)  # Convert to numpy array to perform element wise operation
 
     normalizedQuaternion = eulerParameters/quaternionMagnitude
-
-    #print sqrt(normalizedQuaternion[0]**2 + normalizedQuaternion[1]**2 +
-    #         normalizedQuaternion[2]**2 + normalizedQuaternion[3]**2)
 
     return normalizedQuaternion
 
@@ -436,16 +430,6 @@ def computeEulerParameters(e_current, timeVector, currentAngularVelocity):
     # New quaternion computed through multiplication
     newEulerParameters = np.dot(quaternionMultiplicationMatrix, e_current)  # Dot is used to multiply
 
-
-
-
-    # Solve for euler parameters
-    #eulerParameters = odeint(stateEquationModel, e_current, timeVector,
-    #                         (xAngularVelocity, yAngularVelocity, zAngularVelocity))
-    #eulerParameters = eulerParameters.tolist()[1]
-
-    #print "Obtained Euler Parameters:"
-    #print eulerParameters
 
     # TODO:Do we have to normalize the quaternion?
     # TODO:Can we use this same solver or do we have to switch
@@ -555,6 +539,7 @@ def listMagnitude(xinertialAcceleration,yinertialAcceleration,zinertialAccelerat
     return roundEntries(list_magnitude)
 
 
+
 #
 # swinging = 0
 # def is_swinging():
@@ -609,6 +594,8 @@ def keyboard():
 
     return angle
 
+
+
 # this is for non-blocking input
 old_settings = termios.tcgetattr(sys.stdin)
 
@@ -658,7 +645,6 @@ def streamSwingTrial():
             currentElapsedSampleTime = 0
             previousEulerParameters = e_initial
             index = 0
-
             while (keyboard() != 'kill'):
                     #read callibration angles
                 tm.sleep(.5)
@@ -727,9 +713,9 @@ def streamSwingTrial():
 
                 # Compute Velocity
             if(isSwinging):
-                xinertialVelocity = computeVelocityHistory(xinertialAccelerationVector, sampleTimes)
-                yinertialVelocity = computeVelocityHistory(yinertialAccelerationVector, sampleTimes)
-                zinertialVelocity = computeVelocityHistory(zinertialAccelerationVector, sampleTimes)
+                xinertialVelocity = computeVelocity(xinertialAccelerationVector, sampleTimes)
+                yinertialVelocity = computeVelocity(yinertialAccelerationVector, sampleTimes)
+                zinertialVelocity = computeVelocity(zinertialAccelerationVector, sampleTimes)
 
                 xpositionVector = computePosition(xinertialVelocity, sampleTimes)
                 ypositionVector = computePosition(yinertialVelocity, sampleTimes)
@@ -769,10 +755,58 @@ def streamSwingTrial():
                 Magnitude = magnitude(max_acceleration_x,max_acceleration_y,max_acceleration_z)
                 list_magnitude = listMagnitude(xinertialAccelerationVector,yinertialAccelerationVector,zinertialAccelerationVector)
 
-                payload = {"swing_speed_mag":Magnitude, "swing_speed":list_magnitude}
+                payload = {"firstname":"Chance", "swing_speed_mag":Magnitude, "swing_speed":list_magnitude}
 
-                r=requests.post('https://chanceswings.herokuapp.com/hips',json=payload)
+                r=requests.post('https://chanceswing.herokuapp.com/contacts',json=payload)
                 isSwinging = False
+        # s.connect(('192.168.1.41', port))
+        # transmitString = listToString(xAccelerationVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(yAccelerationVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(zAccelerationVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(xAngularVelocity)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(yAngularVelocity)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(zAngularVelocity)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(elevationAngles)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(timeVectors)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(xinertialVelocity)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(yinertialVelocity)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(zinertialVelocity)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(xinertialAccelerationVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(yinertialAccelerationVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(zinertialAccelerationVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(aimAngleVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(rollVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(sweetSpotVelocityVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(velocityMagnitude)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(xpositionVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(ypositionVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(zpositionVector)
+        # transmitString = transmitString + '!'
+        # transmitString = transmitString + listToString(calibration_angles)
+        #
+        # sendData(transmitString)
+        s.close()
+
 
     finally:
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
