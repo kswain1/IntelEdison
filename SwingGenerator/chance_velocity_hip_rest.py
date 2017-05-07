@@ -763,7 +763,7 @@ def streamSwingTrial():
                 roundEntries(ypositionVector)
                 roundEntries(zpositionVector)
 
- max_acceleration_x = maxValue(xinertialAccelerationVector)
+                max_acceleration_x = maxValue(xinertialAccelerationVector)
                 max_acceleration_y = maxValue(yinertialAccelerationVector)
                 max_acceleration_z = maxValue(zinertialAccelerationVector)
                 Magnitude = magnitude(max_acceleration_x,max_acceleration_y,max_acceleration_z)
