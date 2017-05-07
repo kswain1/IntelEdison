@@ -543,16 +543,16 @@ def maxValue(list):
     for speed_data in list:
         if speed_data > max:
             max = speed_data
-    return max
+    return round(max)
 
 def magnitude(x,y,z):
-    return sqrt(pow(x,2)+pow(y,2)+pow(z,2))
+    return round(sqrt(pow(x,2)+pow(y,2)+pow(z,2)))
 
 def listMagnitude(xinertialAcceleration,yinertialAcceleration,zinertialAcceleration):
     list_magnitude = []
     for i in range(len(xinertialAcceleration)):
         list_magnitude.append(sqrt(pow(xinertialAcceleration[i],2)+pow(yinertialAcceleration[i],2)+pow(zinertialAcceleration[i],2)))
-    return list_magnitude
+    return round(list_magnitude)
 
 
 #
