@@ -771,7 +771,7 @@ def streamSwingTrial():
 
                 payload = {"swing_speed_mag":Magnitude, "swing_speed":list_magnitude}
 
-                r=requests.post('https:/chanceswings.herokuapp.com/hips',json=payload)
+                r=requests.post('https://chanceswings.herokuapp.com/hips',json=payload)
                 isSwinging = False
 
     finally:
