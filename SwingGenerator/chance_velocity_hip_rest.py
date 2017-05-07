@@ -550,8 +550,8 @@ def magnitude(x,y,z):
 
 def listMagnitude(xinertialAcceleration,yinertialAcceleration,zinertialAcceleration):
     list_magnitude = []
-    for accel_data in xinertialAcceleration:
-        list_magnitude.add(sqrt(pow(xinertialAcceleration,2)+pow(yinertialAcceleration,2)+pow(zinertialAcceleration,2)))
+    for i in range(len(xinertialAcceleration)):
+        list_magnitude.append(sqrt(pow(xinertialAcceleration[i],2)+pow(yinertialAcceleration[i],2)+pow(zinertialAcceleration[i],2)))
     return list_magnitude
 
 
@@ -763,12 +763,11 @@ def streamSwingTrial():
                 roundEntries(ypositionVector)
                 roundEntries(zpositionVector)
 
-
-                max_acceleration_x = maxValue(xinertialAcceleration)
-                max_acceleration_y = maxValue(yinertialAcceleration)
-                max_acceleration_z = maxValue(zinertialAcceleration)
+ max_acceleration_x = maxValue(xinertialAccelerationVector)
+                max_acceleration_y = maxValue(yinertialAccelerationVector)
+                max_acceleration_z = maxValue(zinertialAccelerationVector)
                 Magnitude = magnitude(max_acceleration_x,max_acceleration_y,max_acceleration_z)
-                list_magnitude = listMagnitude(xinertialAcceleration,yinertialAcceleration,zinertialAcceleration)
+                list_magnitude = listMagnitude(xinertialAccelerationVector,yinertialAccelerationVector,zinertialAccelerationVector)
 
                 payload = {"swing_speed_mag":Magnitude, "swing_speed":list_magnitude}
 
