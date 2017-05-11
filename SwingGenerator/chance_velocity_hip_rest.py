@@ -16,7 +16,7 @@ import requests
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
 
-
+firstname = raw_input('Enter user first name')
 s = socket.socket()
 # Create a socket object
 port = 81  # Reserve a port for your service.
@@ -755,7 +755,7 @@ def streamSwingTrial():
                 Magnitude = magnitude(max_acceleration_x,max_acceleration_y,max_acceleration_z)
                 list_magnitude = listMagnitude(xinertialAccelerationVector,yinertialAccelerationVector,zinertialAccelerationVector)
 
-                payload = {"firstname":"Chance", "swing_speed_mag":Magnitude, "swing_speed":list_magnitude}
+                payload = {"firstname":firstname, "swing_speed_mag":Magnitude, "swing_speed":list_magnitude}
 
                 r=requests.post('https://chanceswing.herokuapp.com/hips',json=payload)
                 isSwinging = False
