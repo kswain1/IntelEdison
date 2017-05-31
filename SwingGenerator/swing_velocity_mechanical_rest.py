@@ -16,7 +16,6 @@ import requests
 # IMU SAMPLES AT 100 HZ/ 100 samples per second
 # WE ARE WORKING IN METERS NOT FEET!
 
-firstname = raw_input('Enter user first name')
 
 s = socket.socket()
 # Create a socket object
@@ -523,23 +522,6 @@ def listToString(list):
     print longString
     return longString
 
-def maxValue(list):
-    max = 0
-    for speed_data in list:
-        if speed_data > max:
-            max = speed_data
-    return round(max)
-
-def magnitude(x,y,z):
-    return round(sqrt(pow(x,2)+pow(y,2)+pow(z,2)))
-
-def listMagnitude(xinertialAcceleration,yinertialAcceleration,zinertialAcceleration):
-    list_magnitude = []
-    for i in range(len(xinertialAcceleration)):
-        list_magnitude.append(sqrt(pow(xinertialAcceleration[i],2)+pow(yinertialAcceleration[i],2)+pow(zinertialAcceleration[i],2)))
-    return roundEntries(list_magnitude)
-
-
 
 #
 # swinging = 0
@@ -728,7 +710,7 @@ def streamSwingTrial():
                 sweetSpotVelocityVector = computeSweetSpotVelocity([xinertialVelocity, yinertialVelocity, zinertialVelocity],
                                                              [xAngularVelocity, yAngularVelocity, zAngularVelocity])
 
-                roundEntries(xAccelerationVector)
+
                 roundEntries(yAccelerationVector)
                 roundEntries(zAccelerationVector)
                 roundEntries(xAngularVelocity)
@@ -750,15 +732,11 @@ def streamSwingTrial():
                 roundEntries(ypositionVector)
                 roundEntries(zpositionVector)
 
-                max_acceleration_x = maxValue(xinertialAccelerationVector)
-                max_acceleration_y = maxValue(yinertialAccelerationVector)
-                max_acceleration_z = maxValue(zinertialAccelerationVector)
-                Magnitude = magnitude(max_acceleration_x,max_acceleration_y,max_acceleration_z)
-                list_magnitude = listMagnitude(xinertialAccelerationVector,yinertialAccelerationVector,zinertialAccelerationVector)
-                good_swing = input("\n Enter 1 for good and zero for bad \n")
-                payload = {"firstname":firstname, "swing_speed_mag":Magnitude, "swing_speed":list_magnitude, "good_swing":good_swing}
 
-                r=requests.post('https://chanceswing.herokuapp.com/contacts',json=payload)
+                payload = {"accelx":xinertialAccelerationVector, "accely":yinertialAccelerationVector,
+                       "accelz":yinertialAccelerationVector}
+
+                r=requests.post('https://mechanicaltest.herokuapp.com/swings',json=payload)
                 isSwinging = False
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)

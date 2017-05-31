@@ -648,7 +648,7 @@ def streamSwingTrial():
             index = 0
             while (keyboard() != 'kill'):
                     #read callibration angles
-                tm.sleep(.5)
+                #tm.sleep(.5)
                 if ((keyboard() != 'kill') and (keyboard() != 'stop')):
                     calibration_angles.append(keyboard())
 
@@ -749,16 +749,33 @@ def streamSwingTrial():
                 roundEntries(xpositionVector)
                 roundEntries(ypositionVector)
                 roundEntries(zpositionVector)
-
+                
+		max_raw_accel_x = maxValue(xAccelerationVector)
+		max_raw_accel_y = maxValue(yAccelerationVector)
+		max_raw_accel_z = maxValue(zAccelerationVector)
                 max_acceleration_x = maxValue(xinertialAccelerationVector)
                 max_acceleration_y = maxValue(yinertialAccelerationVector)
                 max_acceleration_z = maxValue(zinertialAccelerationVector)
-                Magnitude = magnitude(max_acceleration_x,max_acceleration_y,max_acceleration_z)
-                list_magnitude = listMagnitude(xinertialAccelerationVector,yinertialAccelerationVector,zinertialAccelerationVector)
-                good_swing = input("\n Enter 1 for good and zero for bad \n")
-                payload = {"firstname":firstname, "swing_speed_mag":Magnitude, "swing_speed":list_magnitude, "good_swing":good_swing}
+                max_gyro_x = maxValue(xAngularVelocity)
+		max_gyro_y = maxValue(yAngularVelocity)
+		max_gyro_z = maxValue(zAngularVelocity)
+                
+		raw_accel_magnitude = listMagnitude(xAccelerationVector, yAccelerationVector, zAccelerationVector)
+		accel_magnitude = listMagnitude(xinertialAccelerationVector,yinertialAccelerationVector,zinertialAccelerationVector)
+		gyro_magnitude = listMagnitude(xAngularVelocity, yAngularVelocity, zAngularVelocity)
+                max_gyro = maxValue(gyro_magnitude)	
+                max_accel = maxValue(accel_magnitude)
+		max_raw_accel = maxValue(raw_accel_magnitude)
+		good_swing = input("\n Enter 1 for good and zero for bad \n")
+                payload = {"firstname":firstname, "swing_speed_mag":max_accel, "swing_speed":accel_magnitude, "good_swing":good_swing, 
+                           "x_rotation":xAngularVelocity,"y_rotation":yAngularVelocity, "z_rotation":zAngularVelocity,
+                            "xAcceleration":xinertialAccelerationVector, "yAcceleration":yinertialAccelerationVector,
+                            "zAcceleration":zinertialAccelerationVector,"max_gyro":max_gyro,
+		            "raw_accel_mag":raw_accel_magnitude, "raw_accel_max":max_raw_accel, "raw_accel_x":xAccelerationVector, 
+			    "raw_accel_y":yAccelerationVector, "raw_accel_z":zAccelerationVector
+                            }
 
-                r=requests.post('https://chanceswing.herokuapp.com/contacts',json=payload)
+                r=requests.post('https://baseballperformance.herokuapp.com/contacts',json=payload)
                 isSwinging = False
         # s.connect(('192.168.1.41', port))
         # transmitString = listToString(xAccelerationVector)
